@@ -1,0 +1,199 @@
+@import "~bootstrap/dist/css/bootstrap-reboot.css";
+
+body {
+  background-color: #333333;
+  color: #aaaaaa;
+  margin: 1rem;
+}
+
+button {
+  background-color: #333333;
+  color: #aaaaaa;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  border: 1px inset #666666;
+  box-shadow: 0 0 2px 2px #000000;
+  cursor: pointer;
+  outline: none;
+}
+
+// Small devices (landscape phones, 576px and up)
+$breakpoint-s: 576px;
+// Medium devices (tablets, 768px and up)
+$breakpoint-m: 768px;
+// Large devices (desktops, 992px and up)
+$breakpoint-l: 992px;
+// Extra large devices (large desktops, 1200px and up)
+$breakpoint-xl: 1200px;
+
+@media (min-width: $breakpoint-m) {
+  button {
+    padding: 2rem;
+  }
+}
+
+
+/*.glow-button:hover {*/
+/*    color: rgba(255, 255, 255, 1);*/
+/*    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);*/
+/*}*/
+
+#song-settings {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+$active-color: white;
+$inactive-color: black;
+$active-shadow-color: #aaaaaa;
+$inactive-shadow-color: black;
+
+$beat-blur-radius: 4px;
+$beat-spread-radius: 1px;
+
+$fade-out-delay: 0.1s;
+$fade-out-duration: 0.2s;
+
+@keyframes fade-out-active {
+  from {
+    border-color: $active-color;
+    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
+  }
+  to {
+    border-color: $inactive-color;
+    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
+  }
+}
+
+@keyframes fade-out-active-filled {
+  from {
+    border-color: $active-color;
+    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
+    background-color: $active-color;
+  }
+  to {
+    border-color: $inactive-color;
+    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
+    background-color: $inactive-color;
+  }
+}
+
+@mixin fade-out-active {
+  animation-name: fade-out-active;
+  animation-delay: $fade-out-delay;
+  animation-duration: $fade-out-duration;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@mixin fade-out-active-filled {
+  animation-name: fade-out-active-filled;
+  animation-delay: $fade-out-delay;
+  animation-duration: $fade-out-duration;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+#beat-bar {
+  display: flex;
+  justify-content: space-evenly;
+  /*align-items: center;*/
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  .beat {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .beat-item {
+      margin: 0.3rem 0.6rem;
+      border-width: 1px;
+      border-style: solid;
+      border-color: $inactive-color;
+      box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
+      height: 2rem;
+
+      //transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
+      &:first-child {
+        border-top-left-radius: 0.8rem;
+        border-top-right-radius: 0.8rem;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 0.8rem;
+        border-bottom-right-radius: 0.8rem;
+      }
+    }
+
+    .beat-lower {
+      background-color: $inactive-color;
+    }
+
+    &.accent {
+      .beat-middle {
+        background-color: $inactive-color;
+      }
+    }
+
+    &.active {
+      .beat-item {
+        border-color: $active-color;
+        box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
+        @include fade-out-active;
+      }
+
+      .beat-lower {
+        background-color: $active-color;
+        @include fade-out-active-filled;
+      }
+
+      &.accent {
+        .beat-middle, .beat-lower {
+          background-color: $active-color;
+          @include fade-out-active-filled;
+        }
+      }
+    }
+  }
+}
+
+#main-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+#speed {
+  text-align: center;
+}
+
+#current-bpm-wrapper {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#current-bpm-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#knob-speed {
+  background: url('images/base_one_bg_130.png') no-repeat;
+
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+}
+
+#knob-speed_knob {
+  background: url('images/base_one_knob_35.png') no-repeat;
+}
