@@ -1,6 +1,9 @@
 import React from 'react';
 
-const ToRad = Math.PI / 180;
+import KnobSvg from './images/knob.svg';
+import KnobOverlay from './images/knob-overlay.svg';
+
+//const ToRad = Math.PI / 180;
 const ToDeg = 180 / Math.PI;
 
 class SpeedKnob extends React.Component {
@@ -10,29 +13,72 @@ class SpeedKnob extends React.Component {
         this.state = {
             rotation: props.rotation,
             dragStartDegreeInUnit: 0,
-            quadrant: 0
+            quadrant: 0,
+            mouseDragInProgress: false
         };
     }
 
     render() {
         return (
+            <div style={{
+                position: "relative",
+                width: "50%",
+                paddingBottom: "50%",
+            }}>
                 <div
                     onTouchStart={this.touchStart.bind(this)}
                     onTouchMove={this.touchMove.bind(this)}
+                    onPointerDown={this.pointerDown.bind(this)}
+                    onPointerMove={this.pointerMove.bind(this)}
+                    onPointerUp={this.pointerUp.bind(this)}
                     style={{
+                        touchAction: "none",
                         // flexGrow: 4,
-                        border: "1px solid white",
-                        width: "50%",
-                        paddingBottom: "50%",
                         transform: "rotate(" + this.state.rotation + "deg)",
+                        backgroundImage: `url(${KnobSvg})`,
+                        backgroundSize: "contain",
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%"
                     }}>
                 </div>
+                <img src={KnobOverlay} alt="" style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    zIndex: 100,
+                    opacity: 0.75,
+                    pointerEvents: "none"
+                }}/>
+            </div>
         )
+    }
+
+    pointerDown(e) {
+        this.setState({
+            mouseDragInProgress: true
+        });
+        e.target.setPointerCapture(e.pointerId);
+        this.touchStart(e);
+    }
+
+    pointerUp(e) {
+        e.target.releasePointerCapture(e.pointerId);
+        this.setState({
+            mouseDragInProgress: false
+        })
+    }
+
+    pointerMove(e) {
+        if (this.state.mouseDragInProgress) {
+            this.touchMove(e);
+        }
     }
 
     touchStart(e) {
         const centerRelativeCoordinates = this.getCenterRelativeCoordinates(e);
         const dragStartDegreeInUnit = Math.atan2(centerRelativeCoordinates.y, centerRelativeCoordinates.x) * ToDeg;
+
         this.setState({
             dragStartDegreeInUnit: dragStartDegreeInUnit,
             quadrant: this.getQuadrantFromDegreeInUnit(dragStartDegreeInUnit)
@@ -51,9 +97,19 @@ class SpeedKnob extends React.Component {
 
         if (oldQuadrant === 3 && newQuadrant === 2) {
             diffRotation = 360 + diffRotation;
+        } else if (oldQuadrant === 2 && newQuadrant === 3) {
+            diffRotation = 360 - diffRotation;
         }
 
-        const newRotation = oldRotation + diffRotation;
+        let newRotation = oldRotation + diffRotation;
+
+        if (this.props.minRotation !== undefined && newRotation < this.props.minRotation) {
+            newRotation = this.props.minRotation;
+        }
+
+        if (this.props.maxRotation !== undefined && newRotation > this.props.maxRotation) {
+            newRotation = this.props.maxRotation;
+        }
 
         this.setState({
             dragStartDegreeInUnit: dragMoveDegreeInUnit,
@@ -71,11 +127,11 @@ class SpeedKnob extends React.Component {
         const rect = element.getBoundingClientRect();
 
         let coordinatesHolder;
-        // if (JogDial.MobileEvent) {
-        coordinatesHolder = e.targetTouches[0];
-        // } else {
-        //     coordinatesHolder = e;
-        // }
+        if (e.targetTouches) {
+            coordinatesHolder = e.targetTouches[0];
+        } else {
+            coordinatesHolder = e;
+        }
 
         return {
             x: coordinatesHolder.clientX - rect.left - rect.width / 2,

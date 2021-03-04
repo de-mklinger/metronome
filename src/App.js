@@ -1,10 +1,12 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlay} from '@fortawesome/free-solid-svg-icons'
 import './BeatBar';
 import './SpeedKnob';
 import BeatBar from "./BeatBar";
 import {getLabels} from "./tempo";
 import SpeedKnob from "./SpeedKnob";
+import PlayButton from "./PlayButton";
+import {faClock} from '@fortawesome/free-regular-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {ReactComponent as QuarterNoteSvg} from "./images/quarter-note.svg"
 
 function App(props) {
     function speedKnobRotate(rotation) {
@@ -35,8 +37,8 @@ function App(props) {
                 activeBeatIdx={props.ctx.state.activeBeatIdx}/>
             <div id="song-settings">
                 <button id="button-time-signature">4/4</button>
-                <button id="button-subdivisions">Q</button>
-                <button id="button-song-length">L</button>
+                <button id="button-subdivisions"><QuarterNoteSvg/></button>
+                <button id="button-song-length"><FontAwesomeIcon icon={faClock}/></button>
             </div>
             <div id="current-bpm-wrapper">
                 <div id="current-bpm-label">
@@ -47,15 +49,18 @@ function App(props) {
                 </div>
             </div>
             <div id="main-controls">
-                <button id="button-play" onClick={props.onPlay}>
-                    <FontAwesomeIcon icon={faPlay}/>
-                </button>
+                <PlayButton
+                    started={props.ctx.state.started}
+                    onPlay={props.onPlay} />
                 <SpeedKnob
                     rotation={bpmToRotation(props.ctx.bpm)}
+                    minRotation={bpmToRotation(props.ctx.minBpm)}
+                    maxRotation={bpmToRotation(props.ctx.maxBpm)}
                     onRotate={speedKnobRotate}/>
                 <button id="button-tap">Tap</button>
             </div>
-        </div>);
+        </div>
+    );
 }
 
 export default App;

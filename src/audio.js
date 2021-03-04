@@ -1,3 +1,5 @@
+import silenceWav from './sounds/silence.wav';
+
 export { playSample, playSilence, getAudioBuffer }
 
 // Fix iOS Audio Context:
@@ -5,19 +7,27 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const audioContext = new window.AudioContext();
 
-const silenceAudioBuffer = audioContext.createBuffer(2, 1000, 44100);
+let silenceAudioBuffer = null;
+getAudioBuffer(silenceWav).then(buf => silenceAudioBuffer = buf);
+
+//const silenceAudioBuffer = audioContext.createBuffer(2, 1000, 44100);
 
 const fixAudioContext = function () {
     if (audioContext.state !== 'running') {
         console.log("Resume Audio Context")
         audioContext.resume().then(() => playSilence());
     }
-    // document.removeEventListener('touchend', fixAudioContext);
 };
-document.addEventListener('touchend', fixAudioContext);
+document.addEventListener('touchstart', fixAudioContext);
+document.addEventListener('mousedown', fixAudioContext);
 
 function playSilence() {
-    playSample(silenceAudioBuffer);
+    if (silenceAudioBuffer === null) {
+        console.log("Silence audio buffer not yet loaded");
+    } else {
+        console.log("Play silence");
+        playSample(silenceAudioBuffer);
+    }
 }
 
 function playSample(audioBuffer, whenOffsetSeconds = 0) {

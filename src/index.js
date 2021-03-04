@@ -19,6 +19,7 @@ let ctx = {
     rotationFactor: 0.05, // wheel-ux. Multiplied with 0°-360°
     earlyPlayThresholdMillis: -18, // animation frame dependent. Assuming 60 FPS, actually 16.6666.
     minBpm: 1, // const. Can we go back in time, or stay forever?
+    maxBpm: 400,
     playSilenceIntervalMillis: 10000,
     missMillisThreshold: 100,
 
@@ -49,54 +50,18 @@ function render() {
 reportWebVitals();
 
 async function setUp() {
-    // applySettings();
-
-    // document.getElementById('button-play').addEventListener('click', play);
-
-    // let minDegree = (ctx.minBpm - ctx.centerBpm) / ctx.rotationFactor;
-    // new JogDial(document.getElementById('knob-speed'), {
-    //     // wheelSize: '200px',
-    //     // knobSize: '70px',
-    //     wheelSize: '100px',
-    //     knobSize: '35px',
-    //     minDegree: minDegree,
-    //     // maxDegree:360,
-    //     touchMode: 'wheel',
-    //     degreeStartAt: 0
-    // }).on(JogDial.CustomEvent.ROTATE, onWheelRotate);
-
     ctx.accentAudioBuffer = await getAudioBuffer(Cowbell2);
     ctx.nonAccentAudioBuffer = await getAudioBuffer(Cowbell1);
 
     if (ctx.playSilenceIntervalMillis > 0) {
         ctx.playSilenceTimeout = setInterval(() => {
-            console.log("Play silence");
+            //console.log("Play silence");
             playSilence();
         }, ctx.playSilenceIntervalMillis);
     }
 
     return ctx;
 }
-
-// function onWheelRotate(e) {
-//     let wheelRotation = e.target.rotation;
-//     //console.log("wheelRotation", wheelRotation);
-//     applyWheelRotation(wheelRotation);
-// }
-//
-// function applyWheelRotation(wheelRotation) {
-//     let bpm = ctx.centerBpm + wheelRotation * ctx.rotationFactor;
-//     bpm = Math.max(ctx.minBpm, bpm);
-//     bpm = Math.round(bpm);
-//     // console.log("BPM", bpm);
-//     ctx.bpm = bpm;
-//     applySettings();
-// }
-//
-// function applySettings() {
-//     ctx.switchEveryMillis = 60 * 1000 / ctx.bpm
-//     //console.log('switchEveryMillis', ctx.switchEveryMillis);
-// }
 
 function play() {
     console.log("Play");
@@ -171,6 +136,7 @@ function bpmChange(bpm) {
     }
 }
 
+render();
 setUp()
     .then(x => console.log("Setup done", x))
     .then(render)
