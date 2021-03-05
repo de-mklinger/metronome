@@ -1,12 +1,12 @@
-import './BeatBar';
-import './SpeedKnob';
-import BeatBar from "./BeatBar";
-import {getLabels} from "./tempo";
-import SpeedKnob from "./SpeedKnob";
+import {getLabels} from "../tempo";
+
+import BeatBar from './BeatBar';
+import SpeedKnob from './SpeedKnob';
 import PlayButton from "./PlayButton";
-import {faClock} from '@fortawesome/free-regular-svg-icons'
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {ReactComponent as QuarterNoteSvg} from "./images/quarter-note.svg"
+import {faClock} from '@fortawesome/free-regular-svg-icons'
+import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg"
 import Button from 'react-bootstrap/Button';
 
 function Metronome(props) {

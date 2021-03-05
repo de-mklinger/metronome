@@ -1,6 +1,6 @@
 import Beat from "./Beat";
 
-function BeatBar(props) {
+export default function BeatBar(props) {
     let beats = [];
 
     for (let idx = 0; idx < props.timeSignatureBeats; idx++) {
@@ -18,5 +18,3 @@ function BeatBar(props) {
         </div>
     );
 }
-
-export default BeatBar;

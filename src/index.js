@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import './index.scss';
+import App from './components/App';
+
 import {getAudioBuffer, playSample, playSilence} from './audio'
 import Cowbell1 from './sounds/Cowbell-1.wav'
 import Cowbell2 from './sounds/Cowbell-2.wav'

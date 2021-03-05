@@ -1,7 +1,7 @@
 import React from 'react';
 
-import KnobSvg from './images/knob.svg';
-import KnobOverlay from './images/knob-overlay.svg';
+import KnobSvg from '../images/knob.svg';
+import KnobOverlay from '../images/knob-overlay.svg';
 
 //const ToRad = Math.PI / 180;
 const ToDeg = 180 / Math.PI;
