@@ -11,7 +11,8 @@ import Cowbell2 from './sounds/Cowbell-2.wav'
 let ctx = {
     // user settings
     bpm: 120,
-    numberOfBeats: 4,
+    timeSignatureBeats: 4,
+    timeSignatureNoteValue: 4,
     accentBeatIndices: [0],
     centerBpm: 120, // ui
 
@@ -38,7 +39,12 @@ let ctx = {
 function render() {
     ReactDOM.render(
         <React.StrictMode>
-            <App ctx={ctx} onPlay={play} onBpmChange={bpmChange}/>
+            <App
+                ctx={ctx}
+                onPlay={play}
+                onTimeSignatureBeatsChange={handleTimeSignatureBeatsChange}
+                onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
+                onBpmChange={bpmChange}/>
         </React.StrictMode>,
         document.getElementById('root')
     );
@@ -100,7 +106,7 @@ function tick() {
     let diff = sinceLastSwitchMillis - switchEveryMillis;
     if (diff >= ctx.earlyPlayThresholdMillis) {
         ctx.state.activeBeatIdx++;
-        if (ctx.state.activeBeatIdx >= ctx.numberOfBeats) {
+        if (ctx.state.activeBeatIdx >= ctx.timeSignatureBeats) {
             ctx.state.activeBeatIdx = 0;
         }
 
@@ -134,6 +140,16 @@ function bpmChange(bpm) {
         ctx.bpm = bpm;
         render();
     }
+}
+
+function handleTimeSignatureBeatsChange(timeSignatureBeats) {
+    ctx.timeSignatureBeats = timeSignatureBeats;
+    render();
+}
+
+function handleTimeSignatureNoteValueChange(timeSignatureNoteValue) {
+    ctx.timeSignatureNoteValue = timeSignatureNoteValue;
+    render();
 }
 
 render();

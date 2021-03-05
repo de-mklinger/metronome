@@ -3,7 +3,7 @@ import Beat from "./Beat";
 function BeatBar(props) {
     let beats = [];
 
-    for (let idx = 0; idx < props.numberOfBeats; idx++) {
+    for (let idx = 0; idx < props.timeSignatureBeats; idx++) {
         beats.push(
             <Beat
                 key={idx}

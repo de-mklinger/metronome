@@ -1,5 +1,6 @@
 import {faPlay, faPause} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Button from 'react-bootstrap/Button';
 
 function PlayButton(props) {
     let playButtonIcon;
@@ -10,9 +11,9 @@ function PlayButton(props) {
     }
 
     return (
-        <button id="button-play" onClick={props.onPlay}>
+        <Button id="button-play" onClick={props.onPlay}>
             <FontAwesomeIcon icon={playButtonIcon}/>
-        </button>
+        </Button>
     );
 }
 

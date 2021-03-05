@@ -1,48 +1,48 @@
-@import "~bootstrap/dist/css/bootstrap-reboot.css";
+// --- override bootstrap variables ---
 
-body {
-  background-color: #333333;
-  color: #aaaaaa;
-  margin: 1rem auto;
-  max-width: 40rem;
-}
+$body-bg: #333333;
+$body-color: #aaaaaa;
+$primary: #434343;
+$dark: $primary;
+$yiq-text-light: #aaaaaa;
+$input-btn-font-size: 1.1rem;
+
+$modal-content-color: $body-color;
+$modal-content-bg: $body-bg;
+$modal-header-border-color: $body-color;
+$close-color: darken($modal-content-color, 10%);
+$close-text-shadow: none;
+
+$link-color: $body-color;
+$link-hover-color: $link-color;
+
+$input-color: lighten($body-color, 20%);
+$input-bg: lighten($body-bg, 20%);
+$input-border-color: darken($body-bg, 20%);
+$input-focus-border-color: lighten($input-bg, 20%);;
+
+// --- custom variables ---
+
+$beat-active-color: white;
+$beat-inactive-color: black;
+
+$dark-box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.5);
+$light-box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.5);
+
+$beat-fade-out-delay: 0.1s;
+$beat-fade-out-duration: 0.2s;
+
+@import "~bootstrap/scss/bootstrap";
 
 svg {
-  fill: #aaaaaa;
+  fill: currentColor;
 }
 
-button {
-  background-color: #333333;
-  color: #aaaaaa;
-  padding: 1rem;
-  border-radius: 0.8rem;
-  border: 1px inset #666666;
-  box-shadow: 0 0 2px 2px #000000;
-  cursor: pointer;
-  outline: none;
-  flex-basis: 20%;
+.btn:not(.btn-link) {
+  min-width: 4rem;
+  min-height: 4rem;
+  box-shadow: $dark-box-shadow;
 }
-
-// Small devices (landscape phones, 576px and up)
-$breakpoint-s: 576px;
-// Medium devices (tablets, 768px and up)
-$breakpoint-m: 768px;
-// Large devices (desktops, 992px and up)
-$breakpoint-l: 992px;
-// Extra large devices (large desktops, 1200px and up)
-$breakpoint-xl: 1200px;
-
-@media (min-width: $breakpoint-m) {
-  button {
-    padding: 2rem;
-  }
-}
-
-
-/*.glow-button:hover {*/
-/*    color: rgba(255, 255, 255, 1);*/
-/*    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);*/
-/*}*/
 
 #song-settings {
   display: flex;
@@ -52,53 +52,42 @@ $breakpoint-xl: 1200px;
   margin-bottom: 2rem;
 }
 
-$active-color: white;
-$inactive-color: black;
-$active-shadow-color: #aaaaaa;
-$inactive-shadow-color: black;
-
-$beat-blur-radius: 4px;
-$beat-spread-radius: 1px;
-
-$fade-out-delay: 0.1s;
-$fade-out-duration: 0.2s;
-
-@keyframes fade-out-active {
+@keyframes beat-fade-out-active {
   from {
-    border-color: $active-color;
-    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
+    border-color: $beat-active-color;
+    box-shadow: $light-box-shadow;
   }
   to {
-    border-color: $inactive-color;
-    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
+    border-color: $beat-inactive-color;
+    box-shadow: $dark-box-shadow;
   }
 }
 
-@keyframes fade-out-active-filled {
+@keyframes beat-fade-out-active-filled {
   from {
-    border-color: $active-color;
-    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
-    background-color: $active-color;
+    border-color: $beat-active-color;
+    box-shadow: $light-box-shadow;
+    background-color: $beat-active-color;
   }
   to {
-    border-color: $inactive-color;
-    box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
-    background-color: $inactive-color;
+    border-color: $beat-inactive-color;
+    box-shadow: $dark-box-shadow;
+    background-color: $beat-inactive-color;
   }
 }
 
-@mixin fade-out-active {
-  animation-name: fade-out-active;
-  animation-delay: $fade-out-delay;
-  animation-duration: $fade-out-duration;
+@mixin beat-fade-out-active {
+  animation-name: beat-fade-out-active;
+  animation-delay: $beat-fade-out-delay;
+  animation-duration: $beat-fade-out-duration;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 
-@mixin fade-out-active-filled {
-  animation-name: fade-out-active-filled;
-  animation-delay: $fade-out-delay;
-  animation-duration: $fade-out-duration;
+@mixin beat-fade-out-active-filled {
+  animation-name: beat-fade-out-active-filled;
+  animation-delay: $beat-fade-out-delay;
+  animation-duration: $beat-fade-out-duration;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
@@ -119,11 +108,9 @@ $fade-out-duration: 0.2s;
       margin: 0.3rem 0.6rem;
       border-width: 1px;
       border-style: solid;
-      border-color: $inactive-color;
-      box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $inactive-shadow-color;
+      border-color: $beat-inactive-color;
+      box-shadow: $dark-box-shadow;
       height: 2rem;
-
-      //transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 
       &:first-child {
         border-top-left-radius: 0.8rem;
@@ -137,31 +124,31 @@ $fade-out-duration: 0.2s;
     }
 
     .beat-lower {
-      background-color: $inactive-color;
+      background-color: $beat-inactive-color;
     }
 
     &.accent {
       .beat-middle {
-        background-color: $inactive-color;
+        background-color: $beat-inactive-color;
       }
     }
 
     &.active {
       .beat-item {
-        border-color: $active-color;
-        box-shadow: 0 0 $beat-blur-radius $beat-spread-radius $active-shadow-color;
-        @include fade-out-active;
+        border-color: $beat-active-color;
+        box-shadow: $light-box-shadow;
+        @include beat-fade-out-active;
       }
 
       .beat-lower {
-        background-color: $active-color;
-        @include fade-out-active-filled;
+        background-color: $beat-active-color;
+        @include beat-fade-out-active-filled;
       }
 
       &.accent {
         .beat-middle, .beat-lower {
-          background-color: $active-color;
-          @include fade-out-active-filled;
+          background-color: $beat-active-color;
+          @include beat-fade-out-active-filled;
         }
       }
     }
