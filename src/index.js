@@ -12,19 +12,23 @@ import Cowbell2 from './sounds/Cowbell-2.wav'
 
 let ctx = {
     // user settings
-    bpm: 120,
-    timeSignatureBeats: 4,
-    timeSignatureNoteValue: 4,
-    accentBeatIndices: [0],
-    centerBpm: 120, // ui
+    settings: {
+        bpm: 120,
+        timeSignatureBeats: 4,
+        timeSignatureNoteValue: 4,
+        accentBeatIndices: [0]
+    },
 
     // reasonable base settings
-    rotationFactor: 0.05, // wheel-ux. Multiplied with 0°-360°
-    earlyPlayThresholdMillis: -18, // animation frame dependent. Assuming 60 FPS, actually 16.6666.
-    minBpm: 1, // const. Can we go back in time, or stay forever?
-    maxBpm: 400,
-    playSilenceIntervalMillis: 10000,
-    missMillisThreshold: 100,
+    config: {
+        centerBpm: 120, // ui
+        rotationFactor: 0.05, // wheel-ux. Multiplied with 0°-360°
+        earlyPlayThresholdMillis: -18, // animation frame dependent. Assuming 60 FPS, actually 16.6666.
+        minBpm: 1, // const. Can we go back in time, or stay forever?
+        maxBpm: 400,
+        playSilenceIntervalMillis: 10000,
+        missMillisThreshold: 100,
+    },
 
     // internal state
     state: {
@@ -36,6 +40,9 @@ let ctx = {
     metrics: {
         lastStartTime: 0
     },
+
+    audio: {
+    }
 }
 
 function render() {
@@ -43,10 +50,10 @@ function render() {
         <React.StrictMode>
             <App
                 ctx={ctx}
-                onPlay={play}
+                onPlay={handlePlay}
                 onTimeSignatureBeatsChange={handleTimeSignatureBeatsChange}
                 onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
-                onBpmChange={bpmChange}/>
+                onBpmChange={handleBpmChange}/>
         </React.StrictMode>,
         document.getElementById('root')
     );
@@ -58,20 +65,20 @@ function render() {
 reportWebVitals();
 
 async function setUp() {
-    ctx.accentAudioBuffer = await getAudioBuffer(Cowbell2);
-    ctx.nonAccentAudioBuffer = await getAudioBuffer(Cowbell1);
+    ctx.audio.accentAudioBuffer = await getAudioBuffer(Cowbell2);
+    ctx.audio.nonAccentAudioBuffer = await getAudioBuffer(Cowbell1);
 
-    if (ctx.playSilenceIntervalMillis > 0) {
-        ctx.playSilenceTimeout = setInterval(() => {
+    if (ctx.config.playSilenceIntervalMillis > 0) {
+        setInterval(() => {
             //console.log("Play silence");
             playSilence();
-        }, ctx.playSilenceIntervalMillis);
+        }, ctx.config.playSilenceIntervalMillis);
     }
 
     return ctx;
 }
 
-function play() {
+function handlePlay() {
     console.log("Play");
 
     let doStart = !!!ctx.state.started;
@@ -96,7 +103,7 @@ function tick() {
         return;
     }
 
-    const switchEveryMillis = 60 * 1000 / ctx.bpm
+    const switchEveryMillis = 60 * 1000 / ctx.settings.bpm
 
     let now = new Date().getTime();
     let sinceLastSwitchMillis;
@@ -106,9 +113,9 @@ function tick() {
         sinceLastSwitchMillis = now - ctx.state.switchTime
     }
     let diff = sinceLastSwitchMillis - switchEveryMillis;
-    if (diff >= ctx.earlyPlayThresholdMillis) {
+    if (diff >= ctx.config.earlyPlayThresholdMillis) {
         ctx.state.activeBeatIdx++;
-        if (ctx.state.activeBeatIdx >= ctx.timeSignatureBeats) {
+        if (ctx.state.activeBeatIdx >= ctx.settings.timeSignatureBeats) {
             ctx.state.activeBeatIdx = 0;
         }
 
@@ -116,13 +123,13 @@ function tick() {
         let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
         console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
 
-        if (ctx.accentBeatIndices.indexOf(ctx.state.activeBeatIdx) !== -1) {
-            playSample(ctx.accentAudioBuffer, whenOffsetSeconds);
+        if (ctx.settings.accentBeatIndices.indexOf(ctx.state.activeBeatIdx) !== -1) {
+            playSample(ctx.audio.accentAudioBuffer, whenOffsetSeconds);
         } else {
-            playSample(ctx.nonAccentAudioBuffer, whenOffsetSeconds);
+            playSample(ctx.audio.nonAccentAudioBuffer, whenOffsetSeconds);
         }
 
-        if (missMillis > ctx.missMillisThreshold) {
+        if (missMillis > ctx.config.missMillisThreshold) {
             // Gap is too large. Maybe we have been suspended in the meantime?
             ctx.state.switchTime = now;
         } else {
@@ -136,21 +143,21 @@ function tick() {
     requestAnimationFrame(tick);
 }
 
-function bpmChange(bpm) {
-    if (bpm !== ctx.bpm) {
+function handleBpmChange(bpm) {
+    if (bpm !== ctx.settings.bpm) {
         //console.log("BPM:", bpm);
-        ctx.bpm = bpm;
+        ctx.settings.bpm = bpm;
         render();
     }
 }
 
 function handleTimeSignatureBeatsChange(timeSignatureBeats) {
-    ctx.timeSignatureBeats = timeSignatureBeats;
+    ctx.settings.timeSignatureBeats = timeSignatureBeats;
     render();
 }
 
 function handleTimeSignatureNoteValueChange(timeSignatureNoteValue) {
-    ctx.timeSignatureNoteValue = timeSignatureNoteValue;
+    ctx.settings.timeSignatureNoteValue = timeSignatureNoteValue;
     render();
 }
 

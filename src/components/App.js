@@ -24,9 +24,9 @@ function App(props) {
                 <TimeSignatureModal
                     show={editTimeSignature}
                     onHide={handleClose}
-                    timeSignatureBeats={props.ctx.timeSignatureBeats}
+                    timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
                     onTimeSignatureBeatsChange={props.onTimeSignatureBeatsChange}
-                    timeSignatureNoteValue={props.ctx.timeSignatureNoteValue}
+                    timeSignatureNoteValue={props.ctx.settings.timeSignatureNoteValue}
                     onTimeSignatureNoteValueChange={props.onTimeSignatureNoteValueChange}
                 />
 
