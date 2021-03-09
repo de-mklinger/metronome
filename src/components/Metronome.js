@@ -31,7 +31,7 @@ function Metronome(props) {
     }
 
     return (
-        <div>
+        <div id="metronome">
             <BeatBar
                 timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
                 accentBeatIndices={props.ctx.settings.accentBeatIndices}

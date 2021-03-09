@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import './Metronome';
 import Metronome from "./Metronome";
-import Container from 'react-bootstrap/Container'
 import './InputSpinner';
 import './TimeSignatureModal'
 import TimeSignatureModal from "./TimeSignatureModal";
@@ -13,7 +12,7 @@ function App(props) {
     const handleShow = () => setEditTimeSignature(true);
 
     return (
-            <Container>
+            <>
                 <Metronome
                     ctx={props.ctx}
                     onPlay={props.onPlay}
@@ -29,8 +28,7 @@ function App(props) {
                     timeSignatureNoteValue={props.ctx.settings.timeSignatureNoteValue}
                     onTimeSignatureNoteValueChange={props.onTimeSignatureNoteValueChange}
                 />
-
-            </Container>
+            </>
         );
 }
 
