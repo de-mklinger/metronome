@@ -11,7 +11,7 @@ function PlayButton(props) {
     }
 
     return (
-        <Button id="button-play" onClick={props.onPlay}>
+        <Button id="button-play" onPointerDown={props.onPlay}>
             <FontAwesomeIcon icon={playButtonIcon}/>
         </Button>
     );
