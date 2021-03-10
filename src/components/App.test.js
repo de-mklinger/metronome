@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { ctx } from '../index.testFixtures';
 
-test('renders hello world', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/Hello World/i);
+test('renders tap', () => {
+  render(<App ctx={ctx} />);
+  const linkElement = screen.getByText(/Tap/i);
   expect(linkElement).toBeInTheDocument();
 });
