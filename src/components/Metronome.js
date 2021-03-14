@@ -12,7 +12,8 @@ function Metronome(props) {
             <SongControls
                 settings={props.ctx.settings}
                 onTimeSignatureClick={props.onTimeSignatureClick}
-                onSongSelect={props.onSongSelect} />
+                onSongSelect={props.onSongSelect}
+                onSetlistDeselect={props.onSetlistDeselect} />
             <PlayControls
                 state={props.ctx.state}
                 settings={props.ctx.settings}

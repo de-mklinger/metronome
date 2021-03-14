@@ -5,7 +5,7 @@ import {faClock} from "@fortawesome/free-regular-svg-icons";
 
 function SongSettings({settings, onTimeSignatureClick}) {
     return (
-        <div id="song-settings">
+        <div className="song-controls song-settings">
             <Button onClick={onTimeSignatureClick}>
                 {settings.timeSignatureBeats}
                 /

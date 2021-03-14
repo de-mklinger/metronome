@@ -19,7 +19,9 @@ function render() {
                 onTimeSignatureBeatsChange={handleTimeSignatureBeatsChange}
                 onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
                 onBpmChange={handleBpmChange}
-                onSongSelect={handleSongSelect}/>
+                onSongSelect={handleSongSelect}
+                onSetlistDeselect={handleSetlistDeselect}
+            />
         </React.StrictMode>,
         document.getElementById('root')
     );
@@ -139,6 +141,13 @@ function handleTimeSignatureNoteValueChange(timeSignatureNoteValue) {
 function handleSongSelect(setlistIdx) {
     ctx.settings.activeSetlistIdx = setlistIdx;
     initBpm();
+    render();
+}
+
+function handleSetlistDeselect() {
+    console.log("handleSetlistDeselect", handleSetlistDeselect);
+    ctx.settings.setlist = null;
+    ctx.settings.activeSetlistIdx = 0;
     render();
 }
 

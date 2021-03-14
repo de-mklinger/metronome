@@ -19,6 +19,7 @@ function App(props) {
                     onBpmChange={props.onBpmChange}
                     onTimeSignatureClick={handleShow}
                     onSongSelect={props.onSongSelect}
+                    onSetlistDeselect={props.onSetlistDeselect}
                 />
 
                 <TimeSignatureModal

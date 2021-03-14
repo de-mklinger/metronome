@@ -1,12 +1,21 @@
 import {useRef, useEffect} from 'react';
 import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg";
 
-function Setlist({setlist, activeSetlistIdx, onSongSelect}) {
+function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect}) {
     return (
-        <div className="setlist">
+        <div className="song-controls setlist">
             <ul>
+                <li className="header">
+                    <div className="title">
+                        Setlist
+                    </div>
+                    <div className="settings">
+                        <span onClick={onSetlistDeselect}>X</span>
+                    </div>
+                </li>
                 {setlist.songs.map((song, idx) =>
                     <SetlistEntry
+                        key={idx}
                         song={song}
                         idx={idx}
                         active={idx === activeSetlistIdx}
@@ -33,13 +42,12 @@ function SetlistEntry({song, idx, active, onSongSelect}) {
     return (
         <li
             ref={ref}
-            key={song.id}
             className={active ? 'active' : ''}
             onClick={() => onSongSelect(idx)}>
-            <div className="song-title">
+            <div className="title">
                 {song.title}
             </div>
-            <div className="song-settings">
+            <div className="settings">
                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
             </div>
         </li>
