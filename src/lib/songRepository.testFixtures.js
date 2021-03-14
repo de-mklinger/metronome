@@ -31,11 +31,61 @@ const gott = Object.assign({}, defaultSong, {
     bpm: 180,
 });
 
+const gefaerbt = Object.assign({}, defaultSong, {
+    id: 'gefaerbt',
+    title: 'Gefärbt',
+    bpm: 160,
+});
+
+const irgendjemand = Object.assign({}, defaultSong, {
+    id: 'irgendjemand',
+    title: 'Irgendjemand',
+    bpm: 170
+});
+
+const geldweg = Object.assign({}, defaultSong, {
+    id: 'geldweg',
+    title: 'Geld weg',
+    bpm: 184,
+});
+
+const ufos = Object.assign({}, defaultSong, {
+    id: 'ufos',
+    title: 'UFOs',
+    bpm: 268,
+});
+
+const weitergehen = Object.assign({}, defaultSong, {
+    id: 'weitergehen',
+    title: 'Weitergehen',
+    bpm: 140,
+});
+
+const projektor = Object.assign({}, defaultSong, {
+    id: 'projektor',
+    title: 'Projektor',
+    bpm: 186,
+});
+
+const trotzdem = Object.assign({}, defaultSong, {
+    id: 'trotzdem',
+    title: 'Trotzdem (langsamer, sehr, sehr langer Titel blabla)',
+    bpm: 130,
+});
+
+
 const allSongs = [
     spielchen,
     wuff,
     atem,
-    gott
+    gott,
+    gefaerbt,
+    irgendjemand,
+    geldweg,
+    ufos,
+    weitergehen,
+    projektor,
+    trotzdem
 ];
 
 const jsssSetlist = {
@@ -46,7 +96,14 @@ const jsssSetlist = {
         spielchen,
         wuff,
         atem,
-        gott
+        gott,
+        gefaerbt,
+        irgendjemand,
+        geldweg,
+        ufos,
+        weitergehen,
+        projektor,
+        trotzdem
     ]
     // created, updated, owner, tenant, ...
 }

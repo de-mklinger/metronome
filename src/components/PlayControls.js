@@ -5,7 +5,7 @@ import PlayButton from "./PlayButton";
 import {getLabels} from "../tempo";
 import SpeedKnob from "./SpeedKnob";
 
-function PlayControls({state, settings, config, onBpmChange, onPlay}) {
+function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelect}) {
 
     const speedKnobRotate = (rotation) => {
         if (onBpmChange) {
@@ -29,7 +29,19 @@ function PlayControls({state, settings, config, onBpmChange, onPlay}) {
 
     const onPreviousClick = () => {
         if (settings.setlist) {
-            // TODO
+            const newIdx = settings.activeSetlistIdx - 1;
+            if (newIdx >= 0) {
+                onSongSelect(newIdx);
+            }
+        }
+    }
+
+    const onNextClick = () => {
+        if (settings.setlist) {
+            const newIdx = settings.activeSetlistIdx + 1;
+            if (newIdx < settings.setlist.songs.length) {
+                onSongSelect(newIdx);
+            }
         }
     }
 
@@ -59,7 +71,7 @@ function PlayControls({state, settings, config, onBpmChange, onPlay}) {
                     onRotate={speedKnobRotate}/>
             </div>
             <div>
-                <Button>
+                <Button onClick={onNextClick}>
                     <FontAwesomeIcon icon={faStepForward}/>
                 </Button>
                 <Button>Tap</Button>

@@ -34,6 +34,13 @@ $beat-fade-out-duration: 0.2s;
 
 @import "~bootstrap/scss/bootstrap";
 
+body {
+  // No scrolling:
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
 svg {
   fill: currentColor;
 }

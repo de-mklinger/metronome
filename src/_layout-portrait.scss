@@ -7,6 +7,9 @@ $speed-knob-size-md: 20rem;
 
 #metronome {
   @extend .container;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 #song-settings {
@@ -27,28 +30,38 @@ $speed-knob-size-md: 20rem;
     flex-direction: column;
     flex-grow: 1;
 
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
+
     .beat-item {
-      margin: 0.3rem 0.6rem;
       height: 2rem;
+
+      &:nth-child(2) {
+        margin: 0.5rem 0;
+      }
     }
   }
 }
 
 .setlist {
+  overflow-y: auto;
   margin: 1rem 0;
+
+  border: 1px solid black;
+  border-radius: 0.5rem;
 
   ul {
     margin: 0;
     padding: 0;
     list-style: none;
 
-    border: 1px solid black;
-    border-radius: 0.5rem;
-
     li {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      cursor: pointer;
 
       padding: 0.2rem;
       &:not(:first-child) {
@@ -60,8 +73,16 @@ $speed-knob-size-md: 20rem;
         font-weight: $active-font-weight;
       }
 
+      .song-title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
       .song-settings {
+        margin-left: 0.5rem;
         font-size: 75%;
+        white-space: nowrap;
       }
     }
   }
@@ -106,6 +127,7 @@ $speed-knob-size-md: 20rem;
   #current-bpm {
     color: $active-color;
     font-weight: $active-font-weight;
+    margin-bottom: 0.7rem;
   }
 
   .speed-knob {

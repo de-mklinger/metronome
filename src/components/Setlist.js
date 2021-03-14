@@ -1,12 +1,41 @@
+import {useRef, useEffect} from 'react';
 import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg";
 
 function Setlist({setlist, activeSetlistIdx, onSongSelect}) {
-    const songs = setlist.songs.map((song, idx) =>
+    return (
+        <div className="setlist">
+            <ul>
+                {setlist.songs.map((song, idx) =>
+                    <SetlistEntry
+                        song={song}
+                        idx={idx}
+                        active={idx === activeSetlistIdx}
+                        onSongSelect={onSongSelect}
+                    />
+                )}
+            </ul>
+        </div>
+    )
+}
+
+function SetlistEntry({song, idx, active, onSongSelect}) {
+    const ref = useRef();
+
+    useEffect(
+        () => {
+            if (active) {
+                ref.current.scrollIntoView({behavior: 'smooth'});
+            }
+        },
+        [active]
+    );
+
+    return (
         <li
+            ref={ref}
             key={song.id}
-            className={idx === activeSetlistIdx ? 'active' : ''}
-            onClick={() => onSongSelect(idx)}
-        >
+            className={active ? 'active' : ''}
+            onClick={() => onSongSelect(idx)}>
             <div className="song-title">
                 {song.title}
             </div>
@@ -14,15 +43,7 @@ function Setlist({setlist, activeSetlistIdx, onSongSelect}) {
                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
             </div>
         </li>
-    )
-
-    return (
-        <div className="setlist">
-            <ul>
-                {songs}
-            </ul>
-        </div>
-    )
+    );
 }
 
 export default Setlist;
