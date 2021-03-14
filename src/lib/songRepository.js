@@ -1,10 +1,10 @@
-import testFixtures from "./songRepository.testFixtures";
+import {allSongs, allSetlists} from "./songRepository.testFixtures";
 
 const songRepository = {
-    getSongs: () => testFixtures.allSongs,
-    getSong: id => findById(testFixtures.allSongs, id),
-    getSetlists: () => testFixtures.allSetlists,
-    getSetlist: id => findById(testFixtures.allSetlists, id)
+    getSongs: () => allSongs,
+    getSong: id => findById(allSongs, id),
+    getSetlists: () => allSetlists,
+    getSetlist: id => findById(allSetlists, id)
 }
 
 const findById = (haystack, id) => {

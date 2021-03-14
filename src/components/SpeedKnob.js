@@ -20,11 +20,7 @@ class SpeedKnob extends React.Component {
 
     render() {
         return (
-            <div style={{
-                position: "relative",
-                width: "50%",
-                paddingBottom: "50%",
-            }}>
+            <div className="speed-knob" style={{position: "relative"}}>
                 <div
                     onTouchStart={this.touchStart.bind(this)}
                     onTouchMove={this.touchMove.bind(this)}
@@ -38,12 +34,16 @@ class SpeedKnob extends React.Component {
                         backgroundImage: `url(${KnobSvg})`,
                         backgroundSize: "contain",
                         position: "absolute",
+                        left: 0,
+                        top: 0,
                         width: "100%",
                         height: "100%"
                     }}>
                 </div>
                 <img src={KnobOverlay} alt="" style={{
                     position: "absolute",
+                    left: 0,
+                    top: 0,
                     width: "100%",
                     height: "100%",
                     zIndex: 100,

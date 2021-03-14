@@ -1,14 +1,14 @@
 import Beat from "./Beat";
 
-export default function BeatBar(props) {
+function BeatBar({timeSignatureBeats, accentBeatIndices, activeBeatIdx}) {
     let beats = [];
 
-    for (let idx = 0; idx < props.timeSignatureBeats; idx++) {
+    for (let idx = 0; idx < timeSignatureBeats; idx++) {
         beats.push(
             <Beat
                 key={idx}
-                accent={props.accentBeatIndices.indexOf(idx) !== -1}
-                active={idx === props.activeBeatIdx}/>
+                accent={accentBeatIndices.indexOf(idx) !== -1}
+                active={idx === activeBeatIdx}/>
         );
     }
 
@@ -18,3 +18,5 @@ export default function BeatBar(props) {
         </div>
     );
 }
+
+export default BeatBar;

@@ -1,15 +1,15 @@
 import './songRepository';
 import songRepository from "./songRepository";
-import testFixtures from "./songRepository.testFixtures";
+import {allSongs} from "./songRepository.testFixtures";
 
 test('provides song list', () => {
   const songs = songRepository.getSongs();
   expect(songs).toBeTruthy();
-  expect(songs[0].title).toBe(testFixtures.allSongs[0].title);
+  expect(songs[0].title).toBe(allSongs[0].title);
 });
 
 test('has existing song', () => {
-  const song = songRepository.getSong('song1');
+  const song = songRepository.getSong('wuff');
   expect(song).toBeTruthy();
   expect(song.title).toBe('Wuff');
 });

@@ -18,7 +18,8 @@ function render() {
                 onPlay={handlePlay}
                 onTimeSignatureBeatsChange={handleTimeSignatureBeatsChange}
                 onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
-                onBpmChange={handleBpmChange}/>
+                onBpmChange={handleBpmChange}
+                onSongSelect={handleSongSelect}/>
         </React.StrictMode>,
         document.getElementById('root')
     );
@@ -28,6 +29,15 @@ function render() {
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+function initBpm() {
+    if (ctx.settings.setlist) {
+        const activeSong = ctx.settings.setlist.songs[ctx.settings.activeSetlistIdx];
+        ctx.settings.bpm = activeSong.bpm;
+    } else {
+        ctx.settings.bpm = ctx.config.defaultBpm;
+    }
+}
 
 async function setUp() {
     ctx.audio.accentAudioBuffer = await getAudioBuffer(Cowbell2);
@@ -126,6 +136,13 @@ function handleTimeSignatureNoteValueChange(timeSignatureNoteValue) {
     render();
 }
 
+function handleSongSelect(setlistIdx) {
+    ctx.settings.activeSetlistIdx = setlistIdx;
+    initBpm();
+    render();
+}
+
+initBpm();
 render();
 setUp()
     .then(() => console.log("Metronome setup done"))
