@@ -1,0 +1,40 @@
+// --- override bootstrap variables ---
+
+$body-bg: #333333;
+$body-color: #aaaaaa;
+$primary: #434343;
+$dark: $primary;
+$yiq-text-light: #aaaaaa;
+$input-btn-font-size: 1.1rem;
+
+$modal-content-color: $body-color;
+$modal-content-bg: $body-bg;
+$modal-header-border-color: $body-color;
+$close-color: darken($modal-content-color, 10%);
+$close-text-shadow: none;
+
+$link-color: $body-color;
+$link-hover-color: $link-color;
+
+$input-color: lighten($body-color, 20%);
+$input-bg: lighten($body-bg, 20%);
+$input-border-color: darken($body-bg, 20%);
+$input-focus-border-color: lighten($input-bg, 20%);;
+
+// --- custom variables ---
+
+$beat-active-color: white;
+$beat-inactive-color: black;
+
+$dark-box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.5);
+$light-box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.5);
+
+$beat-fade-out-delay: 0.1s;
+$beat-fade-out-duration: 0.2s;
+
+$active-color: lighten($body-color, 20%);
+$active-font-weight: 600;
+
+$speed-knob-size-xs: 10rem;
+$speed-knob-size-sm: 15rem;
+$speed-knob-size-md: 20rem;

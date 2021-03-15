@@ -1,55 +1,31 @@
-// --- override bootstrap variables ---
+// --- layout: ---
 
-$body-bg: #333333;
-$body-color: #aaaaaa;
-$primary: #434343;
-$dark: $primary;
-$yiq-text-light: #aaaaaa;
-$input-btn-font-size: 1.1rem;
+#beat-bar {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 1rem 0;
 
-$modal-content-color: $body-color;
-$modal-content-bg: $body-bg;
-$modal-header-border-color: $body-color;
-$close-color: darken($modal-content-color, 10%);
-$close-text-shadow: none;
+  .beat {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 
-$link-color: $body-color;
-$link-hover-color: $link-color;
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
 
-$input-color: lighten($body-color, 20%);
-$input-bg: lighten($body-bg, 20%);
-$input-border-color: darken($body-bg, 20%);
-$input-focus-border-color: lighten($input-bg, 20%);;
+    .beat-item {
+      height: 2rem;
 
-// --- custom variables ---
-
-$beat-active-color: white;
-$beat-inactive-color: black;
-
-$dark-box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.5);
-$light-box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.5);
-
-$beat-fade-out-delay: 0.1s;
-$beat-fade-out-duration: 0.2s;
-
-@import "~bootstrap/scss/bootstrap";
-
-body {
-  // No scrolling:
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
+      &:nth-child(2) {
+        margin: 0.5rem 0;
+      }
+    }
+  }
 }
 
-svg {
-  fill: currentColor;
-}
 
-.btn:not(.btn-link) {
-  min-width: 4rem;
-  min-height: 4rem;
-  box-shadow: $dark-box-shadow;
-}
+// --- animation: ---
 
 @keyframes beat-fade-out-active {
   from {
@@ -141,8 +117,3 @@ svg {
     }
   }
 }
-
-
-// ---- layout ----
-
-@import "layout-portrait";

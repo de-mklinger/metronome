@@ -4,7 +4,7 @@ import PlayControls from "./PlayControls";
 
 function Metronome(props) {
     return (
-        <div id="metronome">
+        <div className="metronome">
             <BeatBar
                 timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
                 accentBeatIndices={props.ctx.settings.accentBeatIndices}

@@ -1,0 +1,30 @@
+@import "variables";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+body {
+  // No scrolling:
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+svg {
+  fill: currentColor;
+}
+
+.btn:not(.btn-link) {
+  min-width: 4rem;
+  min-height: 4rem;
+  box-shadow: $dark-box-shadow;
+}
+
+.metronome {
+  @extend .container;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+@import "beat-bar";
+@import "play-controls";
+@import "song-controls";

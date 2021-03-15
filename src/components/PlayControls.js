@@ -46,7 +46,7 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
     }
 
     return (
-        <div id="play-controls">
+        <div className="play-controls">
             <div>
                 <Button onClick={onPreviousClick}>
                     <FontAwesomeIcon icon={faStepBackward}/>

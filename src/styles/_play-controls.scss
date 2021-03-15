@@ -1,0 +1,56 @@
+.play-controls {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .speed {
+    align-items: center;
+    flex: 2;
+    margin: 0 1rem;
+
+    min-width: $speed-knob-size-xs;
+    min-height: $speed-knob-size-xs;
+
+    @include media-breakpoint-up(sm) {
+      min-width: $speed-knob-size-sm;
+      min-height: $speed-knob-size-sm;
+    }
+    @include media-breakpoint-up(md) {
+      min-width: $speed-knob-size-md;
+      min-height: $speed-knob-size-md;
+    }
+
+    #current-bpm-label {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    #current-bpm {
+      color: $active-color;
+      font-weight: $active-font-weight;
+      margin-bottom: 0.7rem;
+    }
+
+    .speed-knob {
+      width: $speed-knob-size-xs;
+      height: $speed-knob-size-xs;
+
+      @include media-breakpoint-up(sm) {
+        width: $speed-knob-size-sm;
+        height: $speed-knob-size-sm;
+      }
+      @include media-breakpoint-up(md) {
+        width: $speed-knob-size-md;
+        height: $speed-knob-size-md;
+      }
+    }
+  }
+}

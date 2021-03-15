@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 
-import './index.scss';
+import './styles/index.scss';
 import App from './components/App';
 
 import {ctx} from './index.testFixtures'

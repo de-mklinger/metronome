@@ -1,0 +1,58 @@
+.song-controls {
+  flex: 2;
+  overflow-y: auto;
+  margin: 1rem 0;
+}
+
+.song-settings {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.setlist {
+  border: 1px solid black;
+  border-radius: 0.5rem;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      cursor: pointer;
+
+      padding: 0.2rem;
+
+      &:not(:first-child) {
+        border-top: 1px solid black;
+      }
+
+      &.active {
+        color: $active-color;
+        font-weight: $active-font-weight;
+      }
+
+      .title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .settings {
+        margin-left: 0.5rem;
+        font-size: 75%;
+        white-space: nowrap;
+      }
+
+      &.header {
+        background-color: black;
+      }
+    }
+  }
+}
