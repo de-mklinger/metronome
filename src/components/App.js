@@ -1,15 +1,12 @@
 import {useState} from 'react';
-import './Metronome';
 import Metronome from "./Metronome";
-import './InputSpinner';
-import './TimeSignatureModal'
 import TimeSignatureModal from "./TimeSignatureModal";
+import SelectSetlistModal from "./SelectSetlistModal";
+import songRepository from "../lib/songRepository";
 
 function App(props) {
     const [editTimeSignature, setEditTimeSignature] = useState(false);
-
-    const handleClose = () => setEditTimeSignature(false);
-    const handleShow = () => setEditTimeSignature(true);
+    const [selectSetlist, setSelectSetlist] = useState(false);
 
     return (
             <>
@@ -17,18 +14,25 @@ function App(props) {
                     ctx={props.ctx}
                     onPlay={props.onPlay}
                     onBpmChange={props.onBpmChange}
-                    onTimeSignatureClick={handleShow}
+                    onTimeSignatureClick={() => setEditTimeSignature(true)}
                     onSongSelect={props.onSongSelect}
                     onSetlistDeselect={props.onSetlistDeselect}
+                    onSetlistButtonClick={() => setSelectSetlist(true)}
                 />
 
                 <TimeSignatureModal
                     show={editTimeSignature}
-                    onHide={handleClose}
+                    onHide={() => setEditTimeSignature(false)}
                     timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
                     onTimeSignatureBeatsChange={props.onTimeSignatureBeatsChange}
                     timeSignatureNoteValue={props.ctx.settings.timeSignatureNoteValue}
                     onTimeSignatureNoteValueChange={props.onTimeSignatureNoteValueChange}
+                />
+
+                <SelectSetlistModal
+                    show={selectSetlist}
+                    onHide={() => setSelectSetlist(false)}
+                    setlists={songRepository.getSetlists()}
                 />
             </>
         );

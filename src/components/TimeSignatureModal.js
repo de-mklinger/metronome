@@ -54,7 +54,7 @@ function TimeSignatureModal(props) {
     return (
         <Modal show={props.show} onHide={props.onHide} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Time Signatur</Modal.Title>
+                <Modal.Title>Time Signature</Modal.Title>
             </Modal.Header>
             <Modal.Body className="text-center my-3">
                 <InputSpinner

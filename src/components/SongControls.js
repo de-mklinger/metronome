@@ -1,7 +1,7 @@
 import Setlist from "./Setlist";
 import SongSettings from "./SongSettings";
 
-function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDeselect}) {
+function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
     if (settings.setlist) {
         return (
             <Setlist
@@ -16,6 +16,7 @@ function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDe
             <SongSettings
                 settings={settings}
                 onTimeSignatureClick={onTimeSignatureClick}
+                onSetlistButtonClick={onSetlistButtonClick}
             />
         );
     }
