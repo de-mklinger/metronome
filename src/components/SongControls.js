@@ -2,17 +2,20 @@ import Setlist from "./Setlist";
 import SongSettings from "./SongSettings";
 
 function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
+    let child;
+
     if (settings.setlist) {
-        return (
+        child = (
             <Setlist
                 setlist={settings.setlist}
                 activeSetlistIdx={settings.activeSetlistIdx}
                 onSongSelect={onSongSelect}
                 onSetlistDeselect={onSetlistDeselect}
+                onSetlistButtonClick={onSetlistButtonClick}
             />
         );
     } else {
-        return (
+        child = (
             <SongSettings
                 settings={settings}
                 onTimeSignatureClick={onTimeSignatureClick}
@@ -20,6 +23,14 @@ function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDe
             />
         );
     }
+
+    return child;
+
+    // return (
+    //     <div className="song-controls">
+    //         {child}
+    //     </div>
+    // );
 }
 
 export default SongControls;

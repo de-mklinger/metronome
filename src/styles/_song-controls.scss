@@ -1,17 +1,15 @@
-.song-controls {
-  flex: 2;
-  overflow-y: auto;
-  margin: 1rem 0;
-}
-
 .song-settings {
+  flex: 2;
+  margin: 1rem 0;
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-top: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .setlist {
+  flex: 2;
+  margin: 1rem 0;
+  overflow-y: auto;
   border: 1px solid black;
   border-radius: 0.5rem;
 

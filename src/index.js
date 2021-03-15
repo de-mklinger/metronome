@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/index.scss';
 import App from './components/App';
 
+import songRepository from "./lib/songRepository";
 import {ctx} from './index.testFixtures'
 import {getAudioBuffer, playSample, playSilence} from './audio'
 import Cowbell1 from './sounds/Cowbell-1.wav'
@@ -20,7 +21,7 @@ function render() {
                 onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
                 onBpmChange={handleBpmChange}
                 onSongSelect={handleSongSelect}
-                onSetlistDeselect={handleSetlistDeselect}
+                onSetlistSelect={handleSetlistSelect}
             />
         </React.StrictMode>,
         document.getElementById('root')
@@ -144,11 +145,17 @@ function handleSongSelect(setlistIdx) {
     render();
 }
 
-function handleSetlistDeselect() {
-    console.log("handleSetlistDeselect", handleSetlistDeselect);
-    ctx.settings.setlist = null;
-    ctx.settings.activeSetlistIdx = 0;
-    render();
+function handleSetlistSelect(setlistId) {
+    if (ctx.settings.setlist?.id !== setlistId) {
+        ctx.settings.activeSetlistIdx = 0;
+        if (setlistId === null) {
+            ctx.settings.setlist = null;
+        } else {
+            ctx.settings.setlist = songRepository.getSetlist(setlistId);
+            initBpm();
+        }
+        render();
+    }
 }
 
 initBpm();

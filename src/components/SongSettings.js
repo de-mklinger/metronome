@@ -6,7 +6,7 @@ import {faList} from "@fortawesome/free-solid-svg-icons";
 
 function SongSettings({settings, onTimeSignatureClick, onSetlistButtonClick}) {
     return (
-        <div className="song-controls song-settings">
+        <div className="song-settings">
             <Button onClick={onTimeSignatureClick}>
                 {settings.timeSignatureBeats}
                 /

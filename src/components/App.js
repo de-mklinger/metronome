@@ -16,7 +16,7 @@ function App(props) {
                     onBpmChange={props.onBpmChange}
                     onTimeSignatureClick={() => setEditTimeSignature(true)}
                     onSongSelect={props.onSongSelect}
-                    onSetlistDeselect={props.onSetlistDeselect}
+                    onSetlistDeselect={() => props.onSetlistSelect(null)}
                     onSetlistButtonClick={() => setSelectSetlist(true)}
                 />
 
@@ -33,6 +33,10 @@ function App(props) {
                     show={selectSetlist}
                     onHide={() => setSelectSetlist(false)}
                     setlists={songRepository.getSetlists()}
+                    onSetlistSelect={(setlistId) => {
+                        props.onSetlistSelect(setlistId);
+                        setSelectSetlist(false);
+                    }}
                 />
             </>
         );

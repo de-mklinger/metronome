@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-function SelectSetlistModal({show, onHide, setlists}) {
+function SelectSetlistModal({show, onHide, setlists, onSetlistSelect}) {
 
     return (
         <Modal show={show} onHide={onHide} centered>
@@ -11,11 +11,15 @@ function SelectSetlistModal({show, onHide, setlists}) {
             <Modal.Body className="text-center my-3">
 
                 <div>
-                    <Button>None</Button>
+                    <Button onClick={() => onSetlistSelect(null)}>
+                        None
+                    </Button>
                 </div>
                 {setlists.map(setlist =>
-                    <div>
-                        <Button>{setlist.title}</Button>
+                    <div key={setlist.id}>
+                        <Button onClick={() => onSetlistSelect(setlist.id)}>
+                            {setlist.title}
+                        </Button>
                     </div>
                 )}
 

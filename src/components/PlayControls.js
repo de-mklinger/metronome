@@ -48,9 +48,14 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
     return (
         <div className="play-controls">
             <div>
-                <Button onClick={onPreviousClick}>
-                    <FontAwesomeIcon icon={faStepBackward}/>
-                </Button>
+                {settings.setlist
+                    ?
+                    <Button onClick={onPreviousClick}>
+                        <FontAwesomeIcon icon={faStepBackward}/>
+                    </Button>
+                    :
+                    <div/>
+                }
                 <PlayButton
                     started={state.started}
                     onPlay={onPlay} />
@@ -71,9 +76,14 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
                     onRotate={speedKnobRotate}/>
             </div>
             <div>
-                <Button onClick={onNextClick}>
-                    <FontAwesomeIcon icon={faStepForward}/>
-                </Button>
+                {settings.setlist
+                    ?
+                    <Button onClick={onNextClick}>
+                        <FontAwesomeIcon icon={faStepForward}/>
+                    </Button>
+                    :
+                    <div/>
+                }
                 <Button>Tap</Button>
             </div>
         </div>

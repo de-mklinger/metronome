@@ -1,15 +1,16 @@
 import {useRef, useEffect} from 'react';
 import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg";
 
-function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect}) {
+function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
     return (
-        <div className="song-controls setlist">
+        <div className="setlist">
             <ul>
                 <li className="header">
                     <div className="title">
-                        Setlist
+                        Setlist: {setlist.title}
                     </div>
                     <div className="settings">
+                        <span onClick={onSetlistButtonClick}>...</span>
                         <span onClick={onSetlistDeselect}>X</span>
                     </div>
                 </li>
