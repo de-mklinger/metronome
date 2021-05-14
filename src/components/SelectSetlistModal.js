@@ -1,15 +1,20 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import {useState} from "react";
+import songRepository from "../lib/songRepository";
+import LoadingIndicator from "./LoadingIndicator";
 
-function SelectSetlistModal({show, onHide, setlists, onSetlistSelect}) {
+function SelectSetlistModal({show, onHide, onSetlistSelect}) {
+    const [setlists, setSetlists] = useState(null);
 
-    return (
-        <Modal show={show} onHide={onHide} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Select Setlist</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="text-center my-3">
+    let body;
 
+    if (setlists === null) {
+        songRepository.getSetlists().then(setSetlists);
+        body = <LoadingIndicator/>
+    } else {
+        body = (
+            <div className="setlist">
                 <div>
                     <Button onClick={() => onSetlistSelect(null)}>
                         None
@@ -22,7 +27,17 @@ function SelectSetlistModal({show, onHide, setlists, onSetlistSelect}) {
                         </Button>
                     </div>
                 )}
+            </div>
+        );
+    }
 
+    return (
+        <Modal show={show} onHide={onHide} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Select Setlist</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="text-center my-3">
+                {body}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={onHide}>

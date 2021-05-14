@@ -8,7 +8,7 @@ const defaultSong = {
 }
 
 const spielchen = Object.assign({}, defaultSong, {
-    id: 'spielchen',
+    id: 'spiel /chen',
     title: 'Spielchen',
     bpm: 240,
 });
@@ -92,18 +92,18 @@ const jsssSetlist = {
     id: 'setlist1',
     title: 'Jimi Satans Schuhshop',
     archived: false,
-    songs: [
-        spielchen,
-        wuff,
-        atem,
-        gott,
-        gefaerbt,
-        irgendjemand,
-        geldweg,
-        ufos,
-        weitergehen,
-        projektor,
-        trotzdem
+    songIds: [
+        spielchen.id,
+        wuff.id,
+        atem.id,
+        gott.id,
+        gefaerbt.id,
+        irgendjemand.id,
+        geldweg.id,
+        ufos.id,
+        weitergehen.id,
+        projektor.id,
+        trotzdem.id
     ]
     // created, updated, owner, tenant, ...
 }

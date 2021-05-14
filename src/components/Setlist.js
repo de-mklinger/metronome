@@ -1,7 +1,22 @@
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg";
+import songRepository from "../lib/songRepository";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEllipsisV, faTimes} from "@fortawesome/free-solid-svg-icons";
+import LoadingIndicator from "./LoadingIndicator";
 
-function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
+
+function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
+    const [setlist, setSetlist] = useState(null);
+
+    if (setlist === null) {
+        songRepository.getSetlist(setlistId).then(setSetlist);
+        return (
+            <LoadingIndicator />
+        );
+    }
+
     return (
         <div className="setlist">
             <ul>
@@ -10,8 +25,12 @@ function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect, on
                         Setlist: {setlist.title}
                     </div>
                     <div className="settings">
-                        <span onClick={onSetlistButtonClick}>...</span>
-                        <span onClick={onSetlistDeselect}>X</span>
+                        <span className="px-2" onClick={onSetlistDeselect}>
+                            <FontAwesomeIcon icon={faTimes}/>
+                        </span>
+                        <span className="pl-2" onClick={onSetlistButtonClick}>
+                            <FontAwesomeIcon icon={faEllipsisV}/>
+                        </span>
                     </div>
                 </li>
                 {setlist.songs.map((song, idx) =>
@@ -50,6 +69,9 @@ function SetlistEntry({song, idx, active, onSongSelect}) {
             </div>
             <div className="settings">
                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
+                <Link className="pl-2" to={"/songs/" + encodeURIComponent(song.id)}>
+                    <FontAwesomeIcon icon={faEllipsisV}/>
+                </Link>
             </div>
         </li>
     );

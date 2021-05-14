@@ -7,7 +7,7 @@ export const ctx = {
         timeSignatureBeats: 4,
         timeSignatureNoteValue: 4,
         accentBeatIndices: [0],
-        setlist: jsssSetlist,
+        setlistId: jsssSetlist.id,
         activeSetlistIdx: 0
     },
 

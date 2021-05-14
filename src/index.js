@@ -34,11 +34,15 @@ function render() {
 reportWebVitals();
 
 function initBpm() {
-    if (ctx.settings.setlist) {
-        const activeSong = ctx.settings.setlist.songs[ctx.settings.activeSetlistIdx];
-        ctx.settings.bpm = activeSong.bpm;
+    if (ctx.settings.setlistId !== null) {
+        return songRepository.getSetlist(ctx.settings.setlistId)
+            .then(setlist => {
+                const activeSong = setlist.songs[ctx.settings.activeSetlistIdx];
+                ctx.settings.bpm = activeSong.bpm;
+            });
     } else {
         ctx.settings.bpm = ctx.config.defaultBpm;
+        return Promise.resolve()
     }
 }
 
@@ -141,25 +145,18 @@ function handleTimeSignatureNoteValueChange(timeSignatureNoteValue) {
 
 function handleSongSelect(setlistIdx) {
     ctx.settings.activeSetlistIdx = setlistIdx;
-    initBpm();
-    render();
+    initBpm().then(() => render());
 }
 
 function handleSetlistSelect(setlistId) {
-    if (ctx.settings.setlist?.id !== setlistId) {
+    if (ctx.settings.setlistId !== setlistId) {
         ctx.settings.activeSetlistIdx = 0;
-        if (setlistId === null) {
-            ctx.settings.setlist = null;
-        } else {
-            ctx.settings.setlist = songRepository.getSetlist(setlistId);
-            initBpm();
-        }
-        render();
+        ctx.settings.setlistId = setlistId;
+        initBpm().then(() => render());
     }
 }
 
-initBpm();
-render();
+initBpm().then(() => render());
 setUp()
     .then(() => console.log("Metronome setup done"))
     .then(render)

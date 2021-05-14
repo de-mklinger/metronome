@@ -4,10 +4,10 @@ import SongSettings from "./SongSettings";
 function SongControls({settings, onTimeSignatureClick, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
     let child;
 
-    if (settings.setlist) {
+    if (settings.setlistId) {
         child = (
             <Setlist
-                setlist={settings.setlist}
+                setlistId={settings.setlistId}
                 activeSetlistIdx={settings.activeSetlistIdx}
                 onSongSelect={onSongSelect}
                 onSetlistDeselect={onSetlistDeselect}
