@@ -41,6 +41,7 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        flex-grow: 1;
       }
 
       .settings {
@@ -53,6 +54,12 @@
         position: sticky;
         top: 0;
         background-color: black;
+      }
+
+      // scroll offset
+      .scroll-target {
+        margin-top: -110px;
+        padding-top: 110px;
       }
     }
   }

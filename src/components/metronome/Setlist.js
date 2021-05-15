@@ -62,9 +62,9 @@ function SetlistEntry({song, idx, active, onSongSelect}) {
 
     return (
         <li
-            ref={ref}
             className={active ? 'active' : ''}
             onClick={() => onSongSelect(idx)}>
+            <span ref={ref} className="scroll-target"/>
             <div className="title">
                 {song.title}
             </div>
