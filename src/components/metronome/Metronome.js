@@ -18,7 +18,6 @@ function Metronome(props) {
             <PlayControls
                 state={props.ctx.state}
                 settings={props.ctx.settings}
-                config={props.ctx.config}
                 onBpmChange={props.onBpmChange}
                 onPlay={props.onPlay}
                 onSongSelect={props.onSongSelect} />

@@ -108,8 +108,19 @@ const jsssSetlist = {
     // created, updated, owner, tenant, ...
 }
 
+const blablaSetlist = {
+    id: 'setlist2',
+    title: 'Bla bla bla',
+    archived: false,
+    songIds: [
+        spielchen.id,
+        wuff.id
+    ]
+};
+
 const allSetlists = [
-    jsssSetlist
+    jsssSetlist,
+    blablaSetlist
 ]
 
 // const testFixtures = {

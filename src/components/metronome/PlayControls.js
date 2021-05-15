@@ -2,33 +2,24 @@ import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStepBackward, faStepForward} from "@fortawesome/free-solid-svg-icons";
 import PlayButton from "./PlayButton";
-import {getLabels} from "../tempo";
-import SpeedKnob from "./SpeedKnob";
+import {getLabels} from "../../tempo";
+import BpmKnob from "../BpmKnob";
+import {useState} from "react";
+import songRepository from "../../lib/songRepository";
+import LoadingIndicator from "../LoadingIndicator";
 
-function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelect}) {
+function PlayControls({state, settings, onBpmChange, onPlay, onSongSelect}) {
+    const [setlist, setSetlist] = useState(null);
 
-    const speedKnobRotate = (rotation) => {
-        if (onBpmChange) {
-            let bpm = rotationToBpm(rotation);
-            //let rotationRev = bpmToRotation(bpm);
-            //console.log(rotation, "->", bpm, "->", rotationRev);
-            onBpmChange(bpm);
-        }
-    };
-
-    const rotationToBpm = (rotation) => {
-        let bpm = config.defaultBpm + rotation * config.rotationFactor;
-        bpm = Math.max(config.minBpm, bpm);
-        bpm = Math.round(bpm);
-        return bpm;
-    };
-
-    const bpmToRotation = (bpm) => {
-        return (bpm - config.defaultBpm) / config.rotationFactor;
-    };
+    if (settings.setlistId && setlist === null) {
+        songRepository.getSetlist(settings.setlistId).then(setSetlist);
+        return (
+            <LoadingIndicator />
+        );
+    }
 
     const onPreviousClick = () => {
-        if (settings.setlist) {
+        if (setlist) {
             const newIdx = settings.activeSetlistIdx - 1;
             if (newIdx >= 0) {
                 onSongSelect(newIdx);
@@ -37,9 +28,9 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
     }
 
     const onNextClick = () => {
-        if (settings.setlist) {
+        if (setlist) {
             const newIdx = settings.activeSetlistIdx + 1;
-            if (newIdx < settings.setlist.songs.length) {
+            if (newIdx < setlist.songs.length) {
                 onSongSelect(newIdx);
             }
         }
@@ -48,7 +39,7 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
     return (
         <div className="play-controls">
             <div>
-                {settings.setlist
+                {setlist
                     ?
                     <Button onClick={onPreviousClick}>
                         <FontAwesomeIcon icon={faStepBackward}/>
@@ -68,15 +59,14 @@ function PlayControls({state, settings, config, onBpmChange, onPlay, onSongSelec
                     {settings.bpm} BPM
                 </div>
 
-                <SpeedKnob
+                <BpmKnob
                     key={settings.activeSetlistIdx} // Force applying rotation if new song was selected. Does not work when selecting song, changing bpm and selecting same song again :(
-                    rotation={bpmToRotation(settings.bpm)}
-                    minRotation={bpmToRotation(config.minBpm)}
-                    maxRotation={bpmToRotation(config.maxBpm)}
-                    onRotate={speedKnobRotate}/>
+                    bpm={settings.bpm}
+                    onBpmChange={onBpmChange}
+                />
             </div>
             <div>
-                {settings.setlist
+                {setlist
                     ?
                     <Button onClick={onNextClick}>
                         <FontAwesomeIcon icon={faStepForward}/>

@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useState} from "react";
-import songRepository from "../lib/songRepository";
+import songRepository from "../../lib/songRepository";
 import SongEditor from "./SongEditor";
-import LoadingIndicator from "./LoadingIndicator";
+import LoadingIndicator from "../LoadingIndicator";
 
 function SongEditorContainer() {
     let {id} = useParams();

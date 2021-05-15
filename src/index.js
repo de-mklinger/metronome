@@ -10,6 +10,7 @@ import {ctx} from './index.testFixtures'
 import {getAudioBuffer, playSample, playSilence} from './audio'
 import Cowbell1 from './sounds/Cowbell-1.wav'
 import Cowbell2 from './sounds/Cowbell-2.wav'
+import {defaultBpm, earlyPlayThresholdMillis, playSilenceIntervalMillis, missMillisThreshold} from "./lib/env";
 
 function render() {
     ReactDOM.render(
@@ -41,7 +42,7 @@ function initBpm() {
                 ctx.settings.bpm = activeSong.bpm;
             });
     } else {
-        ctx.settings.bpm = ctx.config.defaultBpm;
+        ctx.settings.bpm = defaultBpm;
         return Promise.resolve()
     }
 }
@@ -50,11 +51,11 @@ async function setUp() {
     ctx.audio.accentAudioBuffer = await getAudioBuffer(Cowbell2);
     ctx.audio.nonAccentAudioBuffer = await getAudioBuffer(Cowbell1);
 
-    if (ctx.config.playSilenceIntervalMillis > 0) {
+    if (playSilenceIntervalMillis > 0) {
         setInterval(() => {
             //console.log("Play silence");
             playSilence();
-        }, ctx.config.playSilenceIntervalMillis);
+        }, playSilenceIntervalMillis);
     }
 
     return ctx;
@@ -95,7 +96,7 @@ function tick() {
         sinceLastSwitchMillis = now - ctx.state.switchTime
     }
     let diff = sinceLastSwitchMillis - switchEveryMillis;
-    if (diff >= ctx.config.earlyPlayThresholdMillis) {
+    if (diff >= earlyPlayThresholdMillis) {
         ctx.state.activeBeatIdx++;
         if (ctx.state.activeBeatIdx >= ctx.settings.timeSignatureBeats) {
             ctx.state.activeBeatIdx = 0;
@@ -103,7 +104,7 @@ function tick() {
 
         let missMillis = sinceLastSwitchMillis - switchEveryMillis;
         let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
-        console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
+        //console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
 
         if (ctx.settings.accentBeatIndices.indexOf(ctx.state.activeBeatIdx) !== -1) {
             playSample(ctx.audio.accentAudioBuffer, whenOffsetSeconds);
@@ -111,7 +112,7 @@ function tick() {
             playSample(ctx.audio.nonAccentAudioBuffer, whenOffsetSeconds);
         }
 
-        if (missMillis > ctx.config.missMillisThreshold) {
+        if (missMillis > missMillisThreshold) {
             // Gap is too large. Maybe we have been suspended in the meantime?
             ctx.state.switchTime = now;
         } else {

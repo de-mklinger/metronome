@@ -6,7 +6,9 @@ const songRepository = {
     saveSong: async song => save(allSongs, song),
     getSetlists: async () => Promise.all(allSetlists.map(setlistWithSongs)),
     getSetlist: async id => setlistWithSongs(findById(allSetlists, id)),
-    getSetlistsWithSong: async songId => getSetlistsWithSong(songId)
+    getSetlistsWithSong: async songId => getSetlistsWithSong(songId),
+    addSongToSetlist: async (setlistId, songId) => addSongToSetlist(setlistId, songId),
+    removeSongFromSetlist: async (setlistId, songId) => removeSongFromSetlist(setlistId, songId)
 }
 
 const getSetlistsWithSong = async songId => {
@@ -14,6 +16,20 @@ const getSetlistsWithSong = async songId => {
         .filter(setlist => containsSong(setlist, songId))
         .map(setlistWithSongs));
 };
+
+const addSongToSetlist = async (setlistId, songId) => {
+    console.log("Repository: addSongToSetlist", setlistId, songId);
+
+    const setlist = findById(allSetlists, setlistId);
+    setlist.songIds.push(songId);
+}
+
+const removeSongFromSetlist = async (setlistId, songId) => {
+    console.log("Repository: removeSongFromSetlist", setlistId, songId);
+    
+    const setlist = findById(allSetlists, setlistId);
+    setlist.songIds = setlist.songIds.filter(setlistSongId => setlistSongId !== songId);
+}
 
 const containsSong = (setlist, songId) => setlist.songIds.find(setlistSongId => setlistSongId === songId) !== null
 

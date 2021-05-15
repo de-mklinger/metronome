@@ -1,16 +1,17 @@
 import {useRef, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {ReactComponent as QuarterNoteSvg} from "../images/quarter-note.svg";
-import songRepository from "../lib/songRepository";
+import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
+import songRepository from "../../lib/songRepository";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsisV, faTimes} from "@fortawesome/free-solid-svg-icons";
-import LoadingIndicator from "./LoadingIndicator";
+import LoadingIndicator from "../LoadingIndicator";
 
 
 function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
     const [setlist, setSetlist] = useState(null);
 
-    if (setlist === null) {
+    // TODO why do we have old state and new prop?
+    if (setlist === null || setlist.id !== setlistId) {
         songRepository.getSetlist(setlistId).then(setSetlist);
         return (
             <LoadingIndicator />
@@ -28,7 +29,7 @@ function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, 
                         <span className="px-2" onClick={onSetlistDeselect}>
                             <FontAwesomeIcon icon={faTimes}/>
                         </span>
-                        <span className="pl-2" onClick={onSetlistButtonClick}>
+                        <span className="px-2" onClick={onSetlistButtonClick}>
                             <FontAwesomeIcon icon={faEllipsisV}/>
                         </span>
                     </div>
@@ -69,7 +70,7 @@ function SetlistEntry({song, idx, active, onSongSelect}) {
             </div>
             <div className="settings">
                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
-                <Link className="pl-2" to={"/songs/" + encodeURIComponent(song.id)}>
+                <Link className="px-2" to={"/songs/" + encodeURIComponent(song.id)}>
                     <FontAwesomeIcon icon={faEllipsisV}/>
                 </Link>
             </div>

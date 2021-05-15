@@ -4,10 +4,10 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import Metronome from "./Metronome";
+import Metronome from "./metronome/Metronome";
 import TimeSignatureModal from "./TimeSignatureModal";
 import SelectSetlistModal from "./SelectSetlistModal";
-import SongEditorContainer from "./SongEditorContainer";
+import SongEditorContainer from "./song/SongEditorContainer";
 
 function App(props) {
     const [editTimeSignature, setEditTimeSignature] = useState(false);
