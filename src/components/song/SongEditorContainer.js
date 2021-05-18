@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import songRepository from "../../lib/songRepository";
 import SongEditor from "./SongEditor";
 import LoadingIndicator from "../LoadingIndicator";
@@ -10,12 +10,16 @@ function SongEditorContainer() {
 
     const [song, setSong] = useState(null);
 
-    if (song === null) {
+    useEffect(() => {
+        setSong(null);
         songRepository.getSong(id).then(setSong);
+    }, [id])
+
+    if (song === null) {
         return <LoadingIndicator />
-    } else {
-        return <SongEditor song={song} />
     }
+
+    return <SongEditor song={song} />
 }
 
 export default SongEditorContainer;

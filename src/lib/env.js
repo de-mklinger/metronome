@@ -18,8 +18,19 @@ const earlyPlayThresholdMillis = envNumber("EARLY_PLAY_THRESHOLD_MILLIS", -18);
 const playSilenceIntervalMillis = envNumber("PLAY_SILENCE_INTERVAL_MILLIS", 10000);
 const missMillisThreshold = envNumber("MISS_MILLIS_THRESHOLD", 100);
 
+const defaultSong = {
+    bpm: defaultBpm,
+    timeSignatureBeats: 4,
+    timeSignatureNoteValue: 4,
+    subDivisions: 1,
+    songLength: null,
+    accents: [2, 1, 1, 1],
+    // created, updated, owner, tenant, ...
+}
+
 export {
     defaultBpm,
+    defaultSong,
     rotationFactor,
     minBpm,
     maxBpm,

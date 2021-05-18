@@ -7,17 +7,17 @@ import App from './components/App';
 
 import songRepository from "./lib/songRepository";
 import {ctx} from './index.testFixtures'
-import {getAudioBuffer, playSample, playSilence} from './audio'
+import {getAudioBuffer, playSilence} from './audio'
 import Cowbell1 from './sounds/Cowbell-1.wav'
 import Cowbell2 from './sounds/Cowbell-2.wav'
-import {defaultBpm, earlyPlayThresholdMillis, playSilenceIntervalMillis, missMillisThreshold} from "./lib/env";
+import {defaultBpm, playSilenceIntervalMillis} from "./lib/env";
 
 function render() {
     ReactDOM.render(
         <React.StrictMode>
             <App
                 ctx={ctx}
-                onPlay={handlePlay}
+                // onPlay={handlePlay}
                 onTimeSignatureBeatsChange={handleTimeSignatureBeatsChange}
                 onTimeSignatureNoteValueChange={handleTimeSignatureNoteValueChange}
                 onBpmChange={handleBpmChange}
@@ -61,70 +61,70 @@ async function setUp() {
     return ctx;
 }
 
-function handlePlay() {
-    console.log("Play");
+// function handlePlay() {
+//     console.log("Play");
+//
+//     let doStart = !!!ctx.state.started;
+//
+//     ctx.state.started = doStart;
+//
+//     if (doStart) {
+//         let now = new Date().getTime();
+//         console.log("Start", "Last start time ", (now - ctx.metrics.lastStartTime) / 1000, "seconds ago");
+//         ctx.metrics.lastStartTime = now;
+//         requestAnimationFrame(tick);
+//     } else {
+//         console.log("Stop");
+//         // showActive(-1);
+//         ctx.state.activeBeatIdx = -1;
+//         render();
+//     }
+// }
 
-    let doStart = !!!ctx.state.started;
-
-    ctx.state.started = doStart;
-
-    if (doStart) {
-        let now = new Date().getTime();
-        console.log("Start", "Last start time ", (now - ctx.metrics.lastStartTime) / 1000, "seconds ago");
-        ctx.metrics.lastStartTime = now;
-        requestAnimationFrame(tick);
-    } else {
-        console.log("Stop");
-        // showActive(-1);
-        ctx.state.activeBeatIdx = -1;
-        render();
-    }
-}
-
-function tick() {
-    if (!ctx.state.started) {
-        return;
-    }
-
-    const switchEveryMillis = 60 * 1000 / ctx.settings.bpm
-
-    let now = new Date().getTime();
-    let sinceLastSwitchMillis;
-    if (ctx.state.activeBeatIdx === -1) {
-        sinceLastSwitchMillis = switchEveryMillis;
-    } else {
-        sinceLastSwitchMillis = now - ctx.state.switchTime
-    }
-    let diff = sinceLastSwitchMillis - switchEveryMillis;
-    if (diff >= earlyPlayThresholdMillis) {
-        ctx.state.activeBeatIdx++;
-        if (ctx.state.activeBeatIdx >= ctx.settings.timeSignatureBeats) {
-            ctx.state.activeBeatIdx = 0;
-        }
-
-        let missMillis = sinceLastSwitchMillis - switchEveryMillis;
-        let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
-        //console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
-
-        if (ctx.settings.accentBeatIndices.indexOf(ctx.state.activeBeatIdx) !== -1) {
-            playSample(ctx.audio.accentAudioBuffer, whenOffsetSeconds);
-        } else {
-            playSample(ctx.audio.nonAccentAudioBuffer, whenOffsetSeconds);
-        }
-
-        if (missMillis > missMillisThreshold) {
-            // Gap is too large. Maybe we have been suspended in the meantime?
-            ctx.state.switchTime = now;
-        } else {
-            ctx.state.switchTime = now - missMillis;
-        }
-
-        // showActive(ctx.state.activeBeatIdx);
-        render();
-    }
-
-    requestAnimationFrame(tick);
-}
+// function tick() {
+//     if (!ctx.state.started) {
+//         return;
+//     }
+//
+//     const switchEveryMillis = 60 * 1000 / ctx.settings.bpm
+//
+//     let now = new Date().getTime();
+//     let sinceLastSwitchMillis;
+//     if (ctx.state.activeBeatIdx === -1) {
+//         sinceLastSwitchMillis = switchEveryMillis;
+//     } else {
+//         sinceLastSwitchMillis = now - ctx.state.switchTime
+//     }
+//     let diff = sinceLastSwitchMillis - switchEveryMillis;
+//     if (diff >= earlyPlayThresholdMillis) {
+//         ctx.state.activeBeatIdx++;
+//         if (ctx.state.activeBeatIdx >= ctx.settings.timeSignatureBeats) {
+//             ctx.state.activeBeatIdx = 0;
+//         }
+//
+//         let missMillis = sinceLastSwitchMillis - switchEveryMillis;
+//         let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
+//         //console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
+//
+//         if (ctx.settings.accentBeatIndices.indexOf(ctx.state.activeBeatIdx) !== -1) {
+//             playSample(ctx.audio.accentAudioBuffer, whenOffsetSeconds);
+//         } else {
+//             playSample(ctx.audio.nonAccentAudioBuffer, whenOffsetSeconds);
+//         }
+//
+//         if (missMillis > missMillisThreshold) {
+//             // Gap is too large. Maybe we have been suspended in the meantime?
+//             ctx.state.switchTime = now;
+//         } else {
+//             ctx.state.switchTime = now - missMillis;
+//         }
+//
+//         // showActive(ctx.state.activeBeatIdx);
+//         render();
+//     }
+//
+//     requestAnimationFrame(tick);
+// }
 
 function handleBpmChange(bpm) {
     if (bpm !== ctx.settings.bpm) {

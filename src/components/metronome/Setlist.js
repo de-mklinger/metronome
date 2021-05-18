@@ -10,9 +10,12 @@ import LoadingIndicator from "../LoadingIndicator";
 function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
     const [setlist, setSetlist] = useState(null);
 
-    // TODO why do we have old state and new prop?
-    if (setlist === null || setlist.id !== setlistId) {
+    useEffect(() => {
+        setSetlist(null);
         songRepository.getSetlist(setlistId).then(setSetlist);
+    }, [setlistId]);
+
+    if (setlist === null) {
         return (
             <LoadingIndicator />
         );

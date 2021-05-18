@@ -4,13 +4,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import {faList} from "@fortawesome/free-solid-svg-icons";
 
-function SongSettings({settings, onTimeSignatureClick, onSetlistButtonClick}) {
+function SongSettings({timeSignatureBeats, timeSignatureNoteValue, onTimeSignatureClick, onSetlistButtonClick}) {
     return (
         <div className="song-settings">
             <Button onClick={onTimeSignatureClick}>
-                {settings.timeSignatureBeats}
+                {timeSignatureBeats}
                 /
-                {settings.timeSignatureNoteValue}
+                {timeSignatureNoteValue}
             </Button>
             <Button>
                 <QuarterNoteSvg/>

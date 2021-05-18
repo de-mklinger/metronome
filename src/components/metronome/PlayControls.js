@@ -8,11 +8,11 @@ import {useState} from "react";
 import songRepository from "../../lib/songRepository";
 import LoadingIndicator from "../LoadingIndicator";
 
-function PlayControls({state, settings, onBpmChange, onPlay, onSongSelect}) {
+function PlayControls({started, setlistId, activeSetlistIdx, bpm, onBpmChange, onPlay, onSongSelect}) {
     const [setlist, setSetlist] = useState(null);
 
-    if (settings.setlistId && setlist === null) {
-        songRepository.getSetlist(settings.setlistId).then(setSetlist);
+    if (setlistId && setlist === null) {
+        songRepository.getSetlist(setlistId).then(setSetlist);
         return (
             <LoadingIndicator />
         );
@@ -20,7 +20,7 @@ function PlayControls({state, settings, onBpmChange, onPlay, onSongSelect}) {
 
     const onPreviousClick = () => {
         if (setlist) {
-            const newIdx = settings.activeSetlistIdx - 1;
+            const newIdx = activeSetlistIdx - 1;
             if (newIdx >= 0) {
                 onSongSelect(newIdx);
             }
@@ -29,7 +29,7 @@ function PlayControls({state, settings, onBpmChange, onPlay, onSongSelect}) {
 
     const onNextClick = () => {
         if (setlist) {
-            const newIdx = settings.activeSetlistIdx + 1;
+            const newIdx = activeSetlistIdx + 1;
             if (newIdx < setlist.songs.length) {
                 onSongSelect(newIdx);
             }
@@ -48,20 +48,20 @@ function PlayControls({state, settings, onBpmChange, onPlay, onSongSelect}) {
                     <div/>
                 }
                 <PlayButton
-                    started={state.started}
+                    started={started}
                     onPlay={onPlay} />
             </div>
             <div className="speed">
                 <div id="current-bpm-label">
-                    {getLabels(settings.bpm).join(", ")}
+                    {getLabels(bpm).join(", ")}
                 </div>
                 <div id="current-bpm">
-                    {settings.bpm} BPM
+                    {bpm} BPM
                 </div>
 
                 <BpmKnob
-                    key={settings.activeSetlistIdx} // Force applying rotation if new song was selected. Does not work when selecting song, changing bpm and selecting same song again :(
-                    bpm={settings.bpm}
+                    key={activeSetlistIdx} // Force applying rotation if new song was selected. Does not work when selecting song, changing bpm and selecting same song again :(
+                    bpm={bpm}
                     onBpmChange={onBpmChange}
                 />
             </div>

@@ -2,13 +2,17 @@ import {allSongs, allSetlists} from "./songRepository.testFixtures";
 
 const songRepository = {
     getSongs: async () => allSongs,
-    getSong: async id => findById(allSongs, id),
+    getSong: async id => slowFindById(allSongs, id),
     saveSong: async song => save(allSongs, song),
     getSetlists: async () => Promise.all(allSetlists.map(setlistWithSongs)),
     getSetlist: async id => setlistWithSongs(findById(allSetlists, id)),
     getSetlistsWithSong: async songId => getSetlistsWithSong(songId),
     addSongToSetlist: async (setlistId, songId) => addSongToSetlist(setlistId, songId),
     removeSongFromSetlist: async (setlistId, songId) => removeSongFromSetlist(setlistId, songId)
+}
+
+const info = function() {
+    //console.log(...arguments);
 }
 
 const getSetlistsWithSong = async songId => {
@@ -18,14 +22,14 @@ const getSetlistsWithSong = async songId => {
 };
 
 const addSongToSetlist = async (setlistId, songId) => {
-    console.log("Repository: addSongToSetlist", setlistId, songId);
+    info("Repository: addSongToSetlist", setlistId, songId);
 
     const setlist = findById(allSetlists, setlistId);
     setlist.songIds.push(songId);
 }
 
 const removeSongFromSetlist = async (setlistId, songId) => {
-    console.log("Repository: removeSongFromSetlist", setlistId, songId);
+    info("Repository: removeSongFromSetlist", setlistId, songId);
     
     const setlist = findById(allSetlists, setlistId);
     setlist.songIds = setlist.songIds.filter(setlistSongId => setlistSongId !== songId);
@@ -33,8 +37,14 @@ const removeSongFromSetlist = async (setlistId, songId) => {
 
 const containsSong = (setlist, songId) => setlist.songIds.find(setlistSongId => setlistSongId === songId) !== null
 
+const slowFindById = async (haystack, id) => {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(findById(haystack, id)), 500);
+    });
+}
+
 const findById = (haystack, id) => {
-    console.log("Repository: findById", id);
+    info("Repository: findById", id);
 
     const found = haystack.find(item => item.id === id);
     if (!found) {
@@ -46,7 +56,7 @@ const findById = (haystack, id) => {
 }
 
 const save = (haystack, object) => {
-    console.log("Repository: save", object);
+    info("Repository: save", object);
 
     if (object.id === null) {
         object.id = newRandomId();
