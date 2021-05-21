@@ -1,0 +1,29 @@
+.setlists-editor-screen {
+  .setlists {
+    border: 1px solid black;
+    border-radius: 0.5rem;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.2rem;
+
+        &:not(:first-child) {
+          border-top: 1px solid black;
+        }
+
+        &.active {
+          color: $active-color;
+          font-weight: $active-font-weight;
+        }
+      }
+    }
+  }
+}

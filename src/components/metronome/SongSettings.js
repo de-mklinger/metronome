@@ -3,8 +3,9 @@ import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import {faList} from "@fortawesome/free-solid-svg-icons";
+import {Link} from "react-router-dom";
 
-function SongSettings({timeSignatureBeats, timeSignatureNoteValue, onTimeSignatureClick, onSetlistButtonClick}) {
+function SongSettings({timeSignatureBeats, timeSignatureNoteValue, onTimeSignatureClick}) {
     return (
         <div className="song-settings">
             <Button onClick={onTimeSignatureClick}>
@@ -18,9 +19,9 @@ function SongSettings({timeSignatureBeats, timeSignatureNoteValue, onTimeSignatu
             <Button>
                 <FontAwesomeIcon icon={faClock}/>
             </Button>
-            <Button onClick={onSetlistButtonClick}>
+            <Link className="btn btn-primary" to={"/setlists"}>
                 <FontAwesomeIcon icon={faList}/>
-            </Button>
+            </Link>
         </div>
     );
 }

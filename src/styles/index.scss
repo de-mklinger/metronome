@@ -15,6 +15,7 @@ svg {
 .btn:not(.btn-link) {
   min-width: 4rem;
   min-height: 4rem;
+  line-height: 3rem;
   box-shadow: $dark-box-shadow;
   margin: $box-shadow-size;
 }
@@ -31,3 +32,5 @@ svg {
 @import "song-controls";
 
 @import "song-editor-screen";
+@import "setlists-editor-screen";
+@import "setlist-editor-screen";

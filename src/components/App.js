@@ -1,51 +1,64 @@
-import {useState} from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Metronome from "./metronome/Metronome";
-import TimeSignatureModal from "./TimeSignatureModal";
-import SelectSetlistModal from "./SelectSetlistModal";
 import SongEditorContainer from "./song/SongEditorContainer";
+import {useEffect, useState} from "react";
+import SetlistsEditor from "./setlist/SetlistsEditor";
+import SetlistEditorContainer from "./setlist/SetlistEditorContainer";
+import LoadingIndicator from "./LoadingIndicator";
+import songRepository from "../lib/songRepository";
 
-function App(props) {
-    const [editTimeSignature, setEditTimeSignature] = useState(false);
-    const [selectSetlist, setSelectSetlist] = useState(false);
+function App() {
+    const [loadSetlistId, setLoadSetlistId] = useState(null);
+    const [setlist, setSetlist] = useState(null);
+
+    const onSetlistChange = changedSetlist => {
+        if (setlist && setlist.id === changedSetlist) {
+            setSetlist(changedSetlist);
+        }
+    }
+
+    const onSongChange = changedSong => {
+        if (setlist && setlist.songIds.find(songId => songId === changedSong.id)) {
+            setLoadSetlistId(setlist.id);
+        }
+    }
+
+    useEffect(() => {
+            if (loadSetlistId !== null) {
+                songRepository.getSetlist(loadSetlistId).then(setlist => {
+                    setSetlist(setlist);
+                    setLoadSetlistId(null);
+                });
+            }
+        },
+        [loadSetlistId]
+    );
+
+    if (loadSetlistId) {
+        return <LoadingIndicator />;
+    }
 
     return (
         <Router>
             <Switch>
                 <Route path="/songs/:id">
-                    <SongEditorContainer />
+                    <SongEditorContainer
+                        onSongChange={onSongChange}
+                    />
+                </Route>
+                <Route path="/setlists/:id">
+                    <SetlistEditorContainer
+                        onSetlistChange={onSetlistChange}
+                    />
+                </Route>
+                <Route path="/setlists">
+                    <SetlistsEditor
+                        activeSetlist={setlist}
+                        onSetlistSelect={setSetlist} />
                 </Route>
                 <Route path="/">
-                    <Metronome
-                        ctx={props.ctx}
-                        onPlay={props.onPlay}
-                        onBpmChange={props.onBpmChange}
-                        onTimeSignatureClick={() => setEditTimeSignature(true)}
-                        onSongSelect={props.onSongSelect}
-                        onSetlistDeselect={() => props.onSetlistSelect(null)}
-                        onSetlistButtonClick={() => setSelectSetlist(true)}
-                    />
-
-                    <TimeSignatureModal
-                        show={editTimeSignature}
-                        onHide={() => setEditTimeSignature(false)}
-                        timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
-                        onTimeSignatureBeatsChange={props.onTimeSignatureBeatsChange}
-                        timeSignatureNoteValue={props.ctx.settings.timeSignatureNoteValue}
-                        onTimeSignatureNoteValueChange={props.onTimeSignatureNoteValueChange}
-                    />
-
-                    <SelectSetlistModal
-                        show={selectSetlist}
-                        onHide={() => setSelectSetlist(false)}
-                        onSetlistSelect={(setlistId) => {
-                            props.onSetlistSelect(setlistId);
-                            setSelectSetlist(false);
-                        }}
+                    <Metronome setlist={setlist}
+                               onSetlistSelect={setSetlist}
                     />
                 </Route>
             </Switch>

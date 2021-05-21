@@ -1,13 +1,15 @@
 import Beat from "./Beat";
 
-function BeatBar({timeSignatureBeats, accentBeatIndices, activeBeatIdx}) {
+function BeatBar({timeSignatureBeats, accents, activeBeatIdx}) {
     let beats = [];
 
     for (let idx = 0; idx < timeSignatureBeats; idx++) {
+        let isAccent = accents.length > idx && accents[idx] > 1; // TODO
+
         beats.push(
             <Beat
                 key={idx}
-                accent={accentBeatIndices.indexOf(idx) !== -1}
+                accent={isAccent}
                 active={idx === activeBeatIdx}/>
         );
     }

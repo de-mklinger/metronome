@@ -8,7 +8,7 @@ import Accents from "./Accents";
 import Setlists from "./Setlists";
 import TimeSignature from "./TimeSignature";
 
-function SongEditor({song}) {
+function SongEditor({song, onSongChange}) {
     const [title, setTitle] = useState(song.title);
     const [bpm, setBpm] = useState(song.bpm);
     const [timeSignatureBeats, setTimeSignatureBeats] = useState(song.timeSignatureBeats);
@@ -20,6 +20,10 @@ function SongEditor({song}) {
     const [setlists, setSetlists] = useState(null);
     const [originalSetlistIds, setOriginalSetlistIds] = useState([]);
 
+    if (submitted) {
+        return <Redirect to="/"/>
+    }
+
     if (setlists === null) {
         songRepository.getSetlistsWithSong(song.id)
             .then(setlists => {
@@ -27,10 +31,6 @@ function SongEditor({song}) {
                 setSetlists(setlists);
             });
         return <LoadingIndicator/>
-    }
-
-    if (submitted) {
-        return <Redirect to="/"/>
     }
 
     const showSaveAsNew = title !== song.title;
@@ -53,12 +53,18 @@ function SongEditor({song}) {
                     songRepository.removeSongFromSetlist(originalSetlistId, savedSong.id);
                 }
             });
+            return savedSong;
         })
-        .then(() => console.log("ALL SAVED"))
-        .then(() => setSubmitted(true));
+        .then(savedSong => {
+            setSubmitted(true);
+            onSongChange(savedSong);
+        });
 
     const saveAsNew = () => songRepository.saveSong(toSong(null))
-        .then(() => setSubmitted(true));
+        .then(savedSong => {
+            setSubmitted(true);
+            onSongChange(savedSong);
+        });
 
     return (
         <Container className="song-editor-screen">

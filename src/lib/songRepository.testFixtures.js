@@ -1,11 +1,4 @@
-const defaultSong = {
-    timeSignatureBeats: 4,
-    timeSignatureNoteValue: 4,
-    subDivisions: 1,
-    songLength: null,
-    accents: [2, 1, 1, 1],
-    // created, updated, owner, tenant, ...
-}
+import {defaultSong} from "./env";
 
 const spielchen = Object.assign({}, defaultSong, {
     id: 'spiel /chen',

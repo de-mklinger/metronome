@@ -4,7 +4,7 @@ import songRepository from "../../lib/songRepository";
 import SongEditor from "./SongEditor";
 import LoadingIndicator from "../LoadingIndicator";
 
-function SongEditorContainer() {
+function SongEditorContainer({onSongChange}) {
     let {id} = useParams();
     id = decodeURIComponent(id); // TODO no way to automatically decode??
 
@@ -19,7 +19,10 @@ function SongEditorContainer() {
         return <LoadingIndicator />
     }
 
-    return <SongEditor song={song} />
+    return <SongEditor
+        song={song}
+        onSongChange={onSongChange}
+    />
 }
 
 export default SongEditorContainer;

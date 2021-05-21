@@ -1,16 +1,15 @@
 import Setlist from "./Setlist";
 import SongSettings from "./SongSettings";
 
-function SongControls({setlistId, activeSetlistIdx, timeSignatureBeats, timeSignatureNoteValue,
-                          onSongSelect, onSetlistDeselect, onSetlistButtonClick, onTimeSignatureClick}) {
-    if (setlistId) {
+function SongControls({setlist, activeSetlistIdx, timeSignatureBeats, timeSignatureNoteValue,
+                          onSongSelect, onSetlistDeselect, onTimeSignatureClick}) {
+    if (setlist) {
         return (
             <Setlist
-                setlistId={setlistId}
+                setlist={setlist}
                 activeSetlistIdx={activeSetlistIdx}
                 onSongSelect={onSongSelect}
                 onSetlistDeselect={onSetlistDeselect}
-                onSetlistButtonClick={onSetlistButtonClick}
             />
         );
     } else {
@@ -19,7 +18,6 @@ function SongControls({setlistId, activeSetlistIdx, timeSignatureBeats, timeSign
                 timeSignatureBeats={timeSignatureBeats}
                 timeSignatureNoteValue={timeSignatureNoteValue}
                 onTimeSignatureClick={onTimeSignatureClick}
-                onSetlistButtonClick={onSetlistButtonClick}
             />
         );
     }

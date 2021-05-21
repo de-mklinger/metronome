@@ -1,26 +1,11 @@
-import {useRef, useEffect, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
-import songRepository from "../../lib/songRepository";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsisV, faTimes} from "@fortawesome/free-solid-svg-icons";
-import LoadingIndicator from "../LoadingIndicator";
 
 
-function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, onSetlistButtonClick}) {
-    const [setlist, setSetlist] = useState(null);
-
-    useEffect(() => {
-        setSetlist(null);
-        songRepository.getSetlist(setlistId).then(setSetlist);
-    }, [setlistId]);
-
-    if (setlist === null) {
-        return (
-            <LoadingIndicator />
-        );
-    }
-
+function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect}) {
     return (
         <div className="setlist">
             <ul>
@@ -32,9 +17,9 @@ function Setlist({setlistId, activeSetlistIdx, onSongSelect, onSetlistDeselect, 
                         <span className="px-2" onClick={onSetlistDeselect}>
                             <FontAwesomeIcon icon={faTimes}/>
                         </span>
-                        <span className="px-2" onClick={onSetlistButtonClick}>
+                        <Link className="px-2" to={"/setlists"}>
                             <FontAwesomeIcon icon={faEllipsisV}/>
-                        </span>
+                        </Link>
                     </div>
                 </li>
                 {setlist.songs.map((song, idx) =>

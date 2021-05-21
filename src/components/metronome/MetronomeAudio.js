@@ -3,7 +3,7 @@ import {ctx} from "../../index.testFixtures";
 import {earlyPlayThresholdMillis, missMillisThreshold} from "../../lib/env";
 import {playSample} from "../../audio";
 
-const useAnimationFrame = (callback, started) => {
+const useAnimationFrame = (callback, started, deps) => {
     // Use useRef for mutable variables that we want to persist
     // without triggering a re-render on their change
     const requestRef = React.useRef();
@@ -30,7 +30,7 @@ const useAnimationFrame = (callback, started) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [started]); // Make sure the effect runs only when started value changes, ignore changes on callback
+    }, [started, ...deps]); // Make sure the effect runs only when started value changes, ignore changes on callback
 }
 
 function MetronomeAudio({started, bpm, timeSignatureBeats, accents, onActiveBeatIdxChange}) {
@@ -88,7 +88,7 @@ function MetronomeAudio({started, bpm, timeSignatureBeats, accents, onActiveBeat
         }
     };
 
-    useAnimationFrame(tick, started);
+    useAnimationFrame(tick, started, [ bpm, timeSignatureBeats ]);
 
     return <></>;
 }

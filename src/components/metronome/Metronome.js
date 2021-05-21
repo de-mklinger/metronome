@@ -3,47 +3,92 @@ import SongControls from "./SongControls";
 import PlayControls from "./PlayControls";
 import MetronomeAudio from "./MetronomeAudio";
 import {useState} from "react";
+import TimeSignatureModal from "../TimeSignatureModal";
+import {defaultSong} from "../../lib/env";
 
-function Metronome(props) {
+function getActiveSong(setlist, activeSetlistIdx) {
+    if (setlist && setlist.songs) {
+        return setlist.songs[activeSetlistIdx];
+    } else {
+        return defaultSong;
+    }
+}
+
+function Metronome({setlist, onSetlistSelect}) {
     const [started, setStarted] = useState(false);
     const [activeBeatIdx, setActiveBeatIdx] = useState(-1);
+
+    const [activeSetlistIdx, setActiveSetlistIdx] = useState(0);
+
+    let activeSong = getActiveSong(setlist, activeSetlistIdx);
+
+    const [bpm, setBpm] = useState(activeSong.bpm);
+    const [timeSignatureBeats, setTimeSignatureBeats] = useState(activeSong.timeSignatureBeats);
+    const [timeSignatureNoteValue, setTimeSignatureNoteValue] = useState(activeSong.timeSignatureNoteValue);
+    const [accents, setAccents] = useState(activeSong.accents);
+
+    const [editTimeSignature, setEditTimeSignature] = useState(false);
+
+    const onSetlistAndSongSelect = (setlist, selectedSetlistIdx = 0) => {
+        console.log("onSetlistAndSongSelect", setlist, selectedSetlistIdx);
+        onSetlistSelect(setlist);
+        if (selectedSetlistIdx < setlist.songs.length) {
+            setActiveSetlistIdx(selectedSetlistIdx);
+        } else {
+            setActiveSetlistIdx(0);
+        }
+        let activeSong = getActiveSong(setlist, selectedSetlistIdx);
+        setBpm(activeSong.bpm);
+        setTimeSignatureBeats(activeSong.timeSignatureBeats);
+        setTimeSignatureNoteValue(activeSong.timeSignatureNoteValue);
+        setAccents(activeSong.accents);
+    }
 
     return (
         <div className="metronome">
             <MetronomeAudio
                 started={started}
-                bpm={props.ctx.settings.bpm}
-                timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
-                accents={[2, 1]} // TODO
+                bpm={bpm}
+                timeSignatureBeats={timeSignatureBeats}
+                accents={accents}
                 onActiveBeatIdxChange={setActiveBeatIdx}
             />
 
             <BeatBar
-                timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
-                accentBeatIndices={props.ctx.settings.accentBeatIndices}
+                timeSignatureBeats={timeSignatureBeats}
+                accents={accents}
                 activeBeatIdx={activeBeatIdx}
             />
 
             <SongControls
-                setlistId={props.ctx.settings.setlistId}
-                activeSetlistIdx={props.ctx.settings.activeSetlistIdx}
-                timeSignatureBeats={props.ctx.settings.timeSignatureBeats}
-                timeSignatureNoteValue={props.ctx.settings.timeSignatureNoteValue}
-                onSongSelect={props.onSongSelect}
-                onSetlistDeselect={props.onSetlistDeselect}
-                onSetlistButtonClick={props.onSetlistButtonClick}
-                onTimeSignatureClick={props.onTimeSignatureClick}
+                setlist={setlist}
+                activeSetlistIdx={activeSetlistIdx}
+                timeSignatureBeats={timeSignatureBeats}
+                timeSignatureNoteValue={timeSignatureNoteValue}
+                onSongSelect={idx => onSetlistAndSongSelect(setlist, idx)}
+                onSetlistDeselect={() => onSetlistAndSongSelect(null)}
+                onTimeSignatureClick={() => setEditTimeSignature(true)}
             />
 
             <PlayControls
-                started={props.ctx.state.started}
-                setlistId={props.ctx.settings.setlistId}
-                activeSetlistIdx={props.ctx.settings.activeSetlistIdx}
-                bpm={props.ctx.settings.bpm}
-                onBpmChange={props.onBpmChange}
+                started={started}
+                setlist={setlist}
+                activeSetlistIdx={activeSetlistIdx}
+                bpm={bpm}
+                onBpmChange={setBpm}
                 onPlay={() => setStarted(!started)}
-                onSongSelect={props.onSongSelect}
+                onSongSelect={idx => onSetlistAndSongSelect(setlist, idx)}
             />
+
+            <TimeSignatureModal
+                show={editTimeSignature}
+                onHide={() => setEditTimeSignature(false)}
+                timeSignatureBeats={timeSignatureBeats}
+                onTimeSignatureBeatsChange={setTimeSignatureBeats}
+                timeSignatureNoteValue={timeSignatureNoteValue}
+                onTimeSignatureNoteValueChange={setTimeSignatureNoteValue}
+            />
+
         </div>
     );
 }

@@ -4,20 +4,8 @@ import {faStepBackward, faStepForward} from "@fortawesome/free-solid-svg-icons";
 import PlayButton from "./PlayButton";
 import {getLabels} from "../../tempo";
 import BpmKnob from "../BpmKnob";
-import {useState} from "react";
-import songRepository from "../../lib/songRepository";
-import LoadingIndicator from "../LoadingIndicator";
 
-function PlayControls({started, setlistId, activeSetlistIdx, bpm, onBpmChange, onPlay, onSongSelect}) {
-    const [setlist, setSetlist] = useState(null);
-
-    if (setlistId && setlist === null) {
-        songRepository.getSetlist(setlistId).then(setSetlist);
-        return (
-            <LoadingIndicator />
-        );
-    }
-
+function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onPlay, onSongSelect}) {
     const onPreviousClick = () => {
         if (setlist) {
             const newIdx = activeSetlistIdx - 1;

@@ -2,13 +2,14 @@ import {allSongs, allSetlists} from "./songRepository.testFixtures";
 
 const songRepository = {
     getSongs: async () => allSongs,
-    getSong: async id => slowFindById(allSongs, id),
+    getSong: async id => findById(allSongs, id),
     saveSong: async song => save(allSongs, song),
     getSetlists: async () => Promise.all(allSetlists.map(setlistWithSongs)),
     getSetlist: async id => setlistWithSongs(findById(allSetlists, id)),
     getSetlistsWithSong: async songId => getSetlistsWithSong(songId),
     addSongToSetlist: async (setlistId, songId) => addSongToSetlist(setlistId, songId),
-    removeSongFromSetlist: async (setlistId, songId) => removeSongFromSetlist(setlistId, songId)
+    removeSongFromSetlist: async (setlistId, songId) => removeSongFromSetlist(setlistId, songId),
+    saveSetlist: async setlist => save(allSetlists, setlist)
 }
 
 const info = function() {
