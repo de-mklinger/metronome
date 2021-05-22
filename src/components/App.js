@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {HashRouter as Router, Route, Switch} from "react-router-dom";
 import Metronome from "./metronome/Metronome";
 import SongEditorContainer from "./song/SongEditorContainer";
 import {useEffect, useState} from "react";
