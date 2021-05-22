@@ -2,10 +2,16 @@ import silenceWav from './sounds/silence.wav';
 
 export { playSample, playSilence, getAudioBuffer }
 
-// Fix iOS Audio Context:
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioContext = null;
 
-const audioContext = new window.AudioContext();
+const getAudioContext = () => {
+    if (audioContext === null) {
+        // Fix iOS Audio Context:
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+    }
+    return audioContext;
+}
 
 let silenceAudioBuffer = null;
 getAudioBuffer(silenceWav).then(buf => silenceAudioBuffer = buf);
@@ -13,9 +19,9 @@ getAudioBuffer(silenceWav).then(buf => silenceAudioBuffer = buf);
 //const silenceAudioBuffer = audioContext.createBuffer(2, 1000, 44100);
 
 const fixAudioContext = function () {
-    if (audioContext.state !== 'running') {
+    if (getAudioContext().state !== 'running') {
         console.log("Resume Audio Context")
-        audioContext.resume().then(() => playSilence());
+        getAudioContext().resume().then(() => playSilence());
     }
 };
 document.addEventListener('touchstart', fixAudioContext);
@@ -31,10 +37,10 @@ function playSilence() {
 }
 
 function playSample(audioBuffer, whenOffsetSeconds = 0) {
-    const sampleSource = audioContext.createBufferSource();
+    const sampleSource = getAudioContext().createBufferSource();
     sampleSource.buffer = audioBuffer;
-    sampleSource.connect(audioContext.destination)
-    sampleSource.start(whenOffsetSeconds + audioContext.currentTime);
+    sampleSource.connect(getAudioContext().destination)
+    sampleSource.start(whenOffsetSeconds + getAudioContext().currentTime);
     return sampleSource;
 }
 
@@ -43,11 +49,11 @@ async function getAudioBuffer(filepath) {
     const arrayBuffer = await response.arrayBuffer();
 
     // Modern API:
-    // return await audioContext.decodeAudioData(arrayBuffer, (x) => alert(x), () => alert("error"));
+    // return await getAudioContext().decodeAudioData(arrayBuffer, (x) => alert(x), () => alert("error"));
 
     // IOS Safari:
     return new Promise((resolve, reject) => {
-        audioContext.decodeAudioData(
+        getAudioContext().decodeAudioData(
             arrayBuffer,
             (x) => resolve(x),
             (x) => reject(x));
