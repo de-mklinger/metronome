@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStepBackward, faStepForward} from "@fortawesome/free-solid-svg-icons";
 import PlayButton from "./PlayButton";
-import {getLabels} from "../../tempo";
+import {getLabels} from "../../lib/tempo";
 import BpmKnob from "../BpmKnob";
 
 function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onPlay, onSongSelect}) {

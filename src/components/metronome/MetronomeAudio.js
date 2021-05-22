@@ -1,7 +1,7 @@
 import React, {useRef} from "react";
 import {ctx} from "../../index.testFixtures";
 import {earlyPlayThresholdMillis, missMillisThreshold} from "../../lib/env";
-import {playSample} from "../../audio";
+import {playSample} from "../../lib/audio";
 
 const useAnimationFrame = (callback, started, deps) => {
     // Use useRef for mutable variables that we want to persist

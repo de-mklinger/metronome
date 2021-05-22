@@ -1,4 +1,4 @@
-import silenceWav from './sounds/silence.wav';
+import silenceWav from '../sounds/silence.wav';
 
 export { playSample, playSilence, getAudioBuffer }
 
