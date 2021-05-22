@@ -3,35 +3,39 @@ import songRepository from "./songRepository";
 import {allSongs} from "./songRepository.testFixtures";
 
 test('provides song list', () => {
-  const songs = songRepository.getSongs();
-  expect(songs).toBeTruthy();
-  expect(songs[0].title).toBe(allSongs[0].title);
+    return songRepository.getSongs().then(songs => {
+        expect(songs).toBeTruthy();
+        expect(songs[0].title).toBe(allSongs[0].title);
+    });
 });
 
 test('has existing song', () => {
-  const song = songRepository.getSong('wuff');
-  expect(song).toBeTruthy();
-  expect(song.title).toBe('Wuff');
+    return songRepository.getSong('wuff').then(song => {
+        expect(song).toBeTruthy();
+        expect(song.title).toBe('Wuff');
+    });
 });
 
 test('throws error for non-existing song', () => {
-  expect(() => songRepository.getSong('doesnotexist'))
-      .toThrowError();
+    return expect(songRepository.getSong('doesnotexist'))
+        .rejects.toBeTruthy();
 });
 
 test('provides setlist list', () => {
-  const setlists = songRepository.getSetlists();
-  expect(setlists).toBeTruthy();
-  expect(setlists[0].title).toBe('Jimi Satans Schuhshop');
+    return songRepository.getSetlists().then(setlists => {
+        expect(setlists).toBeTruthy();
+        expect(setlists[0].title).toBe('Jimi Satans Schuhshop');
+    });
 });
 
 test('has setlist', () => {
-  const setlist = songRepository.getSetlist('setlist1')
-  expect(setlist).toBeTruthy();
-  expect(setlist.title).toBe('Jimi Satans Schuhshop');
+    return songRepository.getSetlist('setlist1').then(setlist => {
+        expect(setlist).toBeTruthy();
+        expect(setlist.title).toBe('Jimi Satans Schuhshop');
+    });
 });
 
 test('throws error for non-existing setlist', () => {
-  expect(() => songRepository.getSetlist('doesnotexist'))
-      .toThrowError();
+    return expect(songRepository.getSetlist('doesnotexist'))
+        .rejects.toBeTruthy();
 });
