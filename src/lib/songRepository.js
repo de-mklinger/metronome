@@ -38,11 +38,11 @@ const removeSongFromSetlist = async (setlistId, songId) => {
 
 const containsSong = (setlist, songId) => setlist.songIds.find(setlistSongId => setlistSongId === songId) !== null
 
-const slowFindById = async (haystack, id) => {
-    return new Promise(resolve => {
-        setTimeout(() => resolve(findById(haystack, id)), 500);
-    });
-}
+// const slowFindById = async (haystack, id) => {
+//     return new Promise(resolve => {
+//         setTimeout(() => resolve(findById(haystack, id)), 500);
+//     });
+// }
 
 const findById = (haystack, id) => {
     info("Repository: findById", id);
