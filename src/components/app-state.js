@@ -41,21 +41,23 @@ const appStateReducer = (appState, action) => {
             if (appState.setlist && appState.setlist.id === newSetlist.id && appState.setlist.songs.length > appState.activeSetlistIdx) {
                 newActiveSetlistIdx = appState.activeSetlistIdx;
             }
-            return Object.assign({}, appState, {
+            return extend(appState, {
                 setlist: newSetlist,
                 activeSetlistIdx: newActiveSetlistIdx,
                 song: getActiveSong(newSetlist, newActiveSetlistIdx)
             });
         } else {
-            return Object.assign({}, appState, {
+            const currentSong = extend(appState.song, {id: null, title: null});
+            return extend(appState, {
                 setlist: null,
-                activeSetlistIdx: newActiveSetlistIdx
+                activeSetlistIdx: newActiveSetlistIdx,
+                song: currentSong
             });
         }
     }
 
     function withActiveSetlistIdx(activeSetlistIdx) {
-        return Object.assign({}, appState, {
+        return extend(appState, {
             activeSetlistIdx: action.payload,
             song: getActiveSong(appState.setlist, activeSetlistIdx)
         });
