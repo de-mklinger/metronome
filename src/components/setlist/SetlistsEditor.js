@@ -4,7 +4,7 @@ import songRepository from "../../lib/songRepository";
 import {Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 
-function SetlistsEditor({activeSetlist, onSetlistSelect}) {
+function SetlistsEditor({appState, appStateDispatch}) {
     const [setlists, setSetlists] = useState(null);
     const [redirect, setRedirect] = useState(false);
 
@@ -27,7 +27,7 @@ function SetlistsEditor({activeSetlist, onSetlistSelect}) {
                 <ul>
                     {setlists.map(setlist =>
                         <li key={setlist.id}
-                            className={activeSetlist && activeSetlist.id === setlist.id ? "active": ""}>
+                            className={appState.setlist && appState.setlist.id === setlist.id ? "active": ""}>
                             <div>
                                 <div>
                                     {setlist.title}
@@ -42,7 +42,7 @@ function SetlistsEditor({activeSetlist, onSetlistSelect}) {
                                     Edit
                                 </Link>
                                 <button className="btn btn-primary" onClick={() => {
-                                    onSetlistSelect(setlist);
+                                    appStateDispatch({type: "setSetlist", payload: setlist})
                                     setRedirect(true);
                                 }}>
                                     Select

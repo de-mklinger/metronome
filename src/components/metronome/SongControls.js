@@ -1,24 +1,28 @@
 import Setlist from "./Setlist";
-import SongSettings from "./SongSettings";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
 
-function SongControls({setlist, activeSetlistIdx, timeSignatureBeats, timeSignatureNoteValue,
-                          onSongSelect, onSetlistDeselect, onTimeSignatureClick}) {
-    if (setlist) {
+function SongControls({appState, appStateDispatch}) {
+    if (appState.setlist) {
         return (
             <Setlist
-                setlist={setlist}
-                activeSetlistIdx={activeSetlistIdx}
-                onSongSelect={onSongSelect}
-                onSetlistDeselect={onSetlistDeselect}
+                setlist={appState.setlist}
+                activeSetlistIdx={appState.activeSetlistIdx}
+                onSongSelect={idx => appStateDispatch({type: "setActiveSetlistIdx", payload: idx})}
+                onSetlistDeselect={() => appStateDispatch({type: "setSetlist", payload: null})}
             />
         );
     } else {
         return (
-            <SongSettings
-                timeSignatureBeats={timeSignatureBeats}
-                timeSignatureNoteValue={timeSignatureNoteValue}
-                onTimeSignatureClick={onTimeSignatureClick}
-            />
+            <div className="song-settings">
+                <Link className="btn btn-primary" to={"/setlists"}>
+                    <FontAwesomeIcon icon={faListOl}/>
+                </Link>
+                <Link className="btn btn-primary" to={"/currentsong"}>
+                    <FontAwesomeIcon icon={faEllipsisV}/>
+                </Link>
+            </div>
         );
     }
 }

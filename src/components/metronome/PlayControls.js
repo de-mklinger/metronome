@@ -5,10 +5,13 @@ import PlayButton from "./PlayButton";
 import {getLabels} from "../../lib/tempo";
 import BpmKnob from "../BpmKnob";
 
-function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onPlay, onSongSelect}) {
+function PlayControls({started, appState, appStateDispatch, onPlay}) {
+    const onBpmChange = bpm => appStateDispatch({type: "setBpm", payload: bpm});
+    const onSongSelect = idx => appStateDispatch({type: "setActiveSetlistIdx", payload: idx});
+
     const onPreviousClick = () => {
-        if (setlist) {
-            const newIdx = activeSetlistIdx - 1;
+        if (appState.setlist) {
+            const newIdx = appState.activeSetlistIdx - 1;
             if (newIdx >= 0) {
                 onSongSelect(newIdx);
             }
@@ -16,9 +19,9 @@ function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onP
     }
 
     const onNextClick = () => {
-        if (setlist) {
-            const newIdx = activeSetlistIdx + 1;
-            if (newIdx < setlist.songs.length) {
+        if (appState.setlist) {
+            const newIdx = appState.activeSetlistIdx + 1;
+            if (newIdx < appState.setlist.songs.length) {
                 onSongSelect(newIdx);
             }
         }
@@ -27,7 +30,7 @@ function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onP
     return (
         <div className="play-controls">
             <div>
-                {setlist
+                {appState.setlist
                     ?
                     <Button onClick={onPreviousClick}>
                         <FontAwesomeIcon icon={faStepBackward}/>
@@ -41,20 +44,20 @@ function PlayControls({started, setlist, activeSetlistIdx, bpm, onBpmChange, onP
             </div>
             <div className="speed">
                 <div id="current-bpm-label">
-                    {getLabels(bpm).join(", ")}
+                    {getLabels(appState.song.bpm).join(", ")}
                 </div>
                 <div id="current-bpm">
-                    {bpm} BPM
+                    {appState.song.bpm} BPM
                 </div>
 
                 <BpmKnob
-                    key={activeSetlistIdx} // Force applying rotation if new song was selected. Does not work when selecting song, changing bpm and selecting same song again :(
-                    bpm={bpm}
+                    key={appState.activeSetlistIdx} // Force applying rotation if new song was selected. Does not work when selecting song, changing bpm and selecting same song again :(
+                    bpm={appState.song.bpm}
                     onBpmChange={onBpmChange}
                 />
             </div>
             <div>
-                {setlist
+                {appState.setlist
                     ?
                     <Button onClick={onNextClick}>
                         <FontAwesomeIcon icon={faStepForward}/>

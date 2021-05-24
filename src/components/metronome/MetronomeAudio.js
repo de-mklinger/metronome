@@ -72,13 +72,13 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
     }
 };
 
-function MetronomeAudio({started, bpm, timeSignatureBeats, accents, onActiveBeatIdxChange}) {
+function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
     const tickCtx = useRef({});
     tickCtx.current = {
         started: started,
-        bpm: bpm,
-        timeSignatureBeats: timeSignatureBeats,
-        accents: accents,
+        bpm: song.bpm,
+        timeSignatureBeats: song.timeSignatureBeats,
+        accents: song.accents,
         onActiveBeatIdxChange: onActiveBeatIdxChange
     }
 

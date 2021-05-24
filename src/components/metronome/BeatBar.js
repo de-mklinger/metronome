@@ -1,10 +1,10 @@
 import Beat from "./Beat";
 
-function BeatBar({timeSignatureBeats, accents, activeBeatIdx}) {
+function BeatBar({song, activeBeatIdx}) {
     let beats = [];
 
-    for (let idx = 0; idx < timeSignatureBeats; idx++) {
-        let isAccent = accents.length > idx && accents[idx] > 1; // TODO
+    for (let idx = 0; idx < song.timeSignatureBeats; idx++) {
+        let isAccent = song.accents.length > idx && song.accents[idx] > 1; // TODO
 
         beats.push(
             <Beat
