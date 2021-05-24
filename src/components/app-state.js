@@ -7,19 +7,25 @@ const initialAppState = {
     activeSetlistIdx: 0
 }
 
-const appStateReducer = (appState, action) => {
-    console.log("app state action:", action);
+const useAppState = () => useReducer(appStateReducer, initialAppState);
+export default useAppState;
 
-    function getActiveSong(setlist, activeSetlistIdx) {
-        if (setlist && setlist.songs.length > activeSetlistIdx) {
-            return setlist.songs[activeSetlistIdx];
-        } else {
-            return defaultSong;
-        }
-    }
+const extend = (src, ext) => Object.assign({}, src, ext)
 
-    function extend(src, ext) {
-        return Object.assign({}, src, ext);
+function appStateReducer(appState, action) {
+    // console.log("app state action:", action);
+
+    switch (action.type) {
+        case 'setSong':
+            return withSong(action.payload);
+        case 'setBpm':
+            return withBpm(action.payload);
+        case 'setSetlist':
+            return withSetlist(action.payload);
+        case 'setActiveSetlistIdx':
+            return withActiveSetlistIdx(action.payload);
+        default:
+            throw new Error();
     }
 
     function withSong(newSong) {
@@ -47,11 +53,20 @@ const appStateReducer = (appState, action) => {
                 song: getActiveSong(newSetlist, newActiveSetlistIdx)
             });
         } else {
-            const currentSong = extend(appState.song, {id: null, title: null});
+            // detach song:
             return extend(appState, {
                 setlist: null,
                 activeSetlistIdx: newActiveSetlistIdx,
-                song: currentSong
+                song: detachSong()
+            });
+        }
+
+        function detachSong() {
+            return extend(appState.song, {
+                id: null,
+                title: null,
+                setlists: null,
+                setlistIds: null
             });
         }
     }
@@ -63,20 +78,11 @@ const appStateReducer = (appState, action) => {
         });
     }
 
-    switch (action.type) {
-        case 'setSong':
-            return withSong(action.payload);
-        case 'setBpm':
-            return withBpm(action.payload);
-        case 'setSetlist':
-            return withSetlist(action.payload);
-        case 'setActiveSetlistIdx':
-            return withActiveSetlistIdx(action.payload);
-        default:
-            throw new Error();
+    function getActiveSong(setlist, activeSetlistIdx) {
+        if (setlist && setlist.songs.length > activeSetlistIdx) {
+            return setlist.songs[activeSetlistIdx];
+        } else {
+            return defaultSong;
+        }
     }
 }
-
-const useAppState = () => useReducer(appStateReducer, initialAppState);
-
-export default useAppState;
