@@ -1,13 +1,6 @@
 @import "variables";
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-body {
-  // No scrolling:
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-}
-
 svg {
   fill: currentColor;
 }
@@ -20,17 +13,7 @@ svg {
   margin: $box-shadow-size;
 }
 
-.metronome {
-  @extend .container;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-@import "beat-bar";
-@import "play-controls";
-@import "song-controls";
-
+@import "metronome-screen";
 @import "song-editor-screen";
 @import "setlists-editor-screen";
 @import "setlist-editor-screen";

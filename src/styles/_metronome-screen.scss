@@ -1,0 +1,13 @@
+.metronome {
+  @extend .container;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  //overflow: hidden;
+  max-width: 100%;
+}
+
+@import "beat-bar";
+@import "play-controls";
+@import "song-controls";
