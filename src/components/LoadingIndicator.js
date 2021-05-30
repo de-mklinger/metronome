@@ -1,5 +1,5 @@
 function LoadingIndicator() {
-    return <>Loading...</>
+    return <div>Loading...</div>
 }
 
 export default LoadingIndicator;

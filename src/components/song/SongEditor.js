@@ -1,7 +1,7 @@
 import {Link, Redirect} from "react-router-dom";
 import songRepository from "../../lib/songRepository";
 import {Button, Col, Container, Row} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import LoadingIndicator from "../LoadingIndicator";
 import BpmKnob from "../BpmKnob";
 import Accents from "./Accents";
@@ -16,21 +16,29 @@ function SongEditor({song, onSongChange}) {
     const [subDivisions, setSubDivisions] = useState(song.subDivisions);
     const [accents, setAccents] = useState(song.accents);
     const [submitted, setSubmitted] = useState(false);
+    const [loadingSetlists, setLoadingSetlists] = useState(false);
 
     const [setlists, setSetlists] = useState(null);
     const [originalSetlistIds, setOriginalSetlistIds] = useState([]);
 
+    useEffect(
+        () => {
+            if (song.id && setlists === null && !loadingSetlists && !submitted) {
+                songRepository.getSetlistsWithSong(song.id)
+                    .then(setlists => {
+                        setSetlists(setlists);
+                        setOriginalSetlistIds(setlists.map(setlist => setlist.id));
+                        setLoadingSetlists(false);
+                    });
+                setLoadingSetlists(true);
+            }
+
+        },
+        [song.id, setlists, loadingSetlists, submitted]
+    );
+
     if (submitted) {
         return <Redirect to="/"/>
-    }
-
-    if (setlists === null) {
-        songRepository.getSetlistsWithSong(song.id)
-            .then(setlists => {
-                setOriginalSetlistIds(setlists.map(setlist => setlist.id));
-                setSetlists(setlists);
-            });
-        return <LoadingIndicator/>
     }
 
     const showSaveAsNew = title !== song.title;
@@ -122,13 +130,18 @@ function SongEditor({song, onSongChange}) {
                 </div>
 
                 {
-                    setlists && setlists.length > 0 &&
+                    (loadingSetlists || (setlists && setlists.length > 0)) &&
                     <div className="form-group">
                         <label>Setlists</label>
-                        <Setlists
-                            setlists={setlists}
-                            onSetlistsChange={setSetlists}
-                        />
+                        { loadingSetlists
+                            ?
+                            <LoadingIndicator />
+                            :
+                            <Setlists
+                                setlists={setlists}
+                                onSetlistsChange={setSetlists}
+                            />
+                        }
                     </div>
                 }
 
