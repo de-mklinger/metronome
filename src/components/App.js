@@ -7,7 +7,7 @@ import SetlistEditorContainer from "./setlist/SetlistEditorContainer";
 import LoadingIndicator from "./LoadingIndicator";
 import songRepository from "../lib/songRepository";
 import useAppState from "./app-state";
-import SongEditor from "./song/SongEditor";
+import CurrentSongEditor from "./song/CurrentSongEditor";
 
 
 function App() {
@@ -31,6 +31,8 @@ function App() {
     }
 
     const onSetlistChange = changedSetlist => {
+        // TODO reload setlist
+        console.log("changed setlist:", changedSetlist);
         if (appState.setlist && appState.setlist.id === changedSetlist) {
             appStateDispatch({type: "setSetlist", payload: changedSetlist});
         }
@@ -46,13 +48,15 @@ function App() {
         <Router>
             <Switch>
                 <Route path="/currentsong">
-                    <SongEditor
-                        song={appState.song}
+                    <CurrentSongEditor
+                        appState={appState}
+                        appStateDispatch={appStateDispatch}
                     />
                 </Route>
                 <Route path="/songs/:id">
                     <SongEditorContainer
                         onSongChange={onSongChange}
+                        onSetlistChange={onSetlistChange}
                     />
                 </Route>
                 <Route path="/setlists/:id">

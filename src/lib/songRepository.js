@@ -27,6 +27,8 @@ const addSongToSetlist = async (setlistId, songId) => {
 
     const setlist = findById(allSetlists, setlistId);
     setlist.songIds.push(songId);
+
+    return setlist;
 }
 
 const removeSongFromSetlist = async (setlistId, songId) => {
@@ -34,6 +36,8 @@ const removeSongFromSetlist = async (setlistId, songId) => {
     
     const setlist = findById(allSetlists, setlistId);
     setlist.songIds = setlist.songIds.filter(setlistSongId => setlistSongId !== songId);
+
+    return setlist;
 }
 
 const containsSong = (setlist, songId) => setlist.songIds.find(setlistSongId => setlistSongId === songId) !== null

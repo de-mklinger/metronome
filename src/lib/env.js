@@ -20,6 +20,7 @@ const missMillisThreshold = envNumber("MISS_MILLIS_THRESHOLD", 100);
 
 const defaultSong = {
     bpm: defaultBpm,
+    title: "",
     timeSignatureBeats: 4,
     timeSignatureNoteValue: 4,
     subDivisions: 1,

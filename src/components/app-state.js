@@ -13,7 +13,7 @@ export default useAppState;
 const extend = (src, ext) => Object.assign({}, src, ext)
 
 function appStateReducer(appState, action) {
-    // console.log("app state action:", action);
+    //console.log("app state action:", action);
 
     switch (action.type) {
         case 'setSong':
@@ -64,7 +64,7 @@ function appStateReducer(appState, action) {
         function detachSong() {
             return extend(appState.song, {
                 id: null,
-                title: null,
+                title: "",
                 setlists: null,
                 setlistIds: null
             });
