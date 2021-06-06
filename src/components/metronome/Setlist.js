@@ -58,7 +58,7 @@ function SetlistEntry({song, idx, active, onSongSelect}) {
             </div>
             <div className="settings">
                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
-                <Link className="px-2" to={"/songs/" + encodeURIComponent(song.id)}>
+                <Link className="px-2" to={"/songs/" + encodeURIComponent(song.id)} onClick={e => e.stopPropagation()}>
                     <FontAwesomeIcon icon={faEllipsisV}/>
                 </Link>
             </div>
