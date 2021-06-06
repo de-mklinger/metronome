@@ -16,12 +16,14 @@ $close-text-shadow: none;
 $link-color: $body-color;
 $link-hover-color: $link-color;
 
-$input-color: lighten($body-color, 20%);
-$input-bg: lighten($body-bg, 20%);
+$input-color: $body-color; //lighten($body-color, 20%);
+$input-bg: $primary; //lighten($body-bg, 20%);
 $input-border-color: darken($body-bg, 20%);
 $input-focus-border-color: lighten($input-bg, 20%);
 
 $input-placeholder-color: darken($body-color, 5%);
+
+$secondary: $body-bg;
 
 // --- custom variables ---
 

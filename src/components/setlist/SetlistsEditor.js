@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import LoadingIndicator from "../LoadingIndicator";
 import songRepository from "../../lib/songRepository";
-import {Container} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 
 function SetlistsEditor({appState, appStateDispatch}) {
     const [setlists, setSetlists] = useState(null);
     const [redirect, setRedirect] = useState(false);
+    const [newSetlist, setNewSetlist] = useState(false);
 
     useEffect(() => {
         songRepository.getSetlists().then(setSetlists);
@@ -20,10 +21,16 @@ function SetlistsEditor({appState, appStateDispatch}) {
         return <LoadingIndicator />;
     }
 
+    if (newSetlist) {
+        return (
+            <>TODO</>
+        );
+    }
+
     return (
         <Container className="setlists-editor-screen">
             <h1>Setlists</h1>
-            <div className="setlists">
+            <div className="setlists form-group">
                 <ul>
                     {setlists.map(setlist =>
                         <li key={setlist.id}
@@ -37,23 +44,33 @@ function SetlistsEditor({appState, appStateDispatch}) {
                                 </div>
                             </div>
                             <div>
-                                <Link className="btn btn-primary"
+                                <Link className="btn btn-secondary"
                                     to={"/setlists/" + encodeURIComponent(setlist.id)}>
                                     Edit
                                 </Link>
-                                <button className="btn btn-primary" onClick={() => {
+                                <Button variant="secondary" onClick={() => {
                                     appStateDispatch({type: "setSetlist", payload: setlist})
                                     setRedirect(true);
                                 }}>
                                     Select
-                                </button>
+                                </Button>
                             </div>
                         </li>
                     )}
                 </ul>
             </div>
 
-            <Link to="/" className="btn btn-link">Cancel</Link>
+            <div className="form-group">
+                <Button variant="secondary" onClick={() => setNewSetlist(true)}>
+                    New Setlist...
+                </Button>
+            </div>
+
+            <div className="form-group">
+                <Link to="/" className="btn btn-link">
+                    Cancel
+                </Link>
+            </div>
         </Container>
     );
 }

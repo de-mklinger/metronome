@@ -26,11 +26,17 @@ function CurrentSongEditor({appState, appStateDispatch}) {
                 onChange={setSongState}
             />
 
-            <Button className="btn-primary" onClick={apply}>
-                Ok
-            </Button>
+            <div className="form-group">
+                <Button className="btn-primary" onClick={apply}>
+                    Ok
+                </Button>
 
-            <Link to="/" className="btn btn-link">Cancel</Link>
+                <Button className="btn-secondary" onClick={apply} disabled={!songState.title}>
+                    Save as new
+                </Button>
+
+                <Link to="/" className="btn btn-link">Cancel</Link>
+            </div>
         </Container>
     )
 }

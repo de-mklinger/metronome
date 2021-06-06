@@ -1,3 +1,5 @@
+import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
+
 function SelectSong({songs, onSelect}) {
     return (
         <div className="songs">
@@ -5,7 +7,12 @@ function SelectSong({songs, onSelect}) {
                 {songs.map(song =>
                     <li key={song.id}>
                         <div className="title">
-                            {song.title}
+                            <div>
+                                {song.title}
+                            </div>
+                            <div>
+                                {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
+                            </div>
                         </div>
                         <div className="actions">
                             <button className="btn btn-primary" onClick={() => onSelect(song)}>

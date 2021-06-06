@@ -1,0 +1,42 @@
+.list-lg {
+
+  border: 1px solid black;
+  border-radius: 0.5rem;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 0.2rem 0.2rem 0.2rem 0.8rem;
+
+      &:not(:first-child) {
+        border-top: 1px solid black;
+      }
+
+      &.active {
+        color: $active-color;
+        font-weight: $active-font-weight;
+      }
+
+      .title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+      }
+
+      .actions {
+        //margin-left: 0.5rem;
+        //font-size: 75%;
+        white-space: nowrap;
+      }
+    }
+  }
+
+}

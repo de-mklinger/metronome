@@ -12,16 +12,20 @@ function SetlistEditorContainer({onSetlistChange}) {
     id = decodeURIComponent(id); // TODO no way to automatically decode??
 
     const [setlist, setSetlist] = useState(null);
+    const [originalSetlist, setOriginalSetlist] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [selectSong, setSelectSong] = useState(false);
     const [addNewSong, setAddNewSong] = useState(false);
 
     useEffect(() => {
         setSetlist(null);
-        songRepository.getSetlist(id).then(setSetlist);
+        songRepository.getSetlist(id).then(setlist => {
+            setSetlist(setlist);
+            setOriginalSetlist(setlist)
+        });
     }, [id])
 
-    if (setlist === null) {
+    if (setlist === null || originalSetlist === null) {
         return <LoadingIndicator/>
     }
 
@@ -93,12 +97,13 @@ function SetlistEditorContainer({onSetlistChange}) {
             </div>
 
             <div className="form-group">
-                <Button className="btn-primary" onClick={save}>Save</Button>
+                <Button className="btn-primary" onClick={save} disabled={!setlist.title}>
+                    Save
+                </Button>
 
-                {/*{*/}
-                {/*    showSaveAsNew &&*/}
-                <Button className="btn-secondary" onClick={saveAsNew}>Save as new</Button>
-                {/*}*/}
+                <Button className="btn-secondary" onClick={saveAsNew} disabled={!setlist.title || setlist.title === originalSetlist.title}>
+                    Save as new
+                </Button>
 
                 <Link to="/setlists" className="btn btn-link">Cancel</Link>
             </div>

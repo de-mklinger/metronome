@@ -1,5 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleUp, faAngleDown, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {Button} from "react-bootstrap";
 
 function Songs({songs, onSongsChange}) {
     const removeSongIdx = idx => {
@@ -36,16 +37,24 @@ function Songs({songs, onSongsChange}) {
                         <span className="title">
                             {song.title}
                         </span>
-                        <span className="settings">
-                            <span className={"px-2" + (idx === 0 ? " invisible" : "")}>
-                                <FontAwesomeIcon icon={faAngleUp} onClick={() => up(idx)}/>
-                            </span>
-                            <span className={"px-2" + (idx === songs.length - 1 ? " invisible" : "")}>
-                                <FontAwesomeIcon icon={faAngleDown} onClick={() => down(idx)}/>
-                            </span>
-                            <span className="px-2">
-                                <FontAwesomeIcon icon={faTimes} onClick={() => removeSongIdx(idx)}/>
-                            </span>
+                        <span className="actions">
+                            <Button
+                                variant="secondary"
+                                className={(idx === 0 ? " invisible" : "")}
+                                onClick={() => up(idx)}>
+                                <FontAwesomeIcon icon={faAngleUp} />
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                className={(idx === songs.length - 1 ? " invisible" : "")}
+                                onClick={() => down(idx)}>
+                                <FontAwesomeIcon icon={faAngleDown} />
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                onClick={() => removeSongIdx(idx)}>
+                                <FontAwesomeIcon icon={faTimes} />
+                            </Button>
                         </span>
                     </li>
                 )}

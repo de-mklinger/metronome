@@ -11,21 +11,26 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
     id = decodeURIComponent(id); // TODO no way to automatically decode??
 
     const [song, setSong] = useState(null);
+    const [originalSong, setOriginalSong] = useState(null);
     const [setlists, setSetlists] = useState(null);
     const [originalSetlists, setOriginalSetlists] = useState(null);
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
         setSong(null);
+        setOriginalSong(null);
         setSetlists(null);
-        songRepository.getSong(id).then(setSong);
+        songRepository.getSong(id).then(song => {
+            setSong(song);
+            setOriginalSong(song);
+        });
         songRepository.getSetlistsWithSong(id).then(setlists => {
             setSetlists(setlists);
             setOriginalSetlists(setlists);
         });
     }, [id])
 
-    if (song === null || setlists === null || originalSetlists === null) {
+    if (song === null || originalSong === null || setlists === null || originalSetlists === null) {
         return <LoadingIndicator />
     }
 
@@ -83,11 +88,11 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
             />
 
             <div className="form-group">
-                <Button className="btn-primary" onClick={save}>
+                <Button className="btn-primary" onClick={save} disabled={!song.title}>
                     Save
                 </Button>
 
-                <Button className="btn-secondary" onClick={saveAsNew}>
+                <Button className="btn-secondary" onClick={saveAsNew} disabled={!song.title || song.title.trim() === originalSong.title.trim()}>
                     Save as new
                 </Button>
 

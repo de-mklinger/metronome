@@ -5,14 +5,29 @@ svg {
   fill: currentColor;
 }
 
-.btn:not(.btn-link) {
+.btn {
   min-width: 4rem;
   min-height: 4rem;
   line-height: 3rem;
-  box-shadow: $dark-box-shadow;
+  &:not(.btn-link) {
+    box-shadow: $dark-box-shadow;
+  }
   margin: $box-shadow-size;
 }
 
+// reset focus and active colors and box-shadow
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value, $value, $value, $value, $value);
+
+    &:focus,
+    &.focus {
+      box-shadow: $dark-box-shadow;
+    }
+  }
+}
+
+@import "lists";
 @import "metronome-screen";
 @import "song-editor-screen";
 @import "setlists-editor-screen";
