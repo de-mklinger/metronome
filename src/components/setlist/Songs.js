@@ -32,7 +32,7 @@ function Songs({songs, onSongsChange}) {
         <div className="songs">
             <ul>
                 {songs.map((song, idx) =>
-                    <li key={song.id}>
+                    <li key={idx}>
                         <span className="title">
                             {song.title}
                         </span>

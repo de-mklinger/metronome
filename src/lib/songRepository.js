@@ -77,11 +77,11 @@ const findById = (haystack, id) => {
 const save = (haystack, object) => {
     info("Repository: save", object);
 
-    if (object.id === null) {
+    if (object.id) {
+        replace(haystack, object);
+    } else {
         object.id = newRandomId();
         haystack.push(object);
-    } else {
-        replace(haystack, object);
     }
     return object;
 }

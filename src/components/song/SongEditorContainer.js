@@ -82,17 +82,19 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
                 onChange={setSetlists}
             />
 
-            <Button className="btn-primary" onClick={save}>
-                Save
-            </Button>
+            <div className="form-group">
+                <Button className="btn-primary" onClick={save}>
+                    Save
+                </Button>
 
-            <Button className="btn-secondary" onClick={saveAsNew}>
-                Save as new
-            </Button>
+                <Button className="btn-secondary" onClick={saveAsNew}>
+                    Save as new
+                </Button>
 
-            <Link to="/" className="btn btn-link">
-                Cancel
-            </Link>
+                <Link to="/" className="btn btn-link">
+                    Cancel
+                </Link>
+            </div>
         </Container>
     );
 }
