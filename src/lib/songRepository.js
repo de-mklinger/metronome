@@ -17,9 +17,18 @@ const info = function() {
 }
 
 const getSetlistsWithSong = async songId => {
+    info("Repository: getSetlistsWithSong", songId);
+
+    info("Repository: all setlists:", allSetlists);
+
     return Promise.all(allSetlists
         .filter(setlist => containsSong(setlist, songId))
-        .map(setlistWithSongs));
+        .map(setlistWithSongs)
+        .map(setlist => {
+            info("Repository: getSetlistsWithSong found ", setlist);
+            return setlist;
+        })
+    );
 };
 
 const addSongToSetlist = async (setlistId, songId) => {
@@ -37,10 +46,15 @@ const removeSongFromSetlist = async (setlistId, songId) => {
     const setlist = findById(allSetlists, setlistId);
     setlist.songIds = setlist.songIds.filter(setlistSongId => setlistSongId !== songId);
 
+    info("Repository: removeSongFromSetlist after:", setlist);
+    info("Repository: all setlists:", allSetlists);
+
     return setlist;
 }
 
-const containsSong = (setlist, songId) => setlist.songIds.find(setlistSongId => setlistSongId === songId) !== null
+const containsSong = (setlist, songId) =>
+    setlist.songIds.findIndex(setlistSongId =>
+        setlistSongId === songId) !== -1;
 
 // const slowFindById = async (haystack, id) => {
 //     return new Promise(resolve => {

@@ -41,27 +41,15 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
             console.log("removed setlists: ", removedSetlists);
 
             return Promise.all(
-                removedSetlists.map(setlist => songRepository.removeSongFromSetlist(setlist.id, savedSong.id))
-            ).then(() => [savedSong, removedSetlists]);
+                removedSetlists.map(setlist =>
+                    songRepository.removeSongFromSetlist(setlist.id, savedSong.id))
+            ).then(savedSetlists => [savedSong, savedSetlists]);
 
-            // TODO
-            // return Promise.all(
-            //     originalSetlistIds
-            //         .map(originalSetlistId => {
-            //             if (!setlists.find(setlist => setlist.id === originalSetlistId)) {
-            //                 console.log("Remove from setlist: ", originalSetlistId);
-            //                 return songRepository.removeSongFromSetlist(originalSetlistId, savedSong.id)
-            //                     .then(onSetlistChange);
-            //             } else {
-            //                 return Promise.resolve();
-            //             }
-            //         })
-            //     ).then(() => savedSong);
         })
-        .then(([savedSong, removedSetlists]) => {
+        .then(([savedSong, savedSetlists]) => {
             setSubmitted(true);
             onSongChange(savedSong);
-            removedSetlists.forEach(onSetlistChange);
+            savedSetlists.forEach(onSetlistChange);
         });
 
     const saveAsNew = () => songRepository.saveSong({...song, id: null})
