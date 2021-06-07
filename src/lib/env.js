@@ -29,9 +29,16 @@ const defaultSong = {
     // created, updated, owner, tenant, ...
 }
 
+const defaultSetlist = {
+    title: "",
+    archived: false,
+    songIds: []
+}
+
 export {
     defaultBpm,
     defaultSong,
+    defaultSetlist,
     rotationFactor,
     minBpm,
     maxBpm,

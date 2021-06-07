@@ -5,6 +5,18 @@ svg {
   fill: currentColor;
 }
 
+.svg-inline {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
+
+.svg-inline.w-16 {
+  width: 1em;
+}
+
 .btn {
   min-width: 4rem;
   min-height: 4rem;

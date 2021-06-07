@@ -3,6 +3,7 @@ import LoadingIndicator from "../LoadingIndicator";
 import songRepository from "../../lib/songRepository";
 import {Button, Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
+import SetlistEditorContainer from "./SetlistEditorContainer";
 
 function SetlistsEditor({appState, appStateDispatch}) {
     const [setlists, setSetlists] = useState(null);
@@ -23,7 +24,13 @@ function SetlistsEditor({appState, appStateDispatch}) {
 
     if (newSetlist) {
         return (
-            <>TODO</>
+            <SetlistEditorContainer
+                onSetlistChange={setlist => {
+                    setSetlists([...setlists, setlist]);
+                    setNewSetlist(false);
+                }}
+                onCancel={() => setNewSetlist(false)}
+            />
         );
     }
 
@@ -35,15 +42,15 @@ function SetlistsEditor({appState, appStateDispatch}) {
                     {setlists.map(setlist =>
                         <li key={setlist.id}
                             className={appState.setlist && appState.setlist.id === setlist.id ? "active": ""}>
-                            <div>
-                                <div>
+                            <div className="title">
+                                <div className="title">
                                     {setlist.title}
                                 </div>
-                                <div>
+                                <div className="title">
                                     {setlist.songs.length} songs
                                 </div>
                             </div>
-                            <div>
+                            <div className="actions">
                                 <Link className="btn btn-secondary"
                                     to={"/setlists/" + encodeURIComponent(setlist.id)}>
                                     Edit

@@ -1,4 +1,3 @@
-import {Link, Redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import songRepository from "../../lib/songRepository";
 import LoadingIndicator from "../LoadingIndicator";
@@ -6,31 +5,33 @@ import SetlistEditor from "./SetlistEditor";
 import {Button, Container} from "react-bootstrap";
 import SelectSongContainer from "../song/SelectSongContainer";
 import NewSongEditorContainer from "./NewSongEditorContainer";
+import {defaultSetlist} from "../../lib/env";
 
-function SetlistEditorContainer({onSetlistChange}) {
-    let {id} = useParams();
-    id = decodeURIComponent(id); // TODO no way to automatically decode??
+function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
+    let newSetlist = false;
+    let initialSetlist = null;
+    if (!setlistId) {
+        newSetlist = true;
+        initialSetlist = defaultSetlist;
+    }
 
-    const [setlist, setSetlist] = useState(null);
-    const [originalSetlist, setOriginalSetlist] = useState(null);
-    const [submitted, setSubmitted] = useState(false);
+    const [setlist, setSetlist] = useState(initialSetlist);
+    const [originalSetlist, setOriginalSetlist] = useState(initialSetlist);
     const [selectSong, setSelectSong] = useState(false);
     const [addNewSong, setAddNewSong] = useState(false);
 
     useEffect(() => {
-        setSetlist(null);
-        songRepository.getSetlist(id).then(setlist => {
-            setSetlist(setlist);
-            setOriginalSetlist(setlist)
-        });
-    }, [id])
+        if (!newSetlist) {
+            setSetlist(null);
+            songRepository.getSetlist(setlistId).then(setlist => {
+                setSetlist(setlist);
+                setOriginalSetlist(setlist)
+            });
+        }
+    }, [setlistId, newSetlist])
 
     if (setlist === null || originalSetlist === null) {
         return <LoadingIndicator/>
-    }
-
-    if (submitted) {
-        return <Redirect to="/"/>
     }
 
     const addSong = song => {
@@ -38,8 +39,8 @@ function SetlistEditorContainer({onSetlistChange}) {
             console.log("Song selected:", song);
             setSetlist({
                 ...setlist,
-                songs: [...setlist.songs, song],
-                songIds: [...setlist.songIds, song.id]
+                songs: [...(setlist.songs || []), song],
+                songIds: [...(setlist.songIds || []), song.id]
             });
         }
     };
@@ -67,20 +68,16 @@ function SetlistEditorContainer({onSetlistChange}) {
     }
 
     const save = () => songRepository.saveSetlist(setlist)
-        .then(savedSetlist => {
-            setSubmitted(true);
-            onSetlistChange(savedSetlist);
-        });
+        .then(onSetlistChange);
 
     const saveAsNew = () => songRepository.saveSetlist({...setlist, id: null})
-        .then(savedSetlist => {
-            setSubmitted(true);
-            onSetlistChange(savedSetlist);
-        });
+        .then(onSetlistChange);
 
     return (
         <Container className="setlist-editor-screen">
-            <h1>Edit Setlist</h1>
+            <h1>
+                {newSetlist ? "New Setlist" : "Edit Setlist"}
+            </h1>
 
             <SetlistEditor
                 setlist={setlist}
@@ -88,24 +85,29 @@ function SetlistEditorContainer({onSetlistChange}) {
             />
 
             <div className="form-group">
-                <Button onClick={() => setSelectSong(true)}>
+                <Button variant="secondary" onClick={() => setSelectSong(true)}>
                     Add Song...
                 </Button>
-                <Button onClick={() => setAddNewSong(true)}>
+                <Button variant="secondary" onClick={() => setAddNewSong(true)}>
                     Add New Song...
                 </Button>
             </div>
 
             <div className="form-group">
-                <Button className="btn-primary" onClick={save} disabled={!setlist.title}>
+                <Button variant="primary" onClick={save} disabled={!setlist.title}>
                     Save
                 </Button>
 
-                <Button className="btn-secondary" onClick={saveAsNew} disabled={!setlist.title || setlist.title === originalSetlist.title}>
-                    Save as new
-                </Button>
+                {!newSetlist &&
+                    <Button variant="secondary" onClick={saveAsNew}
+                            disabled={!setlist.title || setlist.title === originalSetlist.title}>
+                        Save as new
+                    </Button>
+                }
 
-                <Link to="/setlists" className="btn btn-link">Cancel</Link>
+                <Button variant="link" onClick={onCancel}>
+                    Cancel
+                </Button>
             </div>
         </Container>
     );

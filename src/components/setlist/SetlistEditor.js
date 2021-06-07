@@ -1,4 +1,4 @@
-import Songs from "./Songs";
+import SetlistEditorSongs from "./SetlistEditorSongs";
 
 function SetlistEditor({setlist, onChange}) {
     const fireChange = (attributeName, attributeValue) => {
@@ -18,7 +18,7 @@ function SetlistEditor({setlist, onChange}) {
             <>
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
-                    <input type="text" className="form-control" id="title" placeholder="Enter song title"
+                    <input type="text" className="form-control" id="title" placeholder="Enter setlist title"
                            value={setlist.title}
                            onChange={e => fireChange("title", e.target.value)}
                     />
@@ -28,7 +28,7 @@ function SetlistEditor({setlist, onChange}) {
                     setlist.songs && setlist.songs.length > 0 &&
                     <div className="form-group">
                         <label>Songs</label>
-                        <Songs
+                        <SetlistEditorSongs
                             songs={setlist.songs}
                             onSongsChange={fireSongsChange}
                         />

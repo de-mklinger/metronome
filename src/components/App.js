@@ -3,11 +3,11 @@ import Metronome from "./metronome/Metronome";
 import SongEditorContainer from "./song/SongEditorContainer";
 import {useEffect, useState} from "react";
 import SetlistsEditor from "./setlist/SetlistsEditor";
-import SetlistEditorContainer from "./setlist/SetlistEditorContainer";
 import LoadingIndicator from "./LoadingIndicator";
 import songRepository from "../lib/songRepository";
 import useAppState from "./app-state";
 import CurrentSongEditor from "./song/CurrentSongEditor";
+import SetlistEditorRoute from "./setlist/SetlistEditorRoute";
 
 
 function App() {
@@ -60,7 +60,7 @@ function App() {
                     />
                 </Route>
                 <Route path="/setlists/:id">
-                    <SetlistEditorContainer
+                    <SetlistEditorRoute
                         onSetlistChange={onSetlistChange}
                     />
                 </Route>

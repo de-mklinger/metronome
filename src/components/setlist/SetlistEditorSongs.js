@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleUp, faAngleDown, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
 
-function Songs({songs, onSongsChange}) {
+function SetlistEditorSongs({songs, onSongsChange}) {
     const removeSongIdx = idx => {
         const newSongs = Array.from(songs);
         newSongs.splice(idx, 1);
@@ -34,28 +34,32 @@ function Songs({songs, onSongsChange}) {
             <ul>
                 {songs.map((song, idx) =>
                     <li key={idx}>
-                        <span className="title">
+                        <div className="title">
                             {song.title}
-                        </span>
-                        <span className="actions">
-                            <Button
-                                variant="secondary"
-                                className={(idx === 0 ? " invisible" : "")}
-                                onClick={() => up(idx)}>
-                                <FontAwesomeIcon icon={faAngleUp} />
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                className={(idx === songs.length - 1 ? " invisible" : "")}
-                                onClick={() => down(idx)}>
-                                <FontAwesomeIcon icon={faAngleDown} />
-                            </Button>
+                        </div>
+                        <div className="actions">
+                            {songs.length > 1 &&
+                                <>
+                                    <Button
+                                        variant="secondary"
+                                        className={(idx === 0 ? " invisible" : "")}
+                                        onClick={() => up(idx)}>
+                                        <FontAwesomeIcon icon={faAngleUp} />
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        className={(idx === songs.length - 1 ? " invisible" : "")}
+                                        onClick={() => down(idx)}>
+                                        <FontAwesomeIcon icon={faAngleDown} />
+                                    </Button>
+                                </>
+                            }
                             <Button
                                 variant="secondary"
                                 onClick={() => removeSongIdx(idx)}>
                                 <FontAwesomeIcon icon={faTimes} />
                             </Button>
-                        </span>
+                        </div>
                     </li>
                 )}
             </ul>
@@ -63,4 +67,4 @@ function Songs({songs, onSongsChange}) {
     );
 }
 
-export default Songs;
+export default SetlistEditorSongs;

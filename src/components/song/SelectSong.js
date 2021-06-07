@@ -7,10 +7,10 @@ function SelectSong({songs, onSelect}) {
                 {songs.map(song =>
                     <li key={song.id}>
                         <div className="title">
-                            <div>
+                            <div className="title">
                                 {song.title}
                             </div>
-                            <div>
+                            <div className="title">
                                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
                             </div>
                         </div>
