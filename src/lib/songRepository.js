@@ -5,7 +5,7 @@ const songRepository = {
     getSong: async id => findById(allSongs, id),
     saveSong: async song => save(allSongs, song),
     getSetlists: async () => Promise.all(allSetlists.map(setlistWithSongs)),
-    getSetlist: async id => setlistWithSongs(findById(allSetlists, id)),
+    getSetlist: async id => findById(allSetlists, id).then(setlistWithSongs),
     getSetlistsWithSong: async songId => getSetlistsWithSong(songId),
     addSongToSetlist: async (setlistId, songId) => addSongToSetlist(setlistId, songId),
     removeSongFromSetlist: async (setlistId, songId) => removeSongFromSetlist(setlistId, songId),
@@ -56,13 +56,13 @@ const containsSong = (setlist, songId) =>
     setlist.songIds.findIndex(setlistSongId =>
         setlistSongId === songId) !== -1;
 
-// const slowFindById = async (haystack, id) => {
-//     return new Promise(resolve => {
-//         setTimeout(() => resolve(findById(haystack, id)), 500);
-//     });
-// }
+const slowFindById = async (haystack, id) => {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(doFindById(haystack, id)), 1000);
+    });
+}
 
-const findById = (haystack, id) => {
+const doFindById = (haystack, id) => {
     info("Repository: findById", id);
 
     const found = haystack.find(item => item.id === id);
@@ -73,6 +73,9 @@ const findById = (haystack, id) => {
     // expression `haystack.find(..) ?? throw new Error(..)` not supported:
     // "Support for the experimental syntax 'throwExpressions' isn't currently enabled"
 }
+
+const findById = slowFindById;
+//const findById = doFindById;
 
 const save = (haystack, object) => {
     info("Repository: save", object);
