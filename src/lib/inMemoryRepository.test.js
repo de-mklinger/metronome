@@ -1,6 +1,9 @@
 import './songRepository';
-import inMemorySongRepository from "./inMemorySongRepository";
-import {allSongs} from "./inMemorySongRepository.testFixtures";
+import {allSongs} from "./inMemoryRepository.testFixtures";
+import newRepository from "./baseRepository";
+import inMemoryRepositoryImpl from "./inMemoryRepositoryImpl";
+
+const inMemorySongRepository = newRepository(inMemoryRepositoryImpl);
 
 test('provides song list', () => {
     return inMemorySongRepository.getSongs().then(songs => {

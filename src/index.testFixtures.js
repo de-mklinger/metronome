@@ -1,4 +1,4 @@
-import {jsssSetlist} from './lib/inMemorySongRepository.testFixtures'
+import {jsssSetlist} from './lib/inMemoryRepository.testFixtures'
 
 export const ctx = {
     // user settings
