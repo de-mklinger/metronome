@@ -13,6 +13,19 @@ const localStorageRepositoryImpl = {
 
     doSaveSetlists: async (setlists) => {
         window.localStorage.setItem("setlists", JSON.stringify(setlists));
+    },
+
+    doGetAppState: async () => {
+        let appStateJson = window.localStorage.getItem("appState");
+        if (!appStateJson) {
+            return null;
+        } else {
+            return JSON.parse(appStateJson);
+        }
+    },
+
+    doSaveAppState: async (appState) => {
+        window.localStorage.setItem("appState", JSON.stringify(appState));
     }
 }
 

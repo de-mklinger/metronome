@@ -1,4 +1,6 @@
-export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, doSaveSetlists}) {
+import {defaultAppState} from "../components/app-state";
+
+export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, doSaveSetlists, doGetAppState, doSaveAppState}) {
     return {
         getSongs: getSongs,
         getSong: getSong,
@@ -8,7 +10,9 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
         getSetlistsWithSong: getSetlistsWithSong,
         addSongToSetlist: addSongToSetlist,
         removeSongFromSetlist: removeSongFromSetlist,
-        saveSetlist: saveSetlist
+        saveSetlist: saveSetlist,
+        getAppState: getAppState,
+        saveAppState: saveAppState
     }
 
     async function getSongs() {
@@ -90,6 +94,46 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
         await doSaveSetlists(setlists.map(setlistWithoutSongs));
         return getSetlist(savedSetlist.id)
             .then(setlistWithSongs);
+    }
+
+    async function extendAppState(savedAppState) {
+        const appState = {
+            activeSetlistIdx: savedAppState.activeSetlistIdx,
+            song: savedAppState.song
+        }
+
+        if (savedAppState.activeSetlistId) {
+            appState.setlist = await getSetlist(savedAppState.activeSetlistId);
+        }
+        return appState;
+    }
+
+    async function getAppState() {
+        const savedAppState = await doGetAppState();
+
+        if (!savedAppState) {
+            return defaultAppState;
+        } else {
+            return extendAppState(savedAppState);
+        }
+    }
+
+    async function saveAppState(appState) {
+        const appStateToSave = reduceAppState(appState);
+
+        console.log("Repository: save app state: ", appState);
+
+        doSaveAppState(appStateToSave);
+
+        return appState;
+    }
+
+    function reduceAppState(appState) {
+        return {
+            activeSetlistId: appState.setlist ? appState.setlist.id : null,
+            activeSetlistIdx: appState.activeSetlistIdx,
+            song: appState.song
+        };
     }
 
     // ---- internal

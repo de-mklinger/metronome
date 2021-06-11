@@ -1,4 +1,7 @@
 import {defaultSong} from "./env";
+import {defaultAppState} from "../components/app-state";
+
+const appState = { ...defaultAppState };
 
 const spielchen = Object.assign({}, defaultSong, {
     id: 'spiel /chen',
@@ -123,4 +126,4 @@ const allSetlists = [
 //     allSetlists: allSetlists
 // };
 
-export {wuff, allSongs, jsssSetlist, allSetlists};
+export {appState, wuff, allSongs, jsssSetlist, allSetlists};

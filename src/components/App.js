@@ -16,6 +16,14 @@ function App() {
     const [appState, appStateDispatch] = useAppState();
 
     useEffect(() => {
+        if (appState == null) {
+            songRepository.getAppState()
+                .then(loadedAppState => appStateDispatch({type: "setAppState", payload: loadedAppState}));
+        }
+    },
+        []) // TODO missing appState and appStateDispatch
+
+    useEffect(() => {
             if (loadSetlistId !== null) {
                 songRepository.getSetlist(loadSetlistId).then(setlist => {
                     appStateDispatch({type: "setSetlist", payload: setlist})
@@ -26,8 +34,8 @@ function App() {
         [loadSetlistId, appStateDispatch]
     );
 
-    if (loadSetlistId) {
-        return <LoadingIndicator />;
+    if (appState === null || loadSetlistId) {
+        return <LoadingIndicator/>;
     }
 
     const onSetlistChange = changedSetlist => {

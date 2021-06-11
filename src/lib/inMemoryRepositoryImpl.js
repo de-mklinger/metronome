@@ -1,4 +1,4 @@
-import {allSetlists, allSongs} from "./inMemoryRepository.testFixtures";
+import {allSetlists, allSongs, appState} from "./inMemoryRepository.testFixtures";
 
 const inMemoryRepositoryImpl = {
     doGetSongs: async () => {
@@ -17,6 +17,15 @@ const inMemoryRepositoryImpl = {
     doSaveSetlists: async (setlists) => {
         allSetlists.splice(0, allSetlists.length);
         setlists.forEach(setlist => allSetlists.push(setlist));
+    },
+
+    doGetAppState: async () => {
+        return { ...appState };
+    },
+
+    doSaveAppState: async (appStateToSave) => {
+        Object.keys(appState).forEach(key => delete appState[key]);
+        Object.keys(appStateToSave).forEach(key => appState[key] = appStateToSave[key]);
     }
 }
 

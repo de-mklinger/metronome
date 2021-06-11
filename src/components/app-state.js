@@ -1,21 +1,33 @@
 import {defaultSong} from "../lib/env";
 import {useReducer} from "react";
+import songRepository from "../lib/songRepository";
 
-const initialAppState = {
+const defaultAppState = {
     song: defaultSong,
     setlist: null,
     activeSetlistIdx: 0
 }
+export {defaultAppState};
 
-const useAppState = () => useReducer(appStateReducer, initialAppState);
+const useAppState = () => useReducer(savingAppStateReducer, null);
 export default useAppState;
 
 const extend = (src, ext) => Object.assign({}, src, ext)
+
+function savingAppStateReducer(appState, action) {
+    const newAppState = appStateReducer(appState, action);
+    console.log("Store app state: ", newAppState);
+    songRepository.saveAppState(newAppState)
+        .then(() => console.log("App state saved."));
+    return newAppState;
+}
 
 function appStateReducer(appState, action) {
     //console.log("app state action:", action);
 
     switch (action.type) {
+        case "setAppState":
+            return action.payload;
         case 'setSong':
             return withSong(action.payload);
         case 'setBpm':
@@ -25,7 +37,7 @@ function appStateReducer(appState, action) {
         case 'setActiveSetlistIdx':
             return withActiveSetlistIdx(action.payload);
         default:
-            throw new Error();
+            throw new Error("Unsupported action type:" + action.type);
     }
 
     function withSong(newSong) {

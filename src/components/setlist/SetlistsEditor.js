@@ -37,35 +37,38 @@ function SetlistsEditor({appState, appStateDispatch}) {
     return (
         <Container className="setlists-editor-screen">
             <h1>Setlists</h1>
-            <div className="setlists form-group">
-                <ul>
-                    {setlists.map(setlist =>
-                        <li key={setlist.id}
-                            className={appState.setlist && appState.setlist.id === setlist.id ? "active": ""}>
-                            <div className="title">
+
+            {setlists && setlists.length > 0 &&
+                <div className="setlists form-group">
+                    <ul>
+                        {setlists.map(setlist =>
+                            <li key={setlist.id}
+                                className={appState.setlist && appState.setlist.id === setlist.id ? "active": ""}>
                                 <div className="title">
-                                    {setlist.title}
+                                    <div className="title">
+                                        {setlist.title}
+                                    </div>
+                                    <div className="title">
+                                        {setlist.songs.length} songs
+                                    </div>
                                 </div>
-                                <div className="title">
-                                    {setlist.songs.length} songs
+                                <div className="actions">
+                                    <Link className="btn btn-secondary"
+                                        to={"/setlists/" + encodeURIComponent(setlist.id)}>
+                                        Edit
+                                    </Link>
+                                    <Button variant="secondary" onClick={() => {
+                                        appStateDispatch({type: "setSetlist", payload: setlist})
+                                        setRedirect(true);
+                                    }}>
+                                        Select
+                                    </Button>
                                 </div>
-                            </div>
-                            <div className="actions">
-                                <Link className="btn btn-secondary"
-                                    to={"/setlists/" + encodeURIComponent(setlist.id)}>
-                                    Edit
-                                </Link>
-                                <Button variant="secondary" onClick={() => {
-                                    appStateDispatch({type: "setSetlist", payload: setlist})
-                                    setRedirect(true);
-                                }}>
-                                    Select
-                                </Button>
-                            </div>
-                        </li>
-                    )}
-                </ul>
-            </div>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            }
 
             <div className="form-group">
                 <Button variant="secondary" onClick={() => setNewSetlist(true)}>
