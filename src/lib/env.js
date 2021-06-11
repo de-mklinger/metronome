@@ -35,7 +35,14 @@ const defaultSetlist = {
     songIds: []
 }
 
+const defaultAppState = {
+    song: defaultSong,
+    setlist: null,
+    activeSetlistIdx: 0
+}
+
 export {
+    defaultAppState,
     defaultBpm,
     defaultSong,
     defaultSetlist,

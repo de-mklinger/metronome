@@ -1,4 +1,4 @@
-import {defaultAppState} from "../components/app-state";
+import {defaultAppState} from "./env";
 
 export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, doSaveSetlists, doGetAppState, doSaveAppState}) {
     return {

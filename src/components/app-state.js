@@ -2,13 +2,6 @@ import {defaultSong} from "../lib/env";
 import {useReducer} from "react";
 import songRepository from "../lib/songRepository";
 
-const defaultAppState = {
-    song: defaultSong,
-    setlist: null,
-    activeSetlistIdx: 0
-}
-export {defaultAppState};
-
 const useAppState = () => useReducer(savingAppStateReducer, null);
 export default useAppState;
 

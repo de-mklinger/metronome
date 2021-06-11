@@ -1,5 +1,4 @@
-import {defaultSong} from "./env";
-import {defaultAppState} from "../components/app-state";
+import {defaultAppState, defaultSong} from "./env";
 
 const appState = { ...defaultAppState };
 
