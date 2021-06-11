@@ -38,7 +38,27 @@ test('has setlist', () => {
     });
 });
 
+test('setlist contains full songs', () => {
+    return inMemorySongRepository.getSetlist('setlist1').then(setlist => {
+        expect(setlist.songs).toBeTruthy();
+        expect(setlist.songs.length).toBeGreaterThan(0);
+        expect(setlist.songs.length).toBe(setlist.songIds.length);
+        for (let i = 0; i < setlist.songIds.length; i++) {
+            expect(setlist.songs[i].id).toBe(setlist.songIds[i]);
+        }
+        expect(setlist.songs[0].title).toBe('Spielchen');
+    });
+});
+
 test('throws error for non-existing setlist', () => {
     return expect(inMemorySongRepository.getSetlist('doesnotexist'))
         .rejects.toBeTruthy();
+});
+
+test('provides app state', () => {
+    return inMemorySongRepository.getAppState().then(appState => {
+        expect(appState).toBeTruthy();
+        expect(appState.song).toBeTruthy();
+        expect(appState.song.bpm).toBeGreaterThan(0);
+    });
 });
