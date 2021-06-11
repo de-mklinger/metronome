@@ -1,13 +1,13 @@
 import {Container} from "react-bootstrap";
 import SongEditor from "../song/SongEditor";
 import {defaultSong} from "../../lib/env";
+import repository from "../../lib/repository";
 import {useState} from "react";
-import songRepository from "../../lib/songRepository";
 
 function NewSongEditorContainer({onSave}) {
     const [song, setSong] = useState(defaultSong);
 
-    const save = () => songRepository.saveSong(song)
+    const save = () => repository.saveSong(song)
         .then(savedSong => {
             onSave(savedSong);
         });

@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
-import songRepository from "../../lib/songRepository";
 import LoadingIndicator from "../LoadingIndicator";
 import SelectSong from "./SelectSong";
 import {Container} from "react-bootstrap";
+import repository from "../../lib/repository";
 
 function SelectSongContainer({onSelect}) {
     const [songs, setSongs] = useState(null);
     const [filter, setFilter] = useState("");
 
     useEffect(() => {
-        songRepository.getSongs().then(setSongs);
+        repository.getSongs().then(setSongs);
     }, []);
 
     if (songs === null) {

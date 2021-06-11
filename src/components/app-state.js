@@ -1,6 +1,6 @@
 import {defaultSong} from "../lib/env";
+import repository from "../lib/repository";
 import {useReducer} from "react";
-import songRepository from "../lib/songRepository";
 
 const useAppState = () => useReducer(savingAppStateReducer, null);
 export default useAppState;
@@ -10,7 +10,7 @@ const extend = (src, ext) => Object.assign({}, src, ext)
 function savingAppStateReducer(appState, action) {
     const newAppState = appStateReducer(appState, action);
     //console.log("Store app state: ", newAppState);
-    songRepository.saveAppState(newAppState)
+    repository.saveAppState(newAppState)
         .then(() => {
             //console.log("App state saved.")
         });

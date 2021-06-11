@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import LoadingIndicator from "../LoadingIndicator";
-import songRepository from "../../lib/songRepository";
 import {Button, Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 import SetlistEditorContainer from "./SetlistEditorContainer";
+import repository from "../../lib/repository";
 
 function SetlistsEditor({appState, appStateDispatch}) {
     const [setlists, setSetlists] = useState(null);
@@ -11,7 +11,7 @@ function SetlistsEditor({appState, appStateDispatch}) {
     const [newSetlist, setNewSetlist] = useState(false);
 
     useEffect(() => {
-        songRepository.getSetlists().then(setSetlists);
+        repository.getSetlists().then(setSetlists);
     }, []);
 
     if (redirect) {

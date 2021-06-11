@@ -1,10 +1,10 @@
 import {Link, Redirect, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import songRepository from "../../lib/songRepository";
 import SongEditor from "./SongEditor";
 import LoadingIndicator from "../LoadingIndicator";
 import {Button, Container} from "react-bootstrap";
 import SongSetlistsEditor from "./SongSetlistsEditor";
+import repository from "../../lib/repository";
 
 function SongEditorContainer({onSongChange, onSetlistChange}) {
     let {id} = useParams();
@@ -20,11 +20,11 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
         setSong(null);
         setOriginalSong(null);
         setSetlists(null);
-        songRepository.getSong(id).then(song => {
+        repository.getSong(id).then(song => {
             setSong(song);
             setOriginalSong(song);
         });
-        songRepository.getSetlistsWithSong(id).then(setlists => {
+        repository.getSetlistsWithSong(id).then(setlists => {
             setSetlists(setlists);
             setOriginalSetlists(setlists);
         });
@@ -38,7 +38,7 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
         return <Redirect to="/"/>
     }
 
-    const save = () => songRepository.saveSong(song)
+    const save = () => repository.saveSong(song)
         .then(savedSong => {
             const removedSetlists = originalSetlists.filter(originalSetlist =>
                 !setlists.find(setlist => setlist.id === originalSetlist.id)
@@ -47,7 +47,7 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
 
             return Promise.all(
                 removedSetlists.map(setlist =>
-                    songRepository.removeSongFromSetlist(setlist.id, savedSong.id))
+                    repository.removeSongFromSetlist(setlist.id, savedSong.id))
             ).then(savedSetlists => [savedSong, savedSetlists]);
 
         })
@@ -57,13 +57,13 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
             savedSetlists.forEach(onSetlistChange);
         });
 
-    const saveAsNew = () => songRepository.saveSong({...song, id: null})
+    const saveAsNew = () => repository.saveSong({...song, id: null})
         .then(savedSong => {
             return Promise.all(
                 setlists
                     .map(setlist => {
                         //console.log("Add to setlist: ", setlist);
-                        return songRepository.addSongToSetlist(setlist.id, savedSong.id)
+                        return repository.addSongToSetlist(setlist.id, savedSong.id)
                             .then(onSetlistChange)
                     })
             ).then(() => savedSong);

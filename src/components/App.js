@@ -4,11 +4,10 @@ import SongEditorContainer from "./song/SongEditorContainer";
 import {useEffect, useState} from "react";
 import SetlistsEditor from "./setlist/SetlistsEditor";
 import LoadingIndicator from "./LoadingIndicator";
-import songRepository from "../lib/songRepository";
 import useAppState from "./app-state";
 import CurrentSongEditor from "./song/CurrentSongEditor";
 import SetlistEditorRoute from "./setlist/SetlistEditorRoute";
-
+import repository from "../lib/repository";
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState(null);
@@ -16,15 +15,15 @@ function App() {
     const [appState, appStateDispatch] = useAppState();
 
     useEffect(() => {
-            songRepository.getAppState()
+            repository.getAppState()
                 .then(loadedAppState => appStateDispatch({type: "setAppState", payload: loadedAppState}));
         },
         [appStateDispatch] // appStateDispatch stays stable
     );
-    
+
     useEffect(() => {
             if (loadSetlistId !== null) {
-                songRepository.getSetlist(loadSetlistId).then(setlist => {
+                repository.getSetlist(loadSetlistId).then(setlist => {
                     appStateDispatch({type: "setSetlist", payload: setlist})
                     setLoadSetlistId(null);
                 });

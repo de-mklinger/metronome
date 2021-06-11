@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import songRepository from "../../lib/songRepository";
 import LoadingIndicator from "../LoadingIndicator";
 import SetlistEditor from "./SetlistEditor";
 import {Button, Container} from "react-bootstrap";
 import SelectSongContainer from "../song/SelectSongContainer";
 import NewSongEditorContainer from "./NewSongEditorContainer";
 import {defaultSetlist} from "../../lib/env";
+import repository from "../../lib/repository";
 
 function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
     let newSetlist = false;
@@ -23,7 +23,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
     useEffect(() => {
         if (!newSetlist) {
             setSetlist(null);
-            songRepository.getSetlist(setlistId).then(setlist => {
+            repository.getSetlist(setlistId).then(setlist => {
                 setSetlist(setlist);
                 setOriginalSetlist(setlist)
             });
@@ -67,10 +67,10 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
         );
     }
 
-    const save = () => songRepository.saveSetlist(setlist)
+    const save = () => repository.saveSetlist(setlist)
         .then(onSetlistChange);
 
-    const saveAsNew = () => songRepository.saveSetlist({...setlist, id: null})
+    const saveAsNew = () => repository.saveSetlist({...setlist, id: null})
         .then(onSetlistChange);
 
     return (
