@@ -36,7 +36,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
 
     const addSong = song => {
         if (song !== null) {
-            console.log("Song selected:", song);
+            //console.log("Song selected:", song);
             setSetlist({
                 ...setlist,
                 songs: [...(setlist.songs || []), song],

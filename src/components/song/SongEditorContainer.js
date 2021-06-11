@@ -43,7 +43,7 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
             const removedSetlists = originalSetlists.filter(originalSetlist =>
                 !setlists.find(setlist => setlist.id === originalSetlist.id)
             );
-            console.log("removed setlists: ", removedSetlists);
+            //console.log("removed setlists: ", removedSetlists);
 
             return Promise.all(
                 removedSetlists.map(setlist =>
@@ -62,7 +62,7 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
             return Promise.all(
                 setlists
                     .map(setlist => {
-                        console.log("Add to setlist: ", setlist);
+                        //console.log("Add to setlist: ", setlist);
                         return songRepository.addSongToSetlist(setlist.id, savedSong.id)
                             .then(onSetlistChange)
                     })

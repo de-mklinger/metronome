@@ -31,7 +31,7 @@ function BpmKnob({bpm, onBpmChange}) {
 
     if (lastKnobBpm.current !== bpm) {
         // change from outside
-        console.log("change from outside");
+        //console.log("change from outside");
         lastKnobBpm.current = bpm;
         key.current = Math.random();
     }

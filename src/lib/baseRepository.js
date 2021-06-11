@@ -109,6 +109,8 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
     }
 
     async function getAppState() {
+        info("Repository: getAppState");
+
         const savedAppState = await doGetAppState();
 
         if (!savedAppState) {
@@ -121,7 +123,7 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
     async function saveAppState(appState) {
         const appStateToSave = reduceAppState(appState);
 
-        console.log("Repository: save app state: ", appState);
+        info("Repository: save app state: ", appState);
 
         doSaveAppState(appStateToSave);
 

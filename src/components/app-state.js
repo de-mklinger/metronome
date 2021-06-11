@@ -16,9 +16,11 @@ const extend = (src, ext) => Object.assign({}, src, ext)
 
 function savingAppStateReducer(appState, action) {
     const newAppState = appStateReducer(appState, action);
-    console.log("Store app state: ", newAppState);
+    //console.log("Store app state: ", newAppState);
     songRepository.saveAppState(newAppState)
-        .then(() => console.log("App state saved."));
+        .then(() => {
+            //console.log("App state saved.")
+        });
     return newAppState;
 }
 

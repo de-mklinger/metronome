@@ -16,7 +16,7 @@ const useAnimationFrame = (callback) => {
 
         return () => {
             cancelAnimationFrame(requestRef.current);
-            console.log("Cancelled animation frame");
+            //console.log("Cancelled animation frame");
         };
     }, [callback]); // Make sure the effect runs only once
 }

@@ -31,7 +31,7 @@ function playSilence() {
     if (silenceAudioBuffer === null) {
         console.log("Silence audio buffer not yet loaded");
     } else {
-        console.log("Play silence");
+        //console.log("Play silence");
         playSample(silenceAudioBuffer);
     }
 }

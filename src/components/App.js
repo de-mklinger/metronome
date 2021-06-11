@@ -40,7 +40,7 @@ function App() {
 
     const onSetlistChange = changedSetlist => {
         // TODO reload setlist
-        console.log("changed setlist:", changedSetlist);
+        //console.log("changed setlist:", changedSetlist);
         if (appState.setlist && appState.setlist.id === changedSetlist) {
             appStateDispatch({type: "setSetlist", payload: changedSetlist});
         }
