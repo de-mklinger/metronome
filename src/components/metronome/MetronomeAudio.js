@@ -85,6 +85,8 @@ function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
             } else {
                 noSleep.current.disable();
             }
+
+            return () => noSleep.current.disable();
         },
         [started]
     );
