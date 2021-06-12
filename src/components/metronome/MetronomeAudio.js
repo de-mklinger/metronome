@@ -1,7 +1,8 @@
-import React, {useCallback, useRef} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import {ctx} from "../../index.testFixtures";
 import {earlyPlayThresholdMillis, missMillisThreshold} from "../../lib/env";
 import {playSample} from "../../lib/audio";
+import NoSleep from 'nosleep.js';
 
 const useAnimationFrame = (callback) => {
     const requestRef = React.useRef();
@@ -73,6 +74,21 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
 };
 
 function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
+    const noSleep = useRef(null);
+
+    useEffect(() => {
+            if (noSleep.current === null) {
+                noSleep.current = new NoSleep();
+            }
+            if (started) {
+                noSleep.current.enable()
+            } else {
+                noSleep.current.disable();
+            }
+        },
+        [started]
+    );
+
     const tickCtx = useRef({});
     tickCtx.current = {
         started: started,
