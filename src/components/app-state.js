@@ -5,16 +5,18 @@ import {useReducer} from "react";
 const useAppState = () => useReducer(savingAppStateReducer, null);
 export default useAppState;
 
-const extend = (src, ext) => Object.assign({}, src, ext)
-
 function savingAppStateReducer(appState, action) {
     const newAppState = appStateReducer(appState, action);
-    //console.log("Store app state: ", newAppState);
-    repository.saveAppState(newAppState)
-        .then(() => {
-            //console.log("App state saved.")
-        });
-    return newAppState;
+    if (newAppState) {
+        repository.saveAppState(newAppState)
+            .then(() => {
+                //console.log("App state saved.")
+            });
+        return newAppState;
+    } else {
+        console.warn("Reducer returned no app state on action", action);
+        return appState;
+    }
 }
 
 function appStateReducer(appState, action) {
@@ -29,6 +31,10 @@ function appStateReducer(appState, action) {
             return withBpm(action.payload);
         case 'setSetlist':
             return withSetlist(action.payload);
+        case 'nextSong':
+            return withNextSong();
+        case 'previousSong':
+            return withPreviousSong();
         case 'setActiveSetlistIdx':
             return withActiveSetlistIdx(action.payload);
         default:
@@ -80,9 +86,29 @@ function appStateReducer(appState, action) {
 
     function withActiveSetlistIdx(activeSetlistIdx) {
         return extend(appState, {
-            activeSetlistIdx: action.payload,
+            activeSetlistIdx: activeSetlistIdx,
             song: getActiveSong(appState.setlist, activeSetlistIdx)
         });
+    }
+
+    function withPreviousSong() {
+        if (appState.setlist) {
+            const newIdx = appState.activeSetlistIdx - 1;
+            if (newIdx >= 0) {
+                return withActiveSetlistIdx(newIdx);
+            }
+        }
+        return appState;
+    }
+
+    function withNextSong() {
+        if (appState.setlist) {
+            const newIdx = appState.activeSetlistIdx + 1;
+            if (newIdx < appState.setlist.songIds.length) {
+                return withActiveSetlistIdx(newIdx);
+            }
+        }
+        return appState;
     }
 
     function getActiveSong(setlist, activeSetlistIdx) {
@@ -92,4 +118,11 @@ function appStateReducer(appState, action) {
             return defaultSong;
         }
     }
+
+    // internal, TODO remove
+
+    function extend(src, ext) {
+        return Object.assign({}, src, ext);
+    }
+
 }

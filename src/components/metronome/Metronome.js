@@ -3,6 +3,7 @@ import SongControls from "./SongControls";
 import PlayControls from "./PlayControls";
 import MetronomeAudio from "./MetronomeAudio";
 import {useState} from "react";
+import KeyListener from "./KeyListener";
 
 function Metronome({appState, appStateDispatch}) {
     const [started, setStarted] = useState(false);
@@ -14,6 +15,11 @@ function Metronome({appState, appStateDispatch}) {
                 started={started}
                 song={appState.song}
                 onActiveBeatIdxChange={setActiveBeatIdx}
+            />
+
+            <KeyListener
+                onPlay={() => setStarted(!started)}
+                appStateDispatch={appStateDispatch}
             />
 
             <BeatBar

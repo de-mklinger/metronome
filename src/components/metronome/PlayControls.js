@@ -7,25 +7,8 @@ import BpmKnob from "../BpmKnob";
 
 function PlayControls({started, appState, appStateDispatch, onPlay}) {
     const onBpmChange = bpm => appStateDispatch({type: "setBpm", payload: bpm});
-    const onSongSelect = idx => appStateDispatch({type: "setActiveSetlistIdx", payload: idx});
-
-    const onPreviousClick = () => {
-        if (appState.setlist) {
-            const newIdx = appState.activeSetlistIdx - 1;
-            if (newIdx >= 0) {
-                onSongSelect(newIdx);
-            }
-        }
-    }
-
-    const onNextClick = () => {
-        if (appState.setlist) {
-            const newIdx = appState.activeSetlistIdx + 1;
-            if (newIdx < appState.setlist.songs.length) {
-                onSongSelect(newIdx);
-            }
-        }
-    }
+    const onPreviousClick = () => appStateDispatch({type: "previousSong"});
+    const onNextClick = () => appStateDispatch({type: "nextSong"});
 
     return (
         <div className="play-controls">
