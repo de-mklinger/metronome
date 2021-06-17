@@ -1,15 +1,15 @@
 import useEventListener from "@use-it/event-listener";
 
-function KeyListener({onPlay, appStateDispatch}) {
+function KeyListener({onPlay, config, appStateDispatch}) {
     const onKeyDown = e => {
         switch (e.key) {
-            case " ":
+            case config.playKey:
                 onPlay();
                 break;
-            case "ArrowRight":
+            case config.nextSongKey:
                 appStateDispatch({type: "nextSong"})
                 break;
-            case "ArrowLeft":
+            case config.previousSongKey:
                 appStateDispatch({type: "previousSong"})
                 break;
             default:

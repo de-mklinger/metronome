@@ -35,14 +35,22 @@ const defaultSetlist = {
     songIds: []
 }
 
+const defaultConfig = {
+    playKey: " ",
+    nextSongKey: "ArrowRight",
+    previousSongKey: "ArrowLeft"
+};
+
 const defaultAppState = {
     song: defaultSong,
     setlist: null,
-    activeSetlistIdx: 0
+    activeSetlistIdx: 0,
+    config: defaultConfig
 }
 
 export {
     defaultAppState,
+    defaultConfig,
     defaultBpm,
     defaultSong,
     defaultSetlist,

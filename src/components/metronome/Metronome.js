@@ -19,6 +19,7 @@ function Metronome({appState, appStateDispatch}) {
 
             <KeyListener
                 onPlay={() => setStarted(!started)}
+                config={appState.config}
                 appStateDispatch={appStateDispatch}
             />
 

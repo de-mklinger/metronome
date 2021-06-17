@@ -1,4 +1,4 @@
-import {defaultAppState} from "./env";
+import {defaultAppState, defaultConfig} from "./env";
 
 export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, doSaveSetlists, doGetAppState, doSaveAppState}) {
     return {
@@ -105,6 +105,9 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
         if (savedAppState.activeSetlistId) {
             appState.setlist = await getSetlist(savedAppState.activeSetlistId);
         }
+
+        appState.config = {...defaultConfig, ...appState.config}
+
         return appState;
     }
 
