@@ -3,10 +3,11 @@ import App from './App';
 
 test('renders tap', async () => {
     // https://github.com/jsdom/jsdom/issues/1695
-    if (!window.HTMLElement.prototype.scrollIntoView) {
-        window.HTMLElement.prototype.scrollIntoView = () => {
-        };
-    }
+    window.HTMLElement.prototype.scrollIntoView = () => {
+    };
+
+    window.HTMLMediaElement.prototype.pause = () => {
+    };
 
     render(<App/>);
 
