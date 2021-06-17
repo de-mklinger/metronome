@@ -6,6 +6,8 @@ const useAppState = () => useReducer(savingAppStateReducer, null);
 export default useAppState;
 
 function savingAppStateReducer(appState, action) {
+    // TODO only store non-default config values
+
     const newAppState = appStateReducer(appState, action);
     if (newAppState) {
         repository.saveAppState(newAppState)
@@ -25,6 +27,8 @@ function appStateReducer(appState, action) {
     switch (action.type) {
         case "setAppState":
             return action.payload;
+        case "setConfig":
+            return withConfig(action.payload);
         case 'setSong':
             return withSong(action.payload);
         case 'setBpm':
@@ -39,6 +43,13 @@ function appStateReducer(appState, action) {
             return withActiveSetlistIdx(action.payload);
         default:
             throw new Error("Unsupported action type:" + action.type);
+    }
+
+    function withConfig(newConfig) {
+        return {
+            ...appState,
+            config: newConfig
+        };
     }
 
     function withSong(newSong) {

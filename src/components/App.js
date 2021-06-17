@@ -8,6 +8,7 @@ import useAppState from "./app-state";
 import CurrentSongEditor from "./song/CurrentSongEditor";
 import SetlistEditorRoute from "./setlist/SetlistEditorRoute";
 import repository from "../lib/repository";
+import ConfigEditor from "./config/ConfigEditor";
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState(null);
@@ -53,6 +54,12 @@ function App() {
     return (
         <Router>
             <Switch>
+                <Route path="/config">
+                    <ConfigEditor
+                        appState={appState}
+                        appStateDispatch={appStateDispatch}
+                    />
+                </Route>
                 <Route path="/currentsong">
                     <CurrentSongEditor
                         appState={appState}

@@ -30,7 +30,8 @@ svg {
 // reset focus and active colors and box-shadow
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
-    @include button-variant($value, $value, $value, $value, $value, $value);
+    //@include button-variant($value, $value, $value, $value, $value, $value);
+    @include button-variant($value, $value, $value, $value);
 
     &:focus,
     &.focus {

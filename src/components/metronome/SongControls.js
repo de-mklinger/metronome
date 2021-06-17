@@ -1,7 +1,7 @@
 import Setlist from "./Setlist";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
 
 function SongControls({appState, appStateDispatch}) {
     if (appState.setlist) {
@@ -16,6 +16,9 @@ function SongControls({appState, appStateDispatch}) {
     } else {
         return (
             <div className="song-settings">
+                <Link className="btn btn-primary" to={"/config"}>
+                    <FontAwesomeIcon icon={faBars}/>
+                </Link>
                 <Link className="btn btn-primary" to={"/setlists"}>
                     <FontAwesomeIcon icon={faListOl}/>
                 </Link>
