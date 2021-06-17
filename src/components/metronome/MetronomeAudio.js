@@ -76,9 +76,22 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
 function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
     const noSleep = useRef(null);
 
+    const currentStarted = useRef(started);
+    currentStarted.current = started;
+
     useEffect(() => {
             if (noSleep.current === null) {
                 noSleep.current = new NoSleep();
+
+                // pre-initialize noSleep to avoid timing problems on first metronome start:
+                setTimeout(() => {
+                    noSleep.current.enable();
+                    setTimeout(() => {
+                        if (!currentStarted.current) {
+                            noSleep.current.disable();
+                        }
+                    }, 500);
+                }, 10);
             }
             if (started) {
                 noSleep.current.enable()
