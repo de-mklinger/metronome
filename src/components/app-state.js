@@ -42,14 +42,20 @@ function appStateReducer(appState, action) {
     }
 
     function withSong(newSong) {
-        return extend(appState, {song: newSong});
+        return {
+            ...appState,
+            song: newSong
+        };
     }
 
     function withBpm(bpm) {
         if (bpm === appState.song.bpm) {
             return appState;
         }
-        let newSong = extend(appState.song, {bpm: bpm});
+        let newSong = {
+            ...appState.song,
+            bpm: bpm
+        };
         return withSong(newSong);
     }
 
@@ -60,35 +66,39 @@ function appStateReducer(appState, action) {
             if (appState.setlist && appState.setlist.id === newSetlist.id && appState.setlist.songs.length > appState.activeSetlistIdx) {
                 newActiveSetlistIdx = appState.activeSetlistIdx;
             }
-            return extend(appState, {
+            return {
+                ...appState,
                 setlist: newSetlist,
                 activeSetlistIdx: newActiveSetlistIdx,
                 song: getActiveSong(newSetlist, newActiveSetlistIdx)
-            });
+            };
         } else {
             // detach song:
-            return extend(appState, {
+            return {
+                ...appState,
                 setlist: null,
                 activeSetlistIdx: newActiveSetlistIdx,
                 song: detachSong()
-            });
+            };
         }
 
         function detachSong() {
-            return extend(appState.song, {
+            return {
+                ...appState.song,
                 id: null,
                 title: "",
                 setlists: null,
                 setlistIds: null
-            });
+            };
         }
     }
 
     function withActiveSetlistIdx(activeSetlistIdx) {
-        return extend(appState, {
+        return {
+            ...appState,
             activeSetlistIdx: activeSetlistIdx,
             song: getActiveSong(appState.setlist, activeSetlistIdx)
-        });
+        };
     }
 
     function withPreviousSong() {
@@ -118,11 +128,4 @@ function appStateReducer(appState, action) {
             return defaultSong;
         }
     }
-
-    // internal, TODO remove
-
-    function extend(src, ext) {
-        return Object.assign({}, src, ext);
-    }
-
 }
