@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/de-mklinger/metronome-frontend.git"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
