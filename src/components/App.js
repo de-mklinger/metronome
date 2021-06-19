@@ -10,6 +10,8 @@ import SetlistEditorRoute from "./setlist/SetlistEditorRoute";
 import repository from "../lib/repository";
 import ConfigEditor from "./config/ConfigEditor";
 import {useNoSleep} from "../lib/no-sleep";
+import {getAudioContext} from "../lib/audio";
+import SplashScreen from "./SplashScreen";
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState(null);
@@ -34,10 +36,21 @@ function App() {
         [loadSetlistId, appStateDispatch]
     );
 
-    useNoSleep(appState != null && appState.config.noSleepAlways);
+    const noSleep = useNoSleep(appState != null && appState.config.noSleepAlways);
 
-    if (appState === null || loadSetlistId) {
+    const isAudioContextRunning = () => getAudioContext().state === "running";
+    const isNoSleepEnabled = () => noSleep.current && noSleep.current.isEnabled();
+    const [showSplashScreen, setShowSplashScreen] = useState(
+        !isAudioContextRunning()
+        || (appState && appState.config.noSleepAlways && !isNoSleepEnabled())
+    );
+
+    if (!appState || loadSetlistId) {
         return <LoadingIndicator/>;
+    }
+
+    if (showSplashScreen) {
+        return <SplashScreen onClick={() => setShowSplashScreen(false)}/>
     }
 
     const onSetlistChange = changedSetlist => {

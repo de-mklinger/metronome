@@ -5,9 +5,7 @@ import MetronomeAudio from "./MetronomeAudio";
 import {useCallback, useState} from "react";
 import KeyListener from "./KeyListener";
 import Div100vh from "react-div-100vh";
-import SplashScreen from "../SplashScreen";
 import {useNoSleep} from "../../lib/no-sleep";
-import {getAudioContext} from "../../lib/audio";
 
 function Metronome({appState, appStateDispatch}) {
     const [started, setStarted] = useState(false);
@@ -17,18 +15,7 @@ function Metronome({appState, appStateDispatch}) {
 
     const [activeBeatIdx, setActiveBeatIdx] = useState(-1);
 
-    const noSleep = useNoSleep(appState.config.noSleepWhenStarted && started);
-
-    const isAudioContextRunning = () => getAudioContext().state === "running";
-    const isNoSleepEnabled = () => noSleep.current && noSleep.current.isEnabled();
-    const [showSplashScreen, setShowSplashScreen] = useState(
-        !isAudioContextRunning()
-        || (appState.config.noSleepAlways && !isNoSleepEnabled())
-    );
-
-    if (showSplashScreen) {
-        return <SplashScreen onClick={() => setShowSplashScreen(false)}/>
-    }
+    useNoSleep(appState.config.noSleepWhenStarted && started);
 
     return (
         <Div100vh className="metronome">
