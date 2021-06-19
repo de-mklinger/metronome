@@ -9,9 +9,18 @@ test('renders tap', async () => {
     window.HTMLMediaElement.prototype.pause = () => {
     };
 
+    window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+
+    function AudioContext() {}
+    window.AudioContext = AudioContext;
+
     render(<App/>);
 
-    const linkElement = await screen.findByText(/Tap/i);
+    const startButton = await screen.findByText(/Open Metronome/i);
+    expect(startButton).toBeInTheDocument();
 
+    startButton.click();
+
+    const linkElement = await screen.findByText(/Tap/i);
     expect(linkElement).toBeInTheDocument();
 });

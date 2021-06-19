@@ -1,8 +1,7 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, {memo, useCallback, useRef} from "react";
 import {ctx} from "../../index.testFixtures";
 import {earlyPlayThresholdMillis, missMillisThreshold} from "../../lib/env";
-import {playSample} from "../../lib/audio";
-import NoSleep from 'nosleep.js';
+import {getTime, playSample} from "../../lib/audio";
 
 const useAnimationFrame = (callback) => {
     const requestRef = React.useRef();
@@ -37,15 +36,19 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
     } else {
         sinceLastSwitchMillis = now - switchTime.current
     }
+
     let diff = sinceLastSwitchMillis - switchEveryMillis;
+
     if (diff >= earlyPlayThresholdMillis) {
+        let missMillis = sinceLastSwitchMillis - switchEveryMillis;
+        let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
+        let playTime = getTime(whenOffsetSeconds);
+
         activeBeatIdx.current++;
         if (activeBeatIdx.current >= tickCtx.current.timeSignatureBeats) {
             activeBeatIdx.current = 0;
         }
 
-        let missMillis = sinceLastSwitchMillis - switchEveryMillis;
-        let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
         //console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
 
         let currentAccent = tickCtx.current.accents[activeBeatIdx.current] || 1;
@@ -54,11 +57,11 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
             case 3:
                 // TODO more than one accent sound
                 // console.log("Play accent", whenOffsetSeconds);
-                playSample(ctx.audio.accentAudioBuffer, whenOffsetSeconds);
+                playSample(ctx.audio.accentAudioBuffer, playTime);
                 break;
             default:
                 // console.log("Play non-accent", whenOffsetSeconds);
-                playSample(ctx.audio.nonAccentAudioBuffer, whenOffsetSeconds);
+                playSample(ctx.audio.nonAccentAudioBuffer, playTime);
                 break;
         }
 
@@ -69,40 +72,16 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
             switchTime.current = now - missMillis;
         }
 
+        if (missMillis < -16 || missMillis > 0) {
+            console.log("miss millis", missMillis);
+        }
+
         tickCtx.current.onActiveBeatIdxChange(activeBeatIdx.current);
     }
 };
 
-function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
-    const noSleep = useRef(null);
-
-    const currentStarted = useRef(started);
-    currentStarted.current = started;
-
-    useEffect(() => {
-            if (noSleep.current === null) {
-                noSleep.current = new NoSleep();
-
-                // pre-initialize noSleep to avoid timing problems on first metronome start:
-                setTimeout(() => {
-                    noSleep.current.enable();
-                    setTimeout(() => {
-                        if (!currentStarted.current) {
-                            noSleep.current.disable();
-                        }
-                    }, 500);
-                }, 10);
-            }
-            if (started) {
-                noSleep.current.enable()
-            } else {
-                noSleep.current.disable();
-            }
-
-            return () => noSleep.current.disable();
-        },
-        [started]
-    );
+function WrappedMetronomeAudio({started, song, onActiveBeatIdxChange}) {
+    console.log("WrappedMetronomeAudio render");
 
     const tickCtx = useRef({});
     tickCtx.current = {
@@ -125,5 +104,7 @@ function MetronomeAudio({started, song, onActiveBeatIdxChange}) {
 
     return null;
 }
+
+const MetronomeAudio = memo(WrappedMetronomeAudio);
 
 export default MetronomeAudio;

@@ -4,8 +4,11 @@ import {faStepBackward, faStepForward} from "@fortawesome/free-solid-svg-icons";
 import PlayButton from "./PlayButton";
 import {getLabels} from "../../lib/tempo";
 import BpmKnob from "../BpmKnob";
+import {memo} from "react";
 
-function PlayControls({started, appState, appStateDispatch, onPlay}) {
+function WrappedPlayControls({started, appState, appStateDispatch, onPlay}) {
+    console.log("WrappedPlayControls render");
+
     const onBpmChange = bpm => appStateDispatch({type: "setBpm", payload: bpm});
     const onPreviousClick = () => appStateDispatch({type: "previousSong"});
     const onNextClick = () => appStateDispatch({type: "nextSong"});
@@ -53,5 +56,7 @@ function PlayControls({started, appState, appStateDispatch, onPlay}) {
         </div>
     );
 }
+
+const PlayControls = memo(WrappedPlayControls);
 
 export default PlayControls;

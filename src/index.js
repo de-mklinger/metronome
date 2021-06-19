@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/index.scss';
 import App from './components/App';
 import {ctx} from './index.testFixtures'
-import {getAudioBuffer, playSilence} from './lib/audio'
+import {getAudioBuffer, getAudioContext, playSilence} from './lib/audio'
 import Cowbell1 from './sounds/Cowbell-1.wav'
 import Cowbell2 from './sounds/Cowbell-2.wav'
 import {playSilenceIntervalMillis} from "./lib/env";
@@ -34,6 +34,8 @@ async function setUp() {
             playSilence();
         }, playSilenceIntervalMillis);
     }
+
+    console.log("State:", getAudioContext().state);
 
     return ctx;
 }

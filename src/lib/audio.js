@@ -1,7 +1,5 @@
 import silenceWav from '../sounds/silence.wav';
 
-export { playSample, playSilence, getAudioBuffer }
-
 let audioContext = null;
 
 const getAudioContext = () => {
@@ -18,14 +16,17 @@ getAudioBuffer(silenceWav).then(buf => silenceAudioBuffer = buf);
 
 //const silenceAudioBuffer = audioContext.createBuffer(2, 1000, 44100);
 
-const fixAudioContext = function () {
+const resumeAudioContext = function () {
     if (getAudioContext().state !== 'running') {
-        console.log("Resume Audio Context")
-        getAudioContext().resume().then(() => playSilence());
+        console.log("Trying to resume Audio Context")
+        getAudioContext().resume().then(() => "Audio context resumed");
+    } else {
+        console.log("Audio Context is running")
     }
 };
-document.addEventListener('touchstart', fixAudioContext);
-document.addEventListener('mousedown', fixAudioContext);
+
+document.addEventListener('touchstart', resumeAudioContext);
+document.addEventListener('mousedown', resumeAudioContext);
 
 function playSilence() {
     if (silenceAudioBuffer === null) {
@@ -36,11 +37,21 @@ function playSilence() {
     }
 }
 
-function playSample(audioBuffer, whenOffsetSeconds = 0) {
-    const sampleSource = getAudioContext().createBufferSource();
+function playSample(audioBuffer, playTime = null) {
+    getSampleSource(audioBuffer).start(playTime);
+}
+
+function getTime(whenOffsetSeconds = 0) {
+    return whenOffsetSeconds + getAudioContext().currentTime;
+}
+
+function getSampleSource(audioBuffer) {
+    let audioContext = getAudioContext();
+
+    const sampleSource = audioContext.createBufferSource();
     sampleSource.buffer = audioBuffer;
-    sampleSource.connect(getAudioContext().destination)
-    sampleSource.start(whenOffsetSeconds + getAudioContext().currentTime);
+    sampleSource.connect(audioContext.destination)
+
     return sampleSource;
 }
 
@@ -59,3 +70,5 @@ async function getAudioBuffer(filepath) {
             (x) => reject(x));
     });
 }
+
+export { playSample, playSilence, getAudioBuffer, getAudioContext, getTime }

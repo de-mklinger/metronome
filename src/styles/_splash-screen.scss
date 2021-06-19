@@ -1,0 +1,20 @@
+.splash-screen {
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    margin: 5rem auto;
+    svg {
+      fill: darken($body-bg, 5%);
+    }
+  }
+
+  .start {
+    display: flex;
+    margin: 0 5rem;
+
+    button {
+      flex: 2;
+    }
+  }
+}

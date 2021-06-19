@@ -2,10 +2,10 @@
   @extend .container;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   position: fixed;
-  //overflow: hidden;
-  max-width: 100%;
+  // center (special stuff required because of position: fixed)
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @import "beat-bar";

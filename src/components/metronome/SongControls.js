@@ -2,8 +2,11 @@ import Setlist from "./Setlist";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
+import {memo} from "react";
 
-function SongControls({appState, appStateDispatch}) {
+function WrappedSongControls({appState, appStateDispatch}) {
+    console.log("WrappedSongControls render")
+
     if (appState.setlist) {
         return (
             <Setlist
@@ -29,5 +32,7 @@ function SongControls({appState, appStateDispatch}) {
         );
     }
 }
+
+const SongControls = memo(WrappedSongControls);
 
 export default SongControls;

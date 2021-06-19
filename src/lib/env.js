@@ -38,7 +38,9 @@ const defaultSetlist = {
 const defaultConfig = {
     playKey: " ",
     nextSongKey: "ArrowRight",
-    previousSongKey: "ArrowLeft"
+    previousSongKey: "ArrowLeft",
+    noSleepAlways: true,
+    noSleepWhenStarted: false
 };
 
 const defaultAppState = {

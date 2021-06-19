@@ -1,4 +1,4 @@
-import {ReactComponent as Logo} from "../images/logo-green.svg";
+import {ReactComponent as Logo} from "../images/logo.svg";
 
 function LoadingIndicator() {
     return (
