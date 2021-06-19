@@ -20,8 +20,8 @@ const oldIOS = () =>
     !window.MSStream;
 
 // Detect native Wake Lock API support
-// const nativeWakeLock = () => "wakeLock" in navigator;
-const nativeWakeLock = () => false;
+const nativeWakeLock = () => "wakeLock" in navigator;
+// const nativeWakeLock = () => false;
 
 class NoSleep {
     constructor(title = "No Sleep") {
