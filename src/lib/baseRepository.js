@@ -1,7 +1,9 @@
 import {defaultAppState, defaultConfig} from "./env";
 
+const simulateSlow = false;
+
 export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, doSaveSetlists, doGetAppState, doSaveAppState}) {
-    return {
+    const repository = {
         getSongs: getSongs,
         getSong: getSong,
         saveSong: saveSong,
@@ -14,6 +16,21 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
         getAppState: getAppState,
         saveAppState: saveAppState
     }
+
+    if (simulateSlow) {
+        Object.keys(repository).forEach(key => {
+            const orig = repository[key];
+            function slow() {
+                return new Promise(resolve => {
+                    console.log("Simulating slow", key);
+                    setTimeout(() => orig(...arguments).then(resolve), 5000);
+                })
+            }
+            repository[key] = slow;
+        });
+    }
+
+    return repository;
 
     async function getSongs() {
         info("Repository: getSongs");
@@ -124,9 +141,11 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
     }
 
     async function saveAppState(appState) {
-        const appStateToSave = reduceAppState(appState);
+        // TODO try to save only once if this is invoked many times in sequence
 
         info("Repository: save app state: ", appState);
+
+        const appStateToSave = reduceAppState(appState);
 
         doSaveAppState(appStateToSave);
 
@@ -134,11 +153,14 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
     }
 
     function reduceAppState(appState) {
-        return {
-            activeSetlistId: appState.setlist ? appState.setlist.id : null,
-            activeSetlistIdx: appState.activeSetlistIdx,
-            song: appState.song
-        };
+        const reducedAppState = {...appState};
+
+        if (reducedAppState.setlist) {
+            reducedAppState.activeSetlistId = reducedAppState.setlist.id;
+        }
+        delete reducedAppState.setlist;
+
+        return reducedAppState;
     }
 
     // ---- internal

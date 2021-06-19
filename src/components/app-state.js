@@ -10,10 +10,15 @@ function savingAppStateReducer(appState, action) {
 
     const newAppState = appStateReducer(appState, action);
     if (newAppState) {
-        repository.saveAppState(newAppState)
-            .then(() => {
-                //console.log("App state saved.")
-            });
+        if (appState) {
+            console.log("New app state", newAppState);
+            repository.saveAppState(newAppState)
+                .then(() => {
+                    //console.log("App state saved.")
+                });
+        } else {
+            console.log("Not saving app state after initial set");
+        }
         return newAppState;
     } else {
         console.warn("Reducer returned no app state on action", action);
