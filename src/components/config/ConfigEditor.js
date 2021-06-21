@@ -49,7 +49,7 @@ function ConfigEditor({appState, appStateDispatch}) {
     );
 
     const translateKey = (key) => {
-        console.log("key", key);
+        //console.log("key", key);
 
         if (" " === key) {
             return translateKey("Space");

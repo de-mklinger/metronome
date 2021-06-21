@@ -5,7 +5,7 @@ import {faBars, faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
 import {memo} from "react";
 
 function WrappedSongControls({appState, appStateDispatch}) {
-    console.log("WrappedSongControls render")
+    //console.log("WrappedSongControls render")
 
     if (appState.setlist) {
         return (

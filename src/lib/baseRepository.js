@@ -22,7 +22,7 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
             const orig = repository[key];
             function slow() {
                 return new Promise(resolve => {
-                    console.log("Simulating slow", key);
+                    console.warn("Simulating slow", key);
                     setTimeout(() => orig(...arguments).then(resolve), 5000);
                 })
             }

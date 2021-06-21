@@ -81,7 +81,7 @@ const tick = (tickCtx, switchTime, activeBeatIdx) => {
 };
 
 function WrappedMetronomeAudio({started, song, onActiveBeatIdxChange}) {
-    console.log("WrappedMetronomeAudio render");
+    //console.log("WrappedMetronomeAudio render");
 
     const tickCtx = useRef({});
     tickCtx.current = {

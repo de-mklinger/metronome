@@ -11,7 +11,7 @@ function savingAppStateReducer(appState, action) {
     const newAppState = appStateReducer(appState, action);
     if (newAppState) {
         if (appState) {
-            console.log("New app state", newAppState);
+            //console.log("New app state", newAppState);
             repository.saveAppState(newAppState)
                 .then(() => {
                     //console.log("App state saved.")

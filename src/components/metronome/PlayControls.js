@@ -7,7 +7,7 @@ import BpmKnob from "../BpmKnob";
 import {memo} from "react";
 
 function WrappedPlayControls({started, appState, appStateDispatch, onPlay}) {
-    console.log("WrappedPlayControls render");
+    //console.log("WrappedPlayControls render");
 
     const onBpmChange = bpm => appStateDispatch({type: "setBpm", payload: bpm});
     const onPreviousClick = () => appStateDispatch({type: "previousSong"});

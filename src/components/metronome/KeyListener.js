@@ -2,7 +2,7 @@ import useEventListener from "@use-it/event-listener";
 import {memo, useEffect, useRef} from "react";
 
 function WrappedKeyListener({onPlay, config, appStateDispatch}) {
-    console.log("WrappedKeyListener Render");
+    //console.log("WrappedKeyListener Render");
 
     const onKeyDown = e => {
         switch (e.key) {
