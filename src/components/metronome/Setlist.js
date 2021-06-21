@@ -2,7 +2,7 @@ import {useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEllipsisV, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faEllipsisV, faListOl, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
 function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect}) {
@@ -18,6 +18,9 @@ function Setlist({setlist, activeSetlistIdx, onSongSelect, onSetlistDeselect}) {
                             <FontAwesomeIcon icon={faTimes}/>
                         </span>
                         <Link className="px-2" to={"/setlists"}>
+                            <FontAwesomeIcon icon={faListOl}/>
+                        </Link>
+                        <Link className="px-2" to={"/setlists/" + encodeURIComponent(setlist.id)}>
                             <FontAwesomeIcon icon={faEllipsisV}/>
                         </Link>
                     </div>

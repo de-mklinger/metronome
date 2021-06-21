@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleUp, faAngleDown, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
+import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
 
 function SetlistEditorSongs({songs, onSongsChange}) {
     const removeSongIdx = idx => {
@@ -35,7 +36,12 @@ function SetlistEditorSongs({songs, onSongsChange}) {
                 {songs.map((song, idx) =>
                     <li key={idx}>
                         <div className="title">
-                            {song.title}
+                            <div>
+                                {song.title}
+                            </div>
+                            <div className="small">
+                                {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
+                            </div>
                         </div>
                         <div className="actions">
                             {songs.length > 1 &&

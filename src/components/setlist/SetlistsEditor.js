@@ -48,7 +48,7 @@ function SetlistsEditor({appState, appStateDispatch}) {
                                     <div className="title">
                                         {setlist.title}
                                     </div>
-                                    <div className="title">
+                                    <div className="title small">
                                         {setlist.songs.length} songs
                                     </div>
                                 </div>
