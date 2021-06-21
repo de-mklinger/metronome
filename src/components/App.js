@@ -1,5 +1,4 @@
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
-import Metronome from "./metronome/Metronome";
 import SongEditorContainer from "./song/SongEditorContainer";
 import {useEffect, useState} from "react";
 import SetlistsEditor from "./setlist/SetlistsEditor";
@@ -12,6 +11,7 @@ import ConfigEditor from "./config/ConfigEditor";
 import {useNoSleep} from "../lib/no-sleep";
 import {getAudioContext} from "../lib/audio";
 import SplashScreen from "./SplashScreen";
+import MetronomeScreen from "./metronome/MetronomeScreen";
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState(null);
@@ -102,7 +102,7 @@ function App() {
                         />
                     </Route>
                     <Route path="/">
-                        <Metronome
+                        <MetronomeScreen
                             appState={appState}
                             appStateDispatch={appStateDispatch}
                         />

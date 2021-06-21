@@ -4,7 +4,6 @@ import PlayControls from "./PlayControls";
 import MetronomeAudio from "./MetronomeAudio";
 import {useCallback, useState} from "react";
 import KeyListener from "./KeyListener";
-import Div100vh from "react-div-100vh";
 import {useNoSleep} from "../../lib/no-sleep";
 
 function Metronome({appState, appStateDispatch}) {
@@ -18,7 +17,7 @@ function Metronome({appState, appStateDispatch}) {
     useNoSleep(appState.config.noSleepWhenStarted && started);
 
     return (
-        <Div100vh className="metronome">
+        <>
             {/*<NoSleepDebugView noSleep={noSleep} />*/}
 
             <MetronomeAudio
@@ -49,7 +48,7 @@ function Metronome({appState, appStateDispatch}) {
                 appStateDispatch={appStateDispatch}
                 onPlay={onPlay}
             />
-        </Div100vh>
+        </>
     );
 }
 
