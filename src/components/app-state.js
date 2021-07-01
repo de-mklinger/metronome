@@ -10,8 +10,8 @@ function savingAppStateReducer(appState, action) {
 
     const newAppState = appStateReducer(appState, action);
     if (newAppState) {
+        //console.log("New app state", newAppState);
         if (appState) {
-            //console.log("New app state", newAppState);
             repository.saveAppState(newAppState)
                 .then(() => {
                     //console.log("App state saved.")
@@ -31,7 +31,7 @@ function appStateReducer(appState, action) {
 
     switch (action.type) {
         case "setAppState":
-            return action.payload;
+            return {...action.payload};
         case "setConfig":
             return withConfig(action.payload);
         case 'setSong':

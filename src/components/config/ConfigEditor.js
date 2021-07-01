@@ -28,8 +28,6 @@ function ConfigEditor({appState, appStateDispatch}) {
         setSubmitted(true);
     }
 
-    console.log("change key:", changeKey)
-
     const ChangeKeyButton = ({keyName}) => (
         <Button className={classNames({active: changeKey === keyName})}
                 onClick={() => {
@@ -65,7 +63,7 @@ function ConfigEditor({appState, appStateDispatch}) {
     }
 
     const KeyInput = ({keyName}) => (
-        <div>
+        <div data-testid={"key-input-" + keyName}>
             {translateKey(configState[keyName])}
             <ChangeKeyButton keyName={keyName} />
         </div>

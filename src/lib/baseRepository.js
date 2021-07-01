@@ -114,10 +114,7 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
     }
 
     async function extendAppState(savedAppState) {
-        const appState = {
-            activeSetlistIdx: savedAppState.activeSetlistIdx,
-            song: savedAppState.song
-        }
+        const appState = {...savedAppState};
 
         if (savedAppState.activeSetlistId) {
             appState.setlist = await getSetlist(savedAppState.activeSetlistId);
