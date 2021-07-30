@@ -12,6 +12,16 @@ import {useNoSleep} from "../lib/no-sleep";
 import {getAudioContext} from "../lib/audio";
 import SplashScreen from "./SplashScreen";
 import MetronomeScreen from "./metronome/MetronomeScreen";
+import {IntlProvider} from "react-intl";
+import messages_en from "../lang/en.json"
+import messages_de from "../lang/de.json"
+
+const messages = {
+    'en': messages_en,
+    'de': {...messages_en, ...messages_de}
+};
+
+const language = 'de';
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState(null);
@@ -69,46 +79,48 @@ function App() {
 
     return (
         <>
-            {/*<NoSleepDebugView noSleep={noSleep} />*/}
-            <Router>
-                <Switch>
-                    <Route path="/config">
-                        <ConfigEditor
-                            appState={appState}
-                            appStateDispatch={appStateDispatch}
-                        />
-                    </Route>
-                    <Route path="/currentsong">
-                        <CurrentSongEditor
-                            appState={appState}
-                            appStateDispatch={appStateDispatch}
-                        />
-                    </Route>
-                    <Route path="/songs/:id">
-                        <SongEditorContainer
-                            onSongChange={onSongChange}
-                            onSetlistChange={onSetlistChange}
-                        />
-                    </Route>
-                    <Route path="/setlists/:id">
-                        <SetlistEditorRoute
-                            onSetlistChange={onSetlistChange}
-                        />
-                    </Route>
-                    <Route path="/setlists">
-                        <SetlistsEditor
-                            appState={appState}
-                            appStateDispatch={appStateDispatch}
-                        />
-                    </Route>
-                    <Route path="/">
-                        <MetronomeScreen
-                            appState={appState}
-                            appStateDispatch={appStateDispatch}
-                        />
-                    </Route>
-                </Switch>
-            </Router>
+            <IntlProvider locale={language} defaultLocale="en" messages={messages[language]}>
+                {/*<NoSleepDebugView noSleep={noSleep} />*/}
+                <Router>
+                    <Switch>
+                        <Route path="/config">
+                            <ConfigEditor
+                                appState={appState}
+                                appStateDispatch={appStateDispatch}
+                            />
+                        </Route>
+                        <Route path="/currentsong">
+                            <CurrentSongEditor
+                                appState={appState}
+                                appStateDispatch={appStateDispatch}
+                            />
+                        </Route>
+                        <Route path="/songs/:id">
+                            <SongEditorContainer
+                                onSongChange={onSongChange}
+                                onSetlistChange={onSetlistChange}
+                            />
+                        </Route>
+                        <Route path="/setlists/:id">
+                            <SetlistEditorRoute
+                                onSetlistChange={onSetlistChange}
+                            />
+                        </Route>
+                        <Route path="/setlists">
+                            <SetlistsEditor
+                                appState={appState}
+                                appStateDispatch={appStateDispatch}
+                            />
+                        </Route>
+                        <Route path="/">
+                            <MetronomeScreen
+                                appState={appState}
+                                appStateDispatch={appStateDispatch}
+                            />
+                        </Route>
+                    </Switch>
+                </Router>
+            </IntlProvider>
         </>
     );
 }

@@ -6,6 +6,7 @@ import SelectSongContainer from "../song/SelectSongContainer";
 import NewSongEditorContainer from "./NewSongEditorContainer";
 import {defaultSetlist} from "../../lib/env";
 import repository from "../../lib/repository";
+import EqualWidthFormGroup from "../EqualWidthFormGroup";
 
 function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
     let newSetlist = false;
@@ -84,16 +85,16 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
                 onChange={setSetlist}
             />
 
-            <div className="form-group">
+            <EqualWidthFormGroup>
                 <Button variant="secondary" onClick={() => setSelectSong(true)}>
                     Add Song...
                 </Button>
                 <Button variant="secondary" onClick={() => setAddNewSong(true)}>
                     Add New Song...
                 </Button>
-            </div>
+            </EqualWidthFormGroup>
 
-            <div className="form-group">
+            <EqualWidthFormGroup>
                 <Button variant="primary" onClick={save} disabled={!setlist.title}>
                     Save
                 </Button>
@@ -101,14 +102,16 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}) {
                 {!newSetlist &&
                     <Button variant="secondary" onClick={saveAsNew}
                             disabled={!setlist.title || setlist.title === originalSetlist.title}>
-                        Save as new
+                        <span>
+                            As New
+                        </span>
                     </Button>
                 }
 
                 <Button variant="link" onClick={onCancel}>
                     Cancel
                 </Button>
-            </div>
+            </EqualWidthFormGroup>
         </Container>
     );
 }

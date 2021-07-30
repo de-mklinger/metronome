@@ -1,14 +1,19 @@
 import {useState} from "react";
 import {Link, Redirect} from "react-router-dom";
-import {Button, Container} from "react-bootstrap";
+import {Button, Col, Container, FormGroup, Row} from "react-bootstrap";
 import classNames from "classnames";
 import useEventListener from "@use-it/event-listener";
+import {useIntl} from "react-intl";
+import EqualWidthFormGroup from "../EqualWidthFormGroup";
 
 function ConfigEditor({appState, appStateDispatch}) {
     const [configState, setConfigState] = useState(appState.config);
     const [submitted, setSubmitted] = useState(false);
 
     const [changeKey, setChangeKey] = useState(null);
+
+    const intl = useIntl();
+    const msg = (id) => intl.formatMessage({id: id});
 
     useEventListener("keydown", e => {
         if (changeKey) {
@@ -30,6 +35,7 @@ function ConfigEditor({appState, appStateDispatch}) {
 
     const ChangeKeyButton = ({keyName}) => (
         <Button className={classNames({active: changeKey === keyName})}
+                style={{width: "100%"}}
                 onClick={() => {
                     if (changeKey === keyName) {
                         setChangeKey(null);
@@ -39,9 +45,9 @@ function ConfigEditor({appState, appStateDispatch}) {
                 }}
         >
             {changeKey === keyName ?
-                "Press Button to change"
+                msg("config.press-button-to-change")
                 :
-                "Change..."
+                msg("config.change")
             }
         </Button>
     );
@@ -56,47 +62,59 @@ function ConfigEditor({appState, appStateDispatch}) {
             return null;
         }
         if (key.length > 1) {
-            return "<" + key + ">";
+            return "<" + intl.formatMessage({id: "config.key." + key, defaultMessage: key}) + ">";
         }
 
         return key;
     }
 
     const KeyInput = ({keyName}) => (
-        <div data-testid={"key-input-" + keyName}>
-            {translateKey(configState[keyName])}
-            <ChangeKeyButton keyName={keyName} />
-        </div>
+        <FormGroup data-testid={"key-input-" + keyName}>
+            <Row className="align-items-baseline">
+                <Col xs={12} md={2}>
+                    <label htmlFor={keyName}>
+                        {msg('config.' + keyName)}:
+                    </label>
+                </Col>
+                <Col>
+                    {translateKey(configState[keyName])}
+                </Col>
+                <Col xs={7} md={6}>
+                    <ChangeKeyButton keyName={keyName} />
+                </Col>
+            </Row>
+        </FormGroup>
     )
+
+    const keys = [
+        "playKey",
+        "nextSongKey",
+        "previousSongKey"
+    ]
 
     return (
         <Container className="config-editor-screen">
-            <h1>Settings</h1>
+            <h1>
+                {msg('config.settings')}
+            </h1>
 
-            <h2>Keyboard Shortcuts</h2>
+            <h2>
+                {msg('config.keyboard-shortcuts')}
+            </h2>
 
-            <div className="form-group">
-                <label htmlFor="playKey">Start/Stop</label>
-                <KeyInput keyName="playKey" />
-            </div>
+            {keys.map(keyName =>
+                <KeyInput key={keyName} keyName={keyName} />
+            )}
 
-            <div className="form-group">
-                <label htmlFor="nextSongKey">Next Song</label>
-                <KeyInput keyName="nextSongKey" />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="previousSongKey">Previous Song</label>
-                <KeyInput keyName="previousSongKey" />
-            </div>
-
-            <div className="form-group">
-                <Button className="btn-primary" onClick={apply}>
-                    Save
+            <EqualWidthFormGroup>
+                <Button onClick={apply}>
+                    {msg('config.save')}
                 </Button>
 
-                <Link to="/" className="btn btn-link">Cancel</Link>
-            </div>
+                <Link to="/" className="btn btn-link">
+                    {msg('config.cancel')}
+                </Link>
+            </EqualWidthFormGroup>
         </Container>
     )
 }

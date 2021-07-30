@@ -1,7 +1,8 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleUp, faAngleDown, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faAngleDown, faAngleUp, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
 import {ReactComponent as QuarterNoteSvg} from "../../images/quarter-note.svg";
+import EqualWidthGrid from "../EqualWidthGrid";
 
 function SetlistEditorSongs({songs, onSongsChange}) {
     const removeSongIdx = idx => {
@@ -43,29 +44,25 @@ function SetlistEditorSongs({songs, onSongsChange}) {
                                 {song.timeSignatureBeats}/{song.timeSignatureNoteValue} <QuarterNoteSvg/> {song.bpm} BPM
                             </div>
                         </div>
-                        <div className="actions">
-                            {songs.length > 1 &&
-                                <>
-                                    <Button
-                                        variant="secondary"
-                                        className={(idx === 0 ? " invisible" : "")}
-                                        onClick={() => up(idx)}>
-                                        <FontAwesomeIcon icon={faAngleUp} />
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        className={(idx === songs.length - 1 ? " invisible" : "")}
-                                        onClick={() => down(idx)}>
-                                        <FontAwesomeIcon icon={faAngleDown} />
-                                    </Button>
-                                </>
-                            }
+                        <EqualWidthGrid>
+                            <Button
+                                variant="secondary"
+                                className={{"invisible": idx === 0 || songs.length <= 1}}
+                                onClick={() => up(idx)}>
+                                <FontAwesomeIcon icon={faAngleUp} />
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                className={{"invisible": idx === songs.length - 1 || songs.length <= 1}}
+                                onClick={() => down(idx)}>
+                                <FontAwesomeIcon icon={faAngleDown} />
+                            </Button>
                             <Button
                                 variant="secondary"
                                 onClick={() => removeSongIdx(idx)}>
                                 <FontAwesomeIcon icon={faTimes} />
                             </Button>
-                        </div>
+                        </EqualWidthGrid>
                     </li>
                 )}
             </ul>

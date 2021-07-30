@@ -5,6 +5,7 @@ import LoadingIndicator from "../LoadingIndicator";
 import {Button, Container} from "react-bootstrap";
 import SongSetlistsEditor from "./SongSetlistsEditor";
 import repository from "../../lib/repository";
+import EqualWidthFormGroup from "../EqualWidthFormGroup";
 
 function SongEditorContainer({onSongChange, onSetlistChange}) {
     let {id} = useParams();
@@ -87,19 +88,19 @@ function SongEditorContainer({onSongChange, onSetlistChange}) {
                 onChange={setSetlists}
             />
 
-            <div className="form-group">
+            <EqualWidthFormGroup>
                 <Button className="btn-primary" onClick={save} disabled={!song.title}>
                     Save
                 </Button>
 
                 <Button className="btn-secondary" onClick={saveAsNew} disabled={!song.title || song.title.trim() === originalSong.title.trim()}>
-                    Save as new
+                    As New
                 </Button>
 
                 <Link to="/" className="btn btn-link">
                     Cancel
                 </Link>
-            </div>
+            </EqualWidthFormGroup>
         </Container>
     );
 }
