@@ -102,10 +102,6 @@ function useRepositoryAction<A, R>(supplier: (arg: A) => Promise<R>): UseReposit
   }
 }
 
-export function useSaveSong() {
-  return useRepositoryAction(repository.saveSong);
-}
-
 type UseRepositoryNoArgActionResult<R> = RepositoryActionState<R> & {
   invoke: () => Promise<R>,
   reset: () => void
@@ -120,6 +116,14 @@ function useRepositoryNoArgAction<R>(supplier: () => Promise<R>): UseRepositoryN
       return x.invoke(undefined)
     }
   }
+}
+
+export function useGetSong() {
+  return useRepositoryAction(repository.getSong);
+}
+
+export function useSaveSong() {
+  return useRepositoryAction(repository.saveSong);
 }
 
 export function useGetSetlists() {

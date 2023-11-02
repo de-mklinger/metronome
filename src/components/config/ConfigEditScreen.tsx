@@ -8,9 +8,9 @@ import {ConfigKey} from "../../types.ts";
 import {AppStateProps} from "../../lib/app-state.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
 
-export type ConfigEditorProps = AppStateProps;
+export type ConfigEditScreenProps = AppStateProps;
 
-function ConfigEditor({appState, appStateDispatch}: ConfigEditorProps) {
+function ConfigEditScreen({appState, appStateDispatch}: ConfigEditScreenProps) {
     const [configState, setConfigState] = useState(appState.config);
     const [submitted, setSubmitted] = useState(false);
 
@@ -123,4 +123,4 @@ function ConfigEditor({appState, appStateDispatch}: ConfigEditorProps) {
     )
 }
 
-export default ConfigEditor;
+export default ConfigEditScreen;

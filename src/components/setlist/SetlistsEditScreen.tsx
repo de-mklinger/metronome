@@ -2,11 +2,11 @@ import {useState} from "react";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import {Button, Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
-import SetlistEditorContainer from "./SetlistEditorContainer.tsx";
+import SetlistEditScreen from "./SetlistEditScreen.tsx";
 import {useGetSetlists, useSaveSetlist} from "../../lib/repository.js";
 import {AppStateProps} from "../../lib/app-state.ts";
 
-function SetlistsEditor({appState, appStateDispatch}: AppStateProps) {
+function SetlistsEditScreen({appState, appStateDispatch}: AppStateProps) {
     const {invoke: getSetlists, inProgress: getSetlistsInProgress, error: getSetlistsError, result: setlists, reset: resetSetlists} = useGetSetlists();
     const {invoke: saveSetlist, inProgress: saveSetlistInProgress, error: saveSetlistError} = useSaveSetlist();
     const [redirect, setRedirect] = useState(false);
@@ -31,7 +31,7 @@ function SetlistsEditor({appState, appStateDispatch}: AppStateProps) {
 
     if (newSetlist) {
         return (
-            <SetlistEditorContainer
+            <SetlistEditScreen
                 onSetlistChange={setlist => {
                     saveSetlist(setlist)
                       .then(() => resetSetlists())
@@ -93,4 +93,4 @@ function SetlistsEditor({appState, appStateDispatch}: AppStateProps) {
     );
 }
 
-export default SetlistsEditor;
+export default SetlistsEditScreen;

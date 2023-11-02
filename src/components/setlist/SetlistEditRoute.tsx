@@ -1,5 +1,5 @@
 import {Redirect} from "react-router-dom";
-import SetlistEditorContainer from "./SetlistEditorContainer.js";
+import SetlistEditScreen from "./SetlistEditScreen.tsx";
 import {useState} from "react";
 import {SetlistWithSongs} from "../../types.ts";
 import useParam from "../../lib/use-param.ts";
@@ -8,7 +8,7 @@ export type SetlistEditorRouteProps = {
     onSetlistChange: (setlist: SetlistWithSongs) => void
 }
 
-function SetlistEditorRoute({onSetlistChange}: SetlistEditorRouteProps) {
+function SetlistEditRoute({onSetlistChange}: SetlistEditorRouteProps) {
     const id = useParam("id");
 
     const [submitted, setSubmitted] = useState(false);
@@ -23,7 +23,7 @@ function SetlistEditorRoute({onSetlistChange}: SetlistEditorRouteProps) {
     }
 
     return (
-        <SetlistEditorContainer
+        <SetlistEditScreen
             setlistId={id}
             onSetlistChange={handleSetlistChange}
             onCancel={() => setSubmitted(true)}
@@ -31,4 +31,4 @@ function SetlistEditorRoute({onSetlistChange}: SetlistEditorRouteProps) {
     );
 }
 
-export default SetlistEditorRoute;
+export default SetlistEditRoute;

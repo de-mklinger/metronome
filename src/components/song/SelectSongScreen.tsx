@@ -5,12 +5,12 @@ import {Container} from "react-bootstrap";
 import repository from "../../lib/repository.ts";
 import {Song} from "../../types.ts";
 
-export type SelectSongContainerProps = {
+export type SelectSongScreenProps = {
   onSelect: (song: Song) => void
   onCancel: () => void
 }
 
-function SelectSongContainer({onSelect, onCancel}: SelectSongContainerProps) {
+function SelectSongScreen({onSelect, onCancel}: SelectSongScreenProps) {
     const [songs, setSongs] = useState<Song[]>([]);
     const [filter, setFilter] = useState("");
 
@@ -57,4 +57,4 @@ function SelectSongContainer({onSelect, onCancel}: SelectSongContainerProps) {
     );
 }
 
-export default SelectSongContainer;
+export default SelectSongScreen;

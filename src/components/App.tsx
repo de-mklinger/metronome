@@ -3,17 +3,17 @@ import {useEffect, useState} from "react";
 import LoadingIndicator from "./common/LoadingIndicator.tsx";
 import useAppState from "../lib/app-state.ts";
 import repository from "../lib/repository.ts";
-import {useNoSleep} from "../lib/no-sleep";
+import {useNoSleep} from "../lib/no-sleep.ts";
 import {getAudioContext} from "../lib/audio.js";
 import SplashScreen from "./SplashScreen.js";
 import {IntlProvider} from "react-intl";
 import {SetlistWithSongs, Song} from "../types.ts";
 import MetronomeScreen from "./metronome/MetronomeScreen.tsx";
-import ConfigEditor from "./config/ConfigEditor.tsx";
-import CurrentSongEditor from "./song/CurrentSongEditor.tsx";
-import SongEditorContainer from "./song/SongEditorContainer.tsx";
-import SetlistEditorRoute from "./setlist/SetlistEditorRoute.tsx";
-import SetlistsEditor from "./setlist/SetlistsEditor.tsx";
+import ConfigEditScreen from "./config/ConfigEditScreen.tsx";
+import CurrentSongEditScreen from "./song/CurrentSongEditScreen.tsx";
+import SongEditScreen from "./song/SongEditScreen.tsx";
+import SetlistEditRoute from "./setlist/SetlistEditRoute.tsx";
+import SetlistsEditScreen from "./setlist/SetlistsEditScreen.tsx";
 import {language, messages} from "../lang/i18n.ts";
 
 function App() {
@@ -77,30 +77,30 @@ function App() {
                 <Router>
                     <Switch>
                         <Route path="/config">
-                            <ConfigEditor
+                            <ConfigEditScreen
                                 appState={appState}
                                 appStateDispatch={appStateDispatch}
                             />
                         </Route>
                         <Route path="/currentsong">
-                            <CurrentSongEditor
+                            <CurrentSongEditScreen
                                 appState={appState}
                                 appStateDispatch={appStateDispatch}
                             />
                         </Route>
                         <Route path="/songs/:id">
-                            <SongEditorContainer
+                            <SongEditScreen
                                 onSongChange={onSongChange}
                                 onSetlistChange={onSetlistChange}
                             />
                         </Route>
                         <Route path="/setlists/:id">
-                            <SetlistEditorRoute
+                            <SetlistEditRoute
                                 onSetlistChange={onSetlistChange}
                             />
                         </Route>
                         <Route path="/setlists">
-                            <SetlistsEditor
+                            <SetlistsEditScreen
                                 appState={appState}
                                 appStateDispatch={appStateDispatch}
                             />

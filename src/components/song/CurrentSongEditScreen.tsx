@@ -6,7 +6,7 @@ import {AppStateProps} from "../../lib/app-state.ts";
 import {useSaveSong} from "../../lib/repository.ts";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 
-function CurrentSongEditor({appState, appStateDispatch}: AppStateProps) {
+function CurrentSongEditScreen({appState, appStateDispatch}: AppStateProps) {
     const [songState, setSongState] = useState(appState.song);
     const [submitted, setSubmitted] = useState(false);
     const {invoke: saveSong, inProgress, error} = useSaveSong();
@@ -57,4 +57,4 @@ function CurrentSongEditor({appState, appStateDispatch}: AppStateProps) {
     )
 }
 
-export default CurrentSongEditor;
+export default CurrentSongEditScreen;

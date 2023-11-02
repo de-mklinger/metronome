@@ -9,12 +9,12 @@ import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import {Setlist, SetlistWithSongs, Song} from "../../types.ts";
 import useParam from "../../lib/use-param.ts";
 
-export type SongEditorContainerProps = {
+export type SongEditScreenProps = {
   onSongChange: (song: Song) => void,
   onSetlistChange: (setlist: SetlistWithSongs) => void
 }
 
-function SongEditorContainer({onSongChange, onSetlistChange}: SongEditorContainerProps) {
+function SongEditScreen({onSongChange, onSetlistChange}: SongEditScreenProps) {
     const id = useParam("id");
 
     const [song, setSong] = useState<Song>();
@@ -126,4 +126,4 @@ function SongEditorContainer({onSongChange, onSetlistChange}: SongEditorContaine
 }
 
 
-export default SongEditorContainer;
+export default SongEditScreen;

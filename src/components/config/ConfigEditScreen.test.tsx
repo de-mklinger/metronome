@@ -1,5 +1,5 @@
 import {findByRole, fireEvent, render, screen} from '@testing-library/react';
-import ConfigEditor from "./ConfigEditor.js";
+import ConfigEditScreen from "./ConfigEditScreen.tsx";
 import {HashRouter, Route} from "react-router-dom";
 import {defaultConfig, defaultSong} from "../../lib/env.js";
 import {expect, test} from "vitest"
@@ -73,7 +73,7 @@ function renderConfigEditor(configOverrides?: Partial<Config>) {
     <IntlProvider locale="en" defaultLocale="en" messages={messages["en"]}>
         <HashRouter>
           <Route>
-            <ConfigEditor
+            <ConfigEditScreen
               appState={appState}
               appStateDispatch={appStateDispatch}/>
           </Route>

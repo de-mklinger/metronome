@@ -1,21 +1,21 @@
 import {useEffect, useState} from "react";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
-import SetlistEditor from "./SetlistEditor.tsx";
+import SetlistEditView from "./SetlistEditView.tsx";
 import {Button, Container} from "react-bootstrap";
-import SelectSongContainer from "../song/SelectSongContainer.tsx";
-import NewSongEditorContainer from "./NewSongEditorContainer.tsx";
+import SelectSongScreen from "../song/SelectSongScreen.tsx";
+import NewSongEditScreen from "./NewSongEditScreen.tsx";
 import {defaultSetlist} from "../../lib/env.js";
 import repository from "../../lib/repository.js";
 import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
-import {SetlistWithSongs, Song, toNewSetlist} from "../../types.ts";
+import {NewSetlistWithSongs, SetlistWithSongs, Song, toNewSetlist} from "../../types.ts";
 
-export type SetlistEditorContainerProps = {
+export type SetlistEditScreenProps = {
     setlistId?: string,
     onSetlistChange: (setlist: SetlistWithSongs) => void,
     onCancel: () => void
 }
 
-function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistEditorContainerProps) {
+function SetlistEditScreen({setlistId, onSetlistChange, onCancel}: SetlistEditScreenProps) {
     let newSetlist = false;
     let initialSetlist = undefined;
     if (!setlistId) {
@@ -23,7 +23,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistE
         initialSetlist = defaultSetlist;
     }
 
-    const [setlist, setSetlist] = useState<SetlistWithSongs | undefined>(initialSetlist);
+    const [setlist, setSetlist] = useState<SetlistWithSongs | NewSetlistWithSongs | undefined>(initialSetlist);
     const [originalSetlist, setOriginalSetlist] = useState(initialSetlist);
     const [selectSong, setSelectSong] = useState(false);
     const [addNewSong, setAddNewSong] = useState(false);
@@ -53,7 +53,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistE
 
     if (selectSong) {
         return (
-            <SelectSongContainer
+            <SelectSongScreen
                 onSelect={song => {
                     addSong(song);
                     setSelectSong(false);
@@ -67,7 +67,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistE
 
     if (addNewSong) {
         return (
-            <NewSongEditorContainer
+            <NewSongEditScreen
                 onSave={song => {
                     addSong(song);
                     setAddNewSong(false);
@@ -91,7 +91,7 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistE
                 {newSetlist ? "New Setlist" : "Edit Setlist"}
             </h1>
 
-            <SetlistEditor
+            <SetlistEditView
                 setlist={setlist}
                 onChange={setSetlist}
             />
@@ -127,4 +127,4 @@ function SetlistEditorContainer({setlistId, onSetlistChange, onCancel}: SetlistE
     );
 }
 
-export default SetlistEditorContainer;
+export default SetlistEditScreen;

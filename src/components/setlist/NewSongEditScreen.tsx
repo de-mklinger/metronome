@@ -10,7 +10,7 @@ export type NewSongEditorContainerProps = {
   onCancel: () => void
 }
 
-function NewSongEditorContainer({onSave, onCancel}: NewSongEditorContainerProps) {
+function NewSongEditScreen({onSave, onCancel}: NewSongEditorContainerProps) {
     const [song, setSong] = useState(defaultSong);
 
     const save = () => repository.saveSong(song)
@@ -37,4 +37,4 @@ function NewSongEditorContainer({onSave, onCancel}: NewSongEditorContainerProps)
 
 }
 
-export default NewSongEditorContainer;
+export default NewSongEditScreen;

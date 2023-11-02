@@ -1,12 +1,12 @@
 import SetlistEditorSongs from "./SetlistEditorSongs.js";
 import {NewSetlistWithSongs, Song} from "../../types.ts";
 
-export type SetlistEditorProps<T extends NewSetlistWithSongs> = {
+export type SetlistEditViewProps<T extends NewSetlistWithSongs> = {
     setlist: T,
     onChange: (setlist: T) => void
 }
 
-function SetlistEditor<T extends NewSetlistWithSongs>({setlist, onChange}: SetlistEditorProps<T>) {
+function SetlistEditView<T extends NewSetlistWithSongs>({setlist, onChange}: SetlistEditViewProps<T>) {
     function fireChange<K extends keyof T>(attributeName: K, attributeValue: T[K]) {
         let changedSetlist = { ...setlist };
         changedSetlist[attributeName] = attributeValue;
@@ -44,4 +44,4 @@ function SetlistEditor<T extends NewSetlistWithSongs>({setlist, onChange}: Setli
     );
 }
 
-export default SetlistEditor;
+export default SetlistEditView;
