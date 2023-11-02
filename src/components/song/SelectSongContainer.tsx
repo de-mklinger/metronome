@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import LoadingIndicator from "../LoadingIndicator.tsx";
+import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import SelectSong from "./SelectSong.tsx";
 import {Container} from "react-bootstrap";
 import repository from "../../lib/repository.ts";

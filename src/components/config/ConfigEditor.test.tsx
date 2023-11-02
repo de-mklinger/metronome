@@ -5,7 +5,7 @@ import {defaultConfig, defaultSong} from "../../lib/env.js";
 import {expect, test} from "vitest"
 import {AppState, Config} from "../../types.ts";
 import {IntlProvider} from "react-intl";
-import {messages} from "../i18n.ts";
+import {messages} from "../../lang/i18n.ts";
 
 test('renders shortcut settings', async () => {
   renderConfigEditor();

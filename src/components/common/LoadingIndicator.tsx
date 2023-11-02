@@ -1,4 +1,4 @@
-import Logo from "../images/logo.svg?react";
+import Logo from "../../images/logo.svg?react";
 
 function LoadingIndicator() {
     return (

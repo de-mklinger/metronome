@@ -1,7 +1,7 @@
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
 import {useEffect, useState} from "react";
-import LoadingIndicator from "./LoadingIndicator.js";
-import useAppState from "./app-state.ts";
+import LoadingIndicator from "./common/LoadingIndicator.tsx";
+import useAppState from "../lib/app-state.ts";
 import repository from "../lib/repository.ts";
 import {useNoSleep} from "../lib/no-sleep";
 import {getAudioContext} from "../lib/audio.js";
@@ -14,7 +14,7 @@ import CurrentSongEditor from "./song/CurrentSongEditor.tsx";
 import SongEditorContainer from "./song/SongEditorContainer.tsx";
 import SetlistEditorRoute from "./setlist/SetlistEditorRoute.tsx";
 import SetlistsEditor from "./setlist/SetlistsEditor.tsx";
-import {language, messages} from "./i18n.ts";
+import {language, messages} from "../lang/i18n.ts";
 
 function App() {
     const [loadSetlistId, setLoadSetlistId] = useState<string | undefined>(undefined);

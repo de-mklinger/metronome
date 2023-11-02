@@ -1,5 +1,5 @@
-import {defaultAppState, defaultSong} from "../lib/env.js";
-import repository from "../lib/repository";
+import {defaultAppState, defaultSong} from "./env.ts";
+import repository from "./repository.ts";
 import React, {useReducer} from "react";
 import {AppState, Config, NewSong, SetlistWithSongs, Song} from "../types.ts";
 

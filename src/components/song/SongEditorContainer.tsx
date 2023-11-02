@@ -1,11 +1,11 @@
 import {Link, Redirect} from "react-router-dom";
 import {useEffect, useState} from "react";
 import SongEditor from "./SongEditor.js";
-import LoadingIndicator from "../LoadingIndicator.js";
+import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import {Button, Container} from "react-bootstrap";
 import SongSetlistsEditor from "./SongSetlistsEditor.js";
 import repository from "../../lib/repository.js";
-import EqualWidthFormGroup from "../EqualWidthFormGroup.js";
+import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import {Setlist, SetlistWithSongs, Song} from "../../types.ts";
 import useParam from "../../lib/use-param.ts";
 

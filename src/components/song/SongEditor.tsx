@@ -1,5 +1,5 @@
 import {Col, Row} from "react-bootstrap";
-import BpmKnob from "../BpmKnob.js";
+import BpmKnob from "../common/BpmKnob.tsx";
 import Accents from "./Accents.js";
 import TimeSignature from "./TimeSignature.js";
 import {NewSong} from "../../types.ts";

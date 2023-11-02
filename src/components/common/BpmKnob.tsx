@@ -1,5 +1,5 @@
-import {defaultBpm, maxBpm, minBpm, rotationFactor} from "../lib/env.js";
-import Knob from "./Knob.js";
+import {defaultBpm, maxBpm, minBpm, rotationFactor} from "../../lib/env.ts";
+import Knob from "./Knob.tsx";
 import {useRef} from "react";
 
 const rotationToBpm = (rotation: number) => {

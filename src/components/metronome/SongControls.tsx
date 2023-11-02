@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
 import {memo} from "react";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 
 export type SongControlsProps = AppStateProps;
 

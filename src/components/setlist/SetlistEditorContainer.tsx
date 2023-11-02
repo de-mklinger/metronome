@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
-import LoadingIndicator from "../LoadingIndicator.tsx";
+import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import SetlistEditor from "./SetlistEditor.tsx";
 import {Button, Container} from "react-bootstrap";
 import SelectSongContainer from "../song/SelectSongContainer.tsx";
 import NewSongEditorContainer from "./NewSongEditorContainer.tsx";
 import {defaultSetlist} from "../../lib/env.js";
 import repository from "../../lib/repository.js";
-import EqualWidthFormGroup from "../EqualWidthFormGroup.tsx";
+import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import {SetlistWithSongs, Song, toNewSetlist} from "../../types.ts";
 
 export type SetlistEditorContainerProps = {

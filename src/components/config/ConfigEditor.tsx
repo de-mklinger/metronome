@@ -3,9 +3,9 @@ import {Link, Redirect} from "react-router-dom";
 import {Button, Col, Container, FormGroup, Row} from "react-bootstrap";
 import classNames from "classnames";
 import {useIntl} from "react-intl";
-import EqualWidthFormGroup from "../EqualWidthFormGroup.tsx";
+import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import {ConfigKey} from "../../types.ts";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
 
 export type ConfigEditorProps = AppStateProps;

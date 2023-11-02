@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleDown, faAngleUp, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Button} from "react-bootstrap";
 import QuarterNoteSvg from "../../images/quarter-note.svg?react";
-import EqualWidthGrid from "../EqualWidthGrid.js";
+import EqualWidthGrid from "../common/EqualWidthGrid.tsx";
 import {Song} from "../../types.ts";
 import classNames from "classnames";
 

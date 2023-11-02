@@ -3,9 +3,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStepBackward, faStepForward} from "@fortawesome/free-solid-svg-icons";
 import PlayButton from "./PlayButton.tsx";
 import {getLabels} from "../../lib/tempo.js";
-import BpmKnob from "../BpmKnob.tsx";
+import BpmKnob from "../common/BpmKnob.tsx";
 import {memo} from "react";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 
 export type PlayControlsProps = AppStateProps<{
   started: boolean,

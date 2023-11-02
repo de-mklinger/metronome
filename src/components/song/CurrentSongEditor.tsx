@@ -2,9 +2,9 @@ import SongEditor from "./SongEditor.tsx";
 import {useState} from "react";
 import {Button, Container} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 import {useSaveSong} from "../../lib/repository.ts";
-import LoadingIndicator from "../LoadingIndicator.tsx";
+import LoadingIndicator from "../common/LoadingIndicator.tsx";
 
 function CurrentSongEditor({appState, appStateDispatch}: AppStateProps) {
     const [songState, setSongState] = useState(appState.song);

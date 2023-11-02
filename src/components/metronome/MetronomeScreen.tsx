@@ -1,6 +1,6 @@
 import Metronome from "./Metronome.js";
 import Div100vh from "react-div-100vh";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 
 export type MetronomeScreenProps = AppStateProps;
 

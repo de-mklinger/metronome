@@ -5,7 +5,7 @@ import MetronomeAudio from "./MetronomeAudio.tsx";
 import {useCallback, useState} from "react";
 import KeyListener from "./KeyListener.tsx";
 import {useNoSleep} from "../../lib/no-sleep.js";
-import {AppStateProps} from "../app-state.ts";
+import {AppStateProps} from "../../lib/app-state.ts";
 
 export type MetronomeProps = AppStateProps;
 
