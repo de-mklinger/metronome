@@ -1,58 +1,47 @@
-import BeatBar from './BeatBar.js';
+import BeatBar from "./BeatBar.js";
 import SongControls from "./SongControls.tsx";
 import PlayControls from "./PlayControls.tsx";
 import MetronomeAudio from "./MetronomeAudio.tsx";
-import {useCallback, useState} from "react";
+import { useCallback, useState } from "react";
 import KeyListener from "./KeyListener.tsx";
-import {useNoSleep} from "../../lib/no-sleep.ts";
-import {AppStateProps} from "../../lib/app-state.ts";
+import { useNoSleep } from "../../lib/no-sleep.ts";
+import { useAppState } from "../../lib/app-state.tsx";
 
-export type MetronomeProps = AppStateProps;
+function MetronomeView() {
+  const appState = useAppState();
+  const [started, setStarted] = useState(false);
+  const onPlay = useCallback(() => {
+    setStarted((started) => !started);
+  }, []);
 
-function MetronomeView({appState, appStateDispatch}: MetronomeProps) {
-    const [started, setStarted] = useState(false);
-    const onPlay = useCallback(() => {
-        setStarted((started) => !started);
-    }, []);
+  const [activeBeatIdx, setActiveBeatIdx] = useState(-1);
 
-    const [activeBeatIdx, setActiveBeatIdx] = useState(-1);
+  useNoSleep(appState.config.noSleepWhenStarted && started);
 
-    useNoSleep(appState.config.noSleepWhenStarted && started);
+  return (
+    <>
+      {/*<NoSleepDebugView noSleep={noSleep} />*/}
 
-    return (
-        <>
-            {/*<NoSleepDebugView noSleep={noSleep} />*/}
+      <MetronomeAudio
+        started={started}
+        song={appState.song}
+        onActiveBeatIdxChange={setActiveBeatIdx}
+      />
 
-            <MetronomeAudio
-                started={started}
-                song={appState.song}
-                onActiveBeatIdxChange={setActiveBeatIdx}
-            />
+      <KeyListener
+        onPlay={onPlay}
+      />
 
-            <KeyListener
-                onPlay={onPlay}
-                appState={appState}
-                appStateDispatch={appStateDispatch}
-            />
+      <BeatBar song={appState.song} activeBeatIdx={activeBeatIdx} />
 
-            <BeatBar
-                song={appState.song}
-                activeBeatIdx={activeBeatIdx}
-            />
+      <SongControls />
 
-            <SongControls
-                appState={appState}
-                appStateDispatch={appStateDispatch}
-            />
-
-            <PlayControls
-                started={started}
-                appState={appState}
-                appStateDispatch={appStateDispatch}
-                onPlay={onPlay}
-            />
-        </>
-    );
+      <PlayControls
+        started={started}
+        onPlay={onPlay}
+      />
+    </>
+  );
 }
 
 export default MetronomeView;

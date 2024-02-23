@@ -1,4 +1,4 @@
-import {Redirect} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import SetlistEditScreen from "./SetlistEditScreen.tsx";
 import {useState} from "react";
 import {SetlistWithSongs} from "../../types.ts";
@@ -13,8 +13,10 @@ function SetlistEditRoute({onSetlistChange}: SetlistEditorRouteProps) {
 
     const [submitted, setSubmitted] = useState(false);
 
+    const navigate = useNavigate();
+
     if (submitted) {
-        return <Redirect to="/"/>
+        navigate(-1);
     }
 
     const handleSetlistChange = (setlist: SetlistWithSongs) => {

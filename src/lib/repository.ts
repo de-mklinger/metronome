@@ -1,6 +1,9 @@
 import newRepository from "./baseRepository.js";
 import localStorageRepositoryImpl from "./localStorageRepositoryImpl.js";
 import {useState} from "react";
+import useEntity from "./use-entity.ts";
+import {clearEntityAction} from "./entity-action.ts";
+import {defaultSetlist} from "./env.ts";
 
 const repository = newRepository(localStorageRepositoryImpl);
 
@@ -126,10 +129,63 @@ export function useSaveSong() {
   return useRepositoryAction(repository.saveSong);
 }
 
-export function useGetSetlists() {
-  return useRepositoryNoArgAction(repository.getSetlists);
+export function useGetSetlist() {
+  return useRepositoryAction(repository.getSetlist);
 }
 
 export function useSaveSetlist() {
   return useRepositoryAction(repository.saveSetlist);
+}
+
+export function useGetSetlists() {
+  return useRepositoryNoArgAction(repository.getSetlists);
+}
+
+// -------
+
+export function useNewSetlist() {
+  const {entity: initialSetlist, save, saveCount} = useEntity(
+    `setlist-new-${Math.random().toString(16).substring(2)}`,
+    () => Promise.resolve({...defaultSetlist}),
+    (setlist) => repository.saveSetlist(setlist),
+    (setlist) => Promise.resolve(setlist),
+    () => {
+      clearEntityAction("setlists");
+    }
+  );
+
+  const [setlist, update] = useState(initialSetlist);
+
+  return {setlist, update, save, wasSaved: saveCount > 0};
+}
+
+export function useSetlist(id: string) {
+  const {entity: initialSetlist, save, saveCount} = useEntity(
+    `setlist-${id}`,
+    () => repository.getSetlist(id),
+    (setlist) => repository.saveSetlist(setlist),
+    (setlist) => Promise.resolve(setlist),
+    () => {
+      clearEntityAction("setlists");
+    }
+  );
+
+  const [setlist, update] = useState(initialSetlist);
+
+  return {setlist, update, save, wasSaved: saveCount > 0};
+}
+
+export function useSetlists() {
+  const {entity: initialSetlists, save, saveCount} = useEntity(
+    `setlists`,
+    () => repository.getSetlists(),
+    (_) => Promise.resolve(true),
+    (_) => repository.getSetlists()
+  );
+
+  // TODO save: delete missing, add new
+
+  const [setlists, update] = useState(initialSetlists);
+
+  return {setlists, update, save, wasSaved: saveCount > 0};
 }

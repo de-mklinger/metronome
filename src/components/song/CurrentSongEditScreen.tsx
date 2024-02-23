@@ -1,60 +1,60 @@
 import SongEditor from "./SongEditor.tsx";
-import {useState} from "react";
-import {Button, Container} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
-import {AppStateProps} from "../../lib/app-state.ts";
-import {useSaveSong} from "../../lib/repository.ts";
+import { useState } from "react";
+import { Button, Container } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppState } from "../../lib/app-state.tsx";
+import { useSaveSong } from "../../lib/repository.ts";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 
-function CurrentSongEditScreen({appState, appStateDispatch}: AppStateProps) {
-    const [songState, setSongState] = useState(appState.song);
-    const [submitted, setSubmitted] = useState(false);
-    const {invoke: saveSong, inProgress, error} = useSaveSong();
+function CurrentSongEditScreen() {
+  const appState = useAppState();
+  const [songState, setSongState] = useState(appState.song);
+  const { invoke: saveSong, inProgress, error } = useSaveSong();
 
-    if (submitted) {
-        return <Redirect to="/"/>
-    }
+  const navigate = useNavigate();
 
-    if (inProgress) {
-      return <LoadingIndicator />
-    }
+  if (inProgress) {
+    return <LoadingIndicator />;
+  }
 
-    if (error) {
-      throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    const apply = () => {
-        appStateDispatch({type: "setSong", payload: songState});
-        setSubmitted(true);
-    }
+  const apply = () => {
+    appState.song = songState;
+    navigate(-1);
+  };
 
-    function saveAsNew() {
-      saveSong(songState)
-        .then(() => apply())
-    }
+  function saveAsNew() {
+    saveSong(songState).then(() => apply());
+  }
 
-    return (
-        <Container className="song-editor-screen">
-            <h1>Edit Current Song</h1>
+  return (
+    <Container className="song-editor-screen">
+      <h1>Edit Current Song</h1>
 
-            <SongEditor
-                song={songState}
-                onChange={setSongState}
-            />
+      <SongEditor song={songState} onChange={setSongState} />
 
-            <div className="form-group">
-                <Button className="btn-primary" onClick={apply}>
-                    Ok
-                </Button>
+      <div className="form-group">
+        <Button className="btn-primary" onClick={apply}>
+          Ok
+        </Button>
 
-                <Button className="btn-secondary" onClick={saveAsNew} disabled={!songState.title}>
-                    Save as new
-                </Button>
+        <Button
+          className="btn-secondary"
+          onClick={saveAsNew}
+          disabled={!songState.title}
+        >
+          Save as new
+        </Button>
 
-                <Link to="/" className="btn btn-link">Cancel</Link>
-            </div>
-        </Container>
-    )
+        <Link to="/" className="btn btn-link">
+          Cancel
+        </Link>
+      </div>
+    </Container>
+  );
 }
 
 export default CurrentSongEditScreen;

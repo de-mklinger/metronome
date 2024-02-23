@@ -1,41 +1,44 @@
 import SetlistView from "./SetlistView.tsx";
-import {Link} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars, faEllipsisV, faListOl} from "@fortawesome/free-solid-svg-icons";
-import {memo} from "react";
-import {AppStateProps} from "../../lib/app-state.ts";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faEllipsisV,
+  faListOl,
+} from "@fortawesome/free-solid-svg-icons";
+import { useAppState } from "../../lib/app-state.tsx";
 
-export type SongControlsProps = AppStateProps;
+export default function SongControls() {
+  //console.log("WrappedSongControls render")
 
-function WrappedSongControls({appState, appStateDispatch}: SongControlsProps) {
-    //console.log("WrappedSongControls render")
+  const appState = useAppState();
 
-    if (appState.setlist) {
-        return (
-            <SetlistView
-                setlist={appState.setlist}
-                activeSetlistIdx={appState.activeSetlistIdx}
-                onSongSelect={idx => appStateDispatch({type: "setActiveSetlistIdx", payload: idx})}
-                onSetlistDeselect={() => appStateDispatch({type: "setSetlist", payload: undefined})}
-            />
-        );
-    } else {
-        return (
-            <div className="song-settings">
-                <Link className="btn btn-primary" to={"/config"}>
-                    <FontAwesomeIcon icon={faBars}/>
-                </Link>
-                <Link className="btn btn-primary" to={"/setlists"}>
-                    <FontAwesomeIcon icon={faListOl}/>
-                </Link>
-                <Link className="btn btn-primary" to={"/currentsong"}>
-                    <FontAwesomeIcon icon={faEllipsisV}/>
-                </Link>
-            </div>
-        );
-    }
+  if (appState.setlist) {
+    return (
+      <SetlistView
+        setlist={appState.setlist}
+        songIdx={appState.songIdx}
+        onSongSelect={(idx) => {
+          appState.songIdx = idx;
+        }}
+        onSetlistDeselect={() => {
+          appState.setlist = undefined;
+        }}
+      />
+    );
+  } else {
+    return (
+      <div className="song-settings">
+        <Link className="btn btn-primary" to={"/config"}>
+          <FontAwesomeIcon icon={faBars} />
+        </Link>
+        <Link className="btn btn-primary" to={"/setlists"}>
+          <FontAwesomeIcon icon={faListOl} />
+        </Link>
+        <Link className="btn btn-primary" to={"/currentsong"}>
+          <FontAwesomeIcon icon={faEllipsisV} />
+        </Link>
+      </div>
+    );
+  }
 }
-
-const SongControls = memo(WrappedSongControls);
-
-export default SongControls;

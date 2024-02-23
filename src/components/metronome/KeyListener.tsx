@@ -1,29 +1,29 @@
-import {memo} from "react";
-import {AppStateProps} from "../../lib/app-state.ts";
+import { memo } from "react";
+import { useAppState } from "../../lib/app-state.tsx";
 import useEventListener from "../../lib/use-event-listener.ts";
 
-export type KeyListenerProps = AppStateProps<{
-    onPlay: () => void,
-}>
+export type KeyListenerProps = {
+  onPlay: () => void;
+};
 
-function WrappedKeyListener({onPlay, appState, appStateDispatch}: KeyListenerProps) {
+function WrappedKeyListener({onPlay}: KeyListenerProps) {
     //console.log("WrappedKeyListener Render");
 
-    const {config} = appState;
+  const appState = useAppState();
 
-    const onKeyDown = (e: KeyboardEvent) => {
+  const onKeyDown = (e: KeyboardEvent) => {
         switch (e.key) {
-            case config.playKey:
+            case appState.config.playKey:
                 e.stopPropagation();
                 onPlay();
                 break;
-            case config.nextSongKey:
+            case appState.config.nextSongKey:
                 e.stopPropagation();
-                appStateDispatch({type: "nextSong"})
+                appState.nextSong();
                 break;
-            case config.previousSongKey:
+            case appState.config.previousSongKey:
                 e.stopPropagation();
-                appStateDispatch({type: "previousSong"})
+                appState.previousSong();
                 break;
             default:
                 // fall-through

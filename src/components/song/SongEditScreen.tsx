@@ -1,4 +1,4 @@
-import {Link, Redirect} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import SongEditor from "./SongEditor.js";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
@@ -37,12 +37,15 @@ function SongEditScreen({onSongChange, onSetlistChange}: SongEditScreenProps) {
         });
     }, [id])
 
+    const navigate = useNavigate();
+
     if (!song || !originalSong || !setlists || !originalSetlists) {
         return <LoadingIndicator />
     }
 
     if (submitted) {
-        return <Redirect to="/"/>
+        navigate(-1);
+        return <></>
     }
 
     async function save() {

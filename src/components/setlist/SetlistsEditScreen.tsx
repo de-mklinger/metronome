@@ -1,10 +1,10 @@
 import {useState} from "react";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import {Button, Container} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import SetlistEditScreen from "./SetlistEditScreen.tsx";
 import {useGetSetlists, useSaveSetlist} from "../../lib/repository.js";
-import {AppStateProps} from "../../lib/app-state.ts";
+import {AppStateProps} from "../../lib/app-state.tsx";
 
 function SetlistsEditScreen({appState, appStateDispatch}: AppStateProps) {
     const {invoke: getSetlists, inProgress: getSetlistsInProgress, error: getSetlistsError, result: setlists, reset: resetSetlists} = useGetSetlists();
@@ -12,8 +12,10 @@ function SetlistsEditScreen({appState, appStateDispatch}: AppStateProps) {
     const [redirect, setRedirect] = useState(false);
     const [newSetlist, setNewSetlist] = useState(false);
 
+    const navigate = useNavigate();
+
     if (redirect) {
-        return <Redirect to="/" />
+        navigate(-1);
     }
 
     if (!getSetlistsInProgress && !setlists) {
