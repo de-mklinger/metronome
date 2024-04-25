@@ -43,17 +43,16 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
 
     if (simulateSlow) {
         Object.keys(repository).forEach(key => {
-            // TODO
-            // @ts-ignore
+            // @ts-expect-error Only for test
             const orig = repository[key];
             function slow() {
                 return new Promise(resolve => {
                     console.warn("Simulating slow", key);
+                    // eslint-disable-next-line prefer-rest-params
                     setTimeout(() => orig(...arguments).then(resolve), 5000);
                 })
             }
-            // TODO
-            // @ts-ignore
+            // @ts-expect-error Only for test
             repository[key] = slow;
         });
     }
@@ -172,7 +171,7 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
 
         const appStateToSave = reduceAppState(appState);
 
-        doSaveAppState(appStateToSave);
+        await doSaveAppState(appStateToSave);
 
         return appState;
     }
@@ -263,7 +262,6 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
         return {
             id: setlist.id,
             title: setlist.title,
-            archived: setlist.archived,
             songIds: [...setlist.songIds]
         }
     }
@@ -273,8 +271,9 @@ export default function newRepository({doGetSongs, doGetSetlists, doSaveSongs, d
             setlistSongId === songId) !== -1;
     }
 
-    function info(..._args: unknown[]) {
-        //console.log(...arguments);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function info(...args: unknown[]) {
+        //console.log(...args);
     }
 }
 

@@ -33,7 +33,7 @@ const tick = (tickCtx: RefObject<TickCtx>, switchTime: MutableRefObject<number>,
 
     const switchEveryMillis = 60 * 1000 / tickCtx.current.bpm;
 
-    let now = new Date().getTime();
+    const now = new Date().getTime();
     let sinceLastSwitchMillis;
     if (activeBeatIdx.current === -1) {
         sinceLastSwitchMillis = switchEveryMillis;
@@ -41,12 +41,12 @@ const tick = (tickCtx: RefObject<TickCtx>, switchTime: MutableRefObject<number>,
         sinceLastSwitchMillis = now - switchTime.current
     }
 
-    let diff = sinceLastSwitchMillis - switchEveryMillis;
+    const diff = sinceLastSwitchMillis - switchEveryMillis;
 
     if (diff >= earlyPlayThresholdMillis) {
-        let missMillis = sinceLastSwitchMillis - switchEveryMillis;
-        let whenOffsetSeconds = Math.max(0, -missMillis / 1000);
-        let playTime = getTime(whenOffsetSeconds);
+        const missMillis = sinceLastSwitchMillis - switchEveryMillis;
+        const whenOffsetSeconds = Math.max(0, -missMillis / 1000);
+        const playTime = getTime(whenOffsetSeconds);
 
         activeBeatIdx.current++;
         if (activeBeatIdx.current >= tickCtx.current.timeSignatureBeats) {
@@ -55,7 +55,7 @@ const tick = (tickCtx: RefObject<TickCtx>, switchTime: MutableRefObject<number>,
 
         //console.log('activeBeatIdx', ctx.state.activeBeatIdx, 'missMillis', missMillis, 'whenOffsetSeconds', whenOffsetSeconds);
 
-        let currentAccent = tickCtx.current.accents[activeBeatIdx.current] || 1;
+        const currentAccent = tickCtx.current.accents[activeBeatIdx.current] || 1;
         switch (currentAccent) {
             case 2:
             case 3:

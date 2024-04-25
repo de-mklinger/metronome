@@ -5,7 +5,7 @@ let audioContext: AudioContext | null = null;
 const getAudioContext = () => {
     if (audioContext === null) {
         // Fix iOS Audio Context:
-        // @ts-ignore
+        // @ts-expect-error window.webkitAudioContext is not known
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
     }
@@ -47,7 +47,7 @@ function getTime(whenOffsetSeconds = 0) {
 }
 
 function getSampleSource(audioBuffer: AudioBuffer) {
-    let audioContext = getAudioContext();
+    const audioContext = getAudioContext();
 
     const sampleSource = audioContext.createBufferSource();
     sampleSource.buffer = audioBuffer;

@@ -179,8 +179,8 @@ export function useSetlists() {
   const {entity: initialSetlists, save, saveCount} = useEntity(
     `setlists`,
     () => repository.getSetlists(),
-    (_) => Promise.resolve(true),
-    (_) => repository.getSetlists()
+    () => Promise.resolve(true),
+    () => repository.getSetlists()
   );
 
   // TODO save: delete missing, add new

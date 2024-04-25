@@ -7,7 +7,7 @@ type Tempo = [
   number
 ]
 
-let tempos: Tempo[] = [
+const tempos: Tempo[] = [
     ["Larghissimo", "very, very slowly", 1, 24],
     ["Grave", "very slow", 25, 45],
     ["Largo", "broadly", 40, 60],
@@ -33,12 +33,12 @@ let tempos: Tempo[] = [
 
 let minBpm = Number.POSITIVE_INFINITY;
 let maxBpm = Number.NEGATIVE_INFINITY;
-let labelsByBpm: Record<number, string[]> = {};
+const labelsByBpm: Record<number, string[]> = {};
 
 tempos.forEach(tempo => {
-    let label = tempo[0];
-    let fromBpm = tempo[2];
-    let toBpm = tempo[3];
+    const label = tempo[0];
+    const fromBpm = tempo[2];
+    const toBpm = tempo[3];
     for (let bpm = fromBpm; bpm <= toBpm; bpm++) {
         minBpm = Math.min(minBpm, bpm);
         maxBpm = Math.max(maxBpm, bpm);

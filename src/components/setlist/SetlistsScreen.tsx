@@ -4,9 +4,7 @@ import { useAppState } from "../../lib/app-state.tsx";
 import { SetlistWithSongs } from "../../types.ts";
 import { useNavigate } from "react-router-dom";
 
-export type SetlistsScreenProps = {};
-
-export default function SetlistsScreen({}: SetlistsScreenProps) {
+export default function SetlistsScreen() {
   const appState = useAppState();
   const { setlists } = useSetlists();
   const navigate = useNavigate();

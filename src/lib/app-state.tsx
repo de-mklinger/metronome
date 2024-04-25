@@ -37,7 +37,7 @@ export type Action = { type: "setAppState", payload: AppState }
 
 export type AppStateDispatch = React.Dispatch<Action>;
 
-export type AppStateProps<T = {}> = T & {
+export type AppStateProps<T = unknown> = T & {
     appState: AppState
     appStateDispatch: AppStateDispatch
 }
@@ -45,7 +45,9 @@ export type AppStateProps<T = {}> = T & {
 function appStateReducer(appState: AppState, action: Action): AppState {
     //console.log("app state action:", action);
 
-    switch (action.type) {
+    const type = action.type;
+
+    switch (type) {
         case "setAppState":
             return {...action.payload};
         case "setConfig":
@@ -63,8 +65,7 @@ function appStateReducer(appState: AppState, action: Action): AppState {
         case 'setSongIdx':
             return withSongIdx(action.payload);
         default:
-            // @ts-ignore
-            throw new Error("Unsupported action type:" + action.type);
+            throw new Error("Unsupported action type:" + type);
     }
 
     function withConfig(newConfig: Config): AppState {
@@ -85,7 +86,7 @@ function appStateReducer(appState: AppState, action: Action): AppState {
         if (bpm === appState.song.bpm) {
             return appState;
         }
-        let newSong = {
+        const newSong = {
             ...appState.song,
             bpm: bpm
         };

@@ -13,7 +13,7 @@ test('renders tap', async () => {
     window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 
     function AudioContext() {}
-    // @ts-ignore
+    // @ts-expect-error Mock AudioContext is of wring type
     window.AudioContext = AudioContext;
 
     render(<App/>);

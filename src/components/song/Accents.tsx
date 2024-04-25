@@ -9,9 +9,9 @@ export type AccentsProps = {
 }
 
 function Accents({accents, timeSignatureBeats, onAccentsChange}: AccentsProps) {
-    let normalizedAccents: Accent[] = [];
+    const normalizedAccents: Accent[] = [];
     while (normalizedAccents.length < timeSignatureBeats) {
-        let idx = normalizedAccents.length;
+        const idx = normalizedAccents.length;
         if (accents.length > idx) {
             normalizedAccents.push(accents[idx]);
         } else {

@@ -18,7 +18,7 @@ const localStorageRepositoryImpl: RepositoryImpl = {
     },
 
     doGetAppState: async () => {
-        let appStateJson = window.localStorage.getItem("appState");
+        const appStateJson = window.localStorage.getItem("appState");
         if (!appStateJson) {
             return null;
         } else {

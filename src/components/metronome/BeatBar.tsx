@@ -6,11 +6,11 @@ export type BeatBarProps = {
     activeBeatIdx: number
 }
 
-function BeatBar({song, activeBeatIdx}: BeatBarProps) {
-    let beats = [];
+export default function BeatBar({song, activeBeatIdx}: BeatBarProps) {
+    const beats = [];
 
     for (let idx = 0; idx < song.timeSignatureBeats; idx++) {
-        let isAccent = song.accents.length > idx && song.accents[idx] > 1; // TODO
+        const isAccent = song.accents.length > idx && song.accents[idx] > 1; // TODO
 
         beats.push(
             <Beat
@@ -26,5 +26,3 @@ function BeatBar({song, activeBeatIdx}: BeatBarProps) {
         </div>
     );
 }
-
-export default BeatBar;

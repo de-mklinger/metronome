@@ -8,13 +8,13 @@ export type SetlistEditViewProps<T extends NewSetlistWithSongs> = {
 
 function SetlistEditView<T extends NewSetlistWithSongs>({setlist, onChange}: SetlistEditViewProps<T>) {
     function fireChange<K extends keyof T>(attributeName: K, attributeValue: T[K]) {
-        let changedSetlist = { ...setlist };
+        const changedSetlist = { ...setlist };
         changedSetlist[attributeName] = attributeValue;
         onChange(changedSetlist);
     }
 
     const fireSongsChange = (songs: Song[]) => {
-        let changedSetlist = { ...setlist };
+        const changedSetlist = { ...setlist };
         changedSetlist.songs = songs;
         changedSetlist.songIds = songs.map(song => song.id);
         onChange(changedSetlist);

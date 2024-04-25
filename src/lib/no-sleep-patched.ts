@@ -17,7 +17,7 @@ function oldIOS(): boolean {
         .replace("_", ".")
         .replace("_", "")
     ) < 10 &&
-      // @ts-ignore
+      // @ts-expect-error MSStream is unknown
     !window.MSStream;
 }
 
@@ -123,7 +123,7 @@ class NoSleep {
             this.enabled = true;
             return Promise.resolve();
         } else if (this.noSleepVideo) {
-            let playPromise = this.noSleepVideo.play();
+            const playPromise = this.noSleepVideo.play();
             return playPromise
                 .then((res) => {
                     this.enabled = true;

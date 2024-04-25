@@ -11,7 +11,7 @@ export type SongEditorProps<T extends NewSong> = {
 
 function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
     function fireChange<K extends keyof T>(attributeName: K, attributeValue: T[K]) {
-        let changedSong = { ...song };
+        const changedSong = { ...song };
         changedSong[attributeName] = attributeValue;
         onChange(changedSong);
     }
