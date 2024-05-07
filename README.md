@@ -2,4 +2,4 @@
 
 Metronome with React-based UI. Perfectly usable as a PWA.
 
-![metronome-screenshot-iphone](https://github.com/de-mklinger/metronome-frontend/assets/684527/48aad6d3-521c-49be-88d0-de1e7114522b)
+![metronome-screenshot-iphone](https://github.com/de-mklinger/metronome-frontend/assets/684527/147526b3-c130-45b2-9ee2-54dae01dfa13)
