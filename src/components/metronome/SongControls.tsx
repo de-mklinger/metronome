@@ -6,7 +6,7 @@ import {
   faEllipsisV,
   faListOl,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 
 export default function SongControls() {
   //console.log("WrappedSongControls render")

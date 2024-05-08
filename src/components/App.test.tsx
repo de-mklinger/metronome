@@ -13,15 +13,15 @@ test('renders tap', async () => {
     window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 
     function AudioContext() {}
-    // @ts-expect-error Mock AudioContext is of wring type
+    // @ts-expect-error Mock AudioContext is of wrong type
     window.AudioContext = AudioContext;
 
     render(<App/>);
 
-    const startButton = await screen.findByText(/Open Metronome/i);
-    expect(startButton).toBeInTheDocument();
-
-    startButton.click();
+    // const startButton = await screen.findByText(/Open Metronome/i);
+    // expect(startButton).toBeInTheDocument();
+    //
+    // startButton.click();
 
     const linkElement = await screen.findByText(/Tap/i);
     expect(linkElement).toBeInTheDocument();

@@ -8,7 +8,7 @@ import PlayButton from "./PlayButton.tsx";
 import { getLabels } from "../../lib/tempo.js";
 import BpmKnob from "../common/BpmKnob.tsx";
 import { memo } from "react";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 
 export type PlayControlsProps = {
   started: boolean;

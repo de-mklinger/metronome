@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
 
 export type KeyListenerProps = {

@@ -2,7 +2,7 @@ import SongEditor from "./SongEditor.tsx";
 import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 import { useSaveSong } from "../../lib/repository.ts";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 

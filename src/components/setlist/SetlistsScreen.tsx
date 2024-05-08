@@ -1,6 +1,6 @@
 import { useSetlists } from "../../lib/repository.ts";
 import SetlistsList from "./SetlistsList.tsx";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 import { SetlistWithSongs } from "../../types.ts";
 import { useNavigate } from "react-router-dom";
 

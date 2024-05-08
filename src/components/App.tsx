@@ -1,7 +1,7 @@
 import { HashRouter as Router, Outlet, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import LoadingIndicator from "./common/LoadingIndicator.tsx";
-import { AppStateContextProvider, useAppState } from "../lib/app-state.tsx";
+import { AppStateContextProvider } from "../lib/app-state.tsx";
 import { useNoSleep } from "../lib/no-sleep.ts";
 import { IntlProvider } from "react-intl";
 import MetronomeScreen from "./metronome/MetronomeScreen.tsx";
@@ -10,6 +10,7 @@ import CurrentSongEditScreen from "./song/CurrentSongEditScreen.tsx";
 import { language, messages } from "../lang/i18n.ts";
 import SetlistEditorByParam from "./setlist/SetlistEditorByParam.tsx";
 import SetlistsScreen from "./setlist/SetlistsScreen.tsx";
+import {useAppState} from "../lib/use-app-state.ts";
 
 function App() {
   // const [loadSetlistId, setLoadSetlistId] = useState<string | undefined>(

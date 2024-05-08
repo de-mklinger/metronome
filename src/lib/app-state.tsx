@@ -3,7 +3,6 @@ import {
   createContext,
   Dispatch,
   PropsWithChildren,
-  useContext,
   useReducer,
 } from "react";
 import { AppState, Config, NewSong, SetlistWithSongs, Song } from "../types.ts";
@@ -174,9 +173,6 @@ function appStateReducer(appState: AppState, action: Action): AppState {
   }
 }
 
-export const AppStateContext = createContext<AppState | null>(null);
-export const AppStateDispatchContext = createContext<Dispatch<Action> | null>(null);
-
 export type MutableAppState = Required<Pick<AppState, "songIdx">> &
   Omit<AppState, "songIdx"> & {
     setBpm: (bpm: number) => void;
@@ -184,50 +180,8 @@ export type MutableAppState = Required<Pick<AppState, "songIdx">> &
     previousSong: () => void;
   };
 
-export function useAppState(): MutableAppState {
-  const appState = useContext(AppStateContext);
-  const appStateDispatch = useContext(AppStateDispatchContext);
-
-  if (!appState || !appStateDispatch) {
-    throw new Error();
-  }
-
-  return {
-    get config() {
-      return appState.config;
-    },
-    set config(config: Config) {
-      appStateDispatch({ type: "setConfig", payload: config });
-    },
-    get song() {
-      return appState.song;
-    },
-    set song(song: Song | NewSong) {
-      appStateDispatch({ type: "setSong", payload: song });
-    },
-    setBpm(bpm: number) {
-      appStateDispatch({ type: "setBpm", payload: bpm });
-    },
-    get setlist() {
-      return appState.setlist;
-    },
-    set setlist(setlist: SetlistWithSongs | undefined) {
-      appStateDispatch({ type: "setSetlist", payload: setlist });
-    },
-    get songIdx() {
-      return appState.songIdx ?? 0;
-    },
-    set songIdx(songIdx: number) {
-      appStateDispatch({ type: "setSongIdx", payload: songIdx });
-    },
-    nextSong() {
-      appStateDispatch({ type: "nextSong" });
-    },
-    previousSong() {
-      appStateDispatch({ type: "previousSong" });
-    },
-  };
-}
+export const AppStateContext = createContext<AppState | null>(null);
+export const AppStateDispatchContext = createContext<Dispatch<Action> | null>(null);
 
 export type AppStateContextProviderProps = PropsWithChildren<{
   initialAppState?: AppState;

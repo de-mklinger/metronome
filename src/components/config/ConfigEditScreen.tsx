@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import { ConfigKey } from "../../types.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
-import { useAppState } from "../../lib/app-state.tsx";
+import { useAppState } from "../../lib/use-app-state.ts";
 
 function ConfigEditScreen() {
   const appState = useAppState();
