@@ -26,201 +26,221 @@ function savingAppStateReducer(appState: AppState, action: Action) {
   }
 }
 
-export type Action = { type: "setAppState", payload: AppState }
-    | { type: "setConfig", payload: Config }
-    | { type: 'setSong', payload: Song | NewSong }
-    | { type: 'setBpm', payload: number }
-    | { type: 'setSetlist', payload: SetlistWithSongs | undefined }
-    | { type: 'nextSong' }
-    | { type: 'previousSong' }
-    | { type: 'setSongIdx', payload: number }
+export type Action =
+  | { type: "setAppState"; payload: AppState }
+  | { type: "setConfig"; payload: Config }
+  | { type: "setSong"; payload: Song | NewSong }
+  | { type: "setBpm"; payload: number }
+  | { type: "setSetlist"; payload: SetlistWithSongs | undefined }
+  | { type: "nextSong" }
+  | { type: "previousSong" }
+  | { type: "setSongIdx"; payload: number };
 
 export type AppStateDispatch = React.Dispatch<Action>;
 
 export type AppStateProps<T = unknown> = T & {
-    appState: AppState
-    appStateDispatch: AppStateDispatch
-}
+  appState: AppState;
+  appStateDispatch: AppStateDispatch;
+};
 
 function appStateReducer(appState: AppState, action: Action): AppState {
-    //console.log("app state action:", action);
+  //console.log("app state action:", action);
 
-    const type = action.type;
+  const type = action.type;
 
-    switch (type) {
-        case "setAppState":
-            return {...action.payload};
-        case "setConfig":
-            return withConfig(action.payload);
-        case 'setSong':
-            return withSong(action.payload);
-        case 'setBpm':
-            return withBpm(action.payload);
-        case 'setSetlist':
-            return withSetlist(action.payload);
-        case 'nextSong':
-            return withNextSong();
-        case 'previousSong':
-            return withPreviousSong();
-        case 'setSongIdx':
-            return withSongIdx(action.payload);
-        default:
-            throw new Error("Unsupported action type:" + type);
+  switch (type) {
+    case "setAppState":
+      return { ...action.payload };
+    case "setConfig":
+      return withConfig(action.payload);
+    case "setSong":
+      return withSong(action.payload);
+    case "setBpm":
+      return withBpm(action.payload);
+    case "setSetlist":
+      return withSetlist(action.payload);
+    case "nextSong":
+      return withNextSong();
+    case "previousSong":
+      return withPreviousSong();
+    case "setSongIdx":
+      return withSongIdx(action.payload);
+    default:
+      throw new Error("Unsupported action type:" + type);
+  }
+
+  function withConfig(newConfig: Config): AppState {
+    return {
+      ...appState,
+      config: { ...newConfig },
+    };
+  }
+
+  function withSong(newSong: Song | NewSong): AppState {
+    return {
+      ...appState,
+      song: { ...newSong },
+    };
+  }
+
+  function withBpm(bpm: number): AppState {
+    if (bpm === appState.song.bpm) {
+      return appState;
+    }
+    const newSong = {
+      ...appState.song,
+      bpm: bpm,
+    };
+    return withSong(newSong);
+  }
+
+  function withSetlist(newSetlist: SetlistWithSongs | undefined): AppState {
+    let newSongIdx = 0;
+    if (newSetlist) {
+      // keep songIdx if same setlist and idx is ok
+      if (
+        appState.songIdx !== undefined &&
+        appState.setlist &&
+        appState.setlist.id === newSetlist.id &&
+        appState.setlist.songIds.length > appState.songIdx
+      ) {
+        newSongIdx = appState.songIdx;
+      }
+      return {
+        ...appState,
+        setlist: newSetlist,
+        songIdx: newSongIdx,
+        song: getActiveSong(newSetlist, newSongIdx),
+      };
+    } else {
+      // detach song:
+      return {
+        ...appState,
+        setlist: undefined,
+        songIdx: newSongIdx,
+        song: detachSong(),
+      };
     }
 
-    function withConfig(newConfig: Config): AppState {
-        return {
-            ...appState,
-            config: {...newConfig}
-        };
+    function detachSong(): NewSong {
+      return {
+        bpm: appState.song.bpm,
+        title: "",
+        timeSignatureBeats: appState.song.timeSignatureBeats,
+        timeSignatureNoteValue: appState.song.timeSignatureNoteValue,
+        subDivisions: appState.song.subDivisions,
+        accents: [...appState.song.accents],
+      };
     }
+  }
 
-    function withSong(newSong: Song | NewSong): AppState {
-        return {
-            ...appState,
-            song: {...newSong}
-        };
+  function withSongIdx(songIdx: number): AppState {
+    return {
+      ...appState,
+      songIdx,
+      song: getActiveSong(appState.setlist, songIdx),
+    };
+  }
+
+  function withPreviousSong(): AppState {
+    if (appState.setlist && appState.songIdx !== undefined) {
+      const newIdx = appState.songIdx - 1;
+      if (newIdx >= 0) {
+        return withSongIdx(newIdx);
+      }
     }
+    return appState;
+  }
 
-    function withBpm(bpm: number): AppState {
-        if (bpm === appState.song.bpm) {
-            return appState;
-        }
-        const newSong = {
-            ...appState.song,
-            bpm: bpm
-        };
-        return withSong(newSong);
+  function withNextSong(): AppState {
+    if (appState.setlist && appState.songIdx !== undefined) {
+      const newIdx = appState.songIdx + 1;
+      if (newIdx < appState.setlist.songIds.length) {
+        return withSongIdx(newIdx);
+      }
     }
+    return appState;
+  }
 
-    function withSetlist(newSetlist: SetlistWithSongs | undefined): AppState {
-        let newSongIdx = 0;
-        if (newSetlist) {
-            // keep songIdx if same setlist and idx is ok
-            if (appState.songIdx !== undefined && appState.setlist && appState.setlist.id === newSetlist.id && appState.setlist.songIds.length > appState.songIdx) {
-                newSongIdx = appState.songIdx;
-            }
-            return {
-                ...appState,
-                setlist: newSetlist,
-                songIdx: newSongIdx,
-                song: getActiveSong(newSetlist, newSongIdx)
-            };
-        } else {
-            // detach song:
-            return {
-                ...appState,
-                setlist: undefined,
-                songIdx: newSongIdx,
-                song: detachSong()
-            };
-        }
-
-        function detachSong(): NewSong {
-            return {
-                bpm: appState.song.bpm,
-                title: "",
-                timeSignatureBeats: appState.song.timeSignatureBeats,
-                timeSignatureNoteValue: appState.song.timeSignatureNoteValue,
-                subDivisions: appState.song.subDivisions,
-                accents: [...appState.song.accents],
-            };
-        }
+  function getActiveSong(
+    setlist: SetlistWithSongs | undefined,
+    activeSetlistIdx: number,
+  ) {
+    if (setlist && setlist.songs.length > activeSetlistIdx) {
+      return setlist.songs[activeSetlistIdx];
+    } else {
+      return defaultSong;
     }
-
-    function withSongIdx(songIdx: number): AppState {
-        return {
-            ...appState,
-            songIdx,
-            song: getActiveSong(appState.setlist, songIdx)
-        };
-    }
-
-    function withPreviousSong(): AppState {
-        if (appState.setlist && appState.songIdx !== undefined) {
-            const newIdx = appState.songIdx - 1;
-            if (newIdx >= 0) {
-                return withSongIdx(newIdx);
-            }
-        }
-        return appState;
-    }
-
-    function withNextSong(): AppState {
-        if (appState.setlist && appState.songIdx !== undefined) {
-            const newIdx = appState.songIdx + 1;
-            if (newIdx < appState.setlist.songIds.length) {
-                return withSongIdx(newIdx);
-            }
-        }
-        return appState;
-    }
-
-    function getActiveSong(setlist: SetlistWithSongs | undefined, activeSetlistIdx: number) {
-        if (setlist && setlist.songs.length > activeSetlistIdx) {
-            return setlist.songs[activeSetlistIdx];
-        } else {
-            return defaultSong;
-        }
-    }
+  }
 }
 
-const AppStateContext = createContext<AppState | null>(null);
-const AppStateDispatchContext = createContext<Dispatch<Action> | null>(null);
+export const AppStateContext = createContext<AppState | null>(null);
+export const AppStateDispatchContext = createContext<Dispatch<Action> | null>(null);
 
-export type MutableAppState = Required<Pick<AppState, "songIdx">> & Omit<AppState, "songIdx"> & {
-  setBpm: (bpm: number) => void,
-  nextSong: () => void,
-  previousSong: () => void
-}
+export type MutableAppState = Required<Pick<AppState, "songIdx">> &
+  Omit<AppState, "songIdx"> & {
+    setBpm: (bpm: number) => void;
+    nextSong: () => void;
+    previousSong: () => void;
+  };
 
 export function useAppState(): MutableAppState {
   const appState = useContext(AppStateContext);
   const appStateDispatch = useContext(AppStateDispatchContext);
 
   if (!appState || !appStateDispatch) {
-    throw new Error()
+    throw new Error();
   }
 
   return {
     get config() {
-      return appState.config
+      return appState.config;
     },
     set config(config: Config) {
-      appStateDispatch({type: "setConfig", payload: config});
+      appStateDispatch({ type: "setConfig", payload: config });
     },
     get song() {
       return appState.song;
     },
     set song(song: Song | NewSong) {
-      appStateDispatch({type: "setSong", payload: song});
+      appStateDispatch({ type: "setSong", payload: song });
     },
     setBpm(bpm: number) {
-      appStateDispatch({type: "setBpm", payload: bpm});
+      appStateDispatch({ type: "setBpm", payload: bpm });
     },
     get setlist() {
       return appState.setlist;
     },
     set setlist(setlist: SetlistWithSongs | undefined) {
-      appStateDispatch({type: "setSetlist", payload: setlist});
+      appStateDispatch({ type: "setSetlist", payload: setlist });
     },
     get songIdx() {
       return appState.songIdx ?? 0;
     },
     set songIdx(songIdx: number) {
-      appStateDispatch({type: "setSongIdx", payload: songIdx});
+      appStateDispatch({ type: "setSongIdx", payload: songIdx });
     },
     nextSong() {
-      appStateDispatch({type: "nextSong"});
+      appStateDispatch({ type: "nextSong" });
     },
     previousSong() {
-      appStateDispatch({type: "previousSong"});
+      appStateDispatch({ type: "previousSong" });
     },
   };
 }
 
-export function AppStateContextProvider({children}: PropsWithChildren) {
-  const [appState, appStateDispatch] = useReducer(savingAppStateReducer, defaultAppState);
+export type AppStateContextProviderProps = PropsWithChildren<{
+  initialAppState?: AppState;
+}>;
+
+export function AppStateContextProvider({
+  children,
+  initialAppState,
+}: AppStateContextProviderProps) {
+  const [appState, appStateDispatch] = useReducer(
+    savingAppStateReducer,
+    initialAppState ?? defaultAppState,
+  );
 
   return (
     <AppStateContext.Provider value={appState}>

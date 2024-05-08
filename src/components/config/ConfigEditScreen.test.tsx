@@ -1,53 +1,56 @@
-import {findByRole, fireEvent, render, screen} from '@testing-library/react';
+import { findByRole, fireEvent, render, screen } from "@testing-library/react";
 import ConfigEditScreen from "./ConfigEditScreen.tsx";
-import {HashRouter, Route} from "react-router-dom";
-import {defaultConfig, defaultSong} from "../../lib/env.js";
-import {expect, test} from "vitest"
-import {AppState, Config} from "../../types.ts";
-import {IntlProvider} from "react-intl";
-import {messages} from "../../lang/i18n.ts";
+import { HashRouter, Route } from "react-router-dom";
+import { defaultConfig, defaultSong } from "../../lib/env.js";
+import { expect, test } from "vitest";
+import { AppState, Config } from "../../types.ts";
+import { IntlProvider } from "react-intl";
+import { messages } from "../../lang/i18n.ts";
+import {
+  AppStateContext,
+  AppStateDispatchContext,
+} from "../../lib/app-state.tsx";
 
-test('renders shortcut settings', async () => {
+test("renders shortcut settings", async () => {
   renderConfigEditor();
 
   screen.getByText(/Start\/Stop/i);
-  expect(screen.getByTestId("key-input-playKey"))
-    .toHaveTextContent("<Space>");
+  expect(screen.getByTestId("key-input-playKey")).toHaveTextContent("<Space>");
 
   screen.getByText(/Next Song/i);
-  expect(screen.getByTestId("key-input-nextSongKey"))
-    .toHaveTextContent("<Right>");
+  expect(screen.getByTestId("key-input-nextSongKey")).toHaveTextContent(
+    "<Right>",
+  );
 
   screen.getByText(/Previous Song/i);
-  expect(screen.getByTestId("key-input-previousSongKey"))
-    .toHaveTextContent("<Left>");
+  expect(screen.getByTestId("key-input-previousSongKey")).toHaveTextContent(
+    "<Left>",
+  );
 });
 
-test('renders customized shortcut settings', async () => {
-  renderConfigEditor({playKey: "ArrowUp"});
+test("renders customized shortcut settings", async () => {
+  renderConfigEditor({ playKey: "ArrowUp" });
 
-  expect(screen.getByTestId("key-input-playKey"))
-    .toHaveTextContent("<Up>");
+  expect(screen.getByTestId("key-input-playKey")).toHaveTextContent("<Up>");
 });
 
-test('saves shortcut settings', async () => {
+test("saves shortcut settings", async () => {
   const newKey = "x";
 
   const dispatched = renderConfigEditor();
 
   const changeButtonBefore = await findButton("key-input-playKey");
-  expect(changeButtonBefore)
-    .toHaveTextContent("Change...");
+  expect(changeButtonBefore).toHaveTextContent("Change...");
 
   fireEvent.click(changeButtonBefore);
 
-  expect(await findButton("key-input-playKey"))
-    .toHaveTextContent("Press Button to change");
+  expect(await findButton("key-input-playKey")).toHaveTextContent(
+    "Press Button to change",
+  );
 
-  fireEvent.keyDown(window, {key: newKey})
+  fireEvent.keyDown(window, { key: newKey });
 
-  expect(await findButton("key-input-playKey"))
-    .toHaveTextContent("Change...");
+  expect(await findButton("key-input-playKey")).toHaveTextContent("Change...");
 
   fireEvent.click(await screen.findByText("Save"));
 
@@ -60,33 +63,32 @@ function renderConfigEditor(configOverrides?: Partial<Config>) {
   const dispatched: unknown[] = [];
   const config = {
     ...defaultConfig,
-    ...configOverrides
-  }
+    ...configOverrides,
+  };
   const appState: AppState = {
     config,
     song: defaultSong,
-    activeSetlistIdx: 0
+    songIdx: 0,
   };
   const appStateDispatch = (x: unknown) => dispatched.push(x);
 
   render(
     <IntlProvider locale="en" defaultLocale="en" messages={messages["en"]}>
-        <HashRouter>
-          <Route>
-            <ConfigEditScreen
-              appState={appState}
-              appStateDispatch={appStateDispatch}/>
-          </Route>
-        </HashRouter>
-    </IntlProvider>
+      <HashRouter>
+        <Route>
+          <AppStateContext.Provider value={appState}>
+            <AppStateDispatchContext.Provider value={appStateDispatch}>
+              <ConfigEditScreen />
+            </AppStateDispatchContext.Provider>
+          </AppStateContext.Provider>
+        </Route>
+      </HashRouter>
+    </IntlProvider>,
   );
 
   return dispatched;
 }
 
 async function findButton(containerTestId: string) {
-  return findByRole(
-    await screen.findByTestId(containerTestId),
-    "button"
-  );
+  return findByRole(await screen.findByTestId(containerTestId), "button");
 }

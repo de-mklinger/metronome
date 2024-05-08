@@ -159,8 +159,8 @@ export function isAppState(x: unknown): x is AppState {
     isPlainOldObject(x) &&
     isConfig(x.config) &&
     (x.setlist === undefined || isSetlistWithSongs(x.setlist)) &&
-    (x.songIdx === undefined || typeof x.songIdx === "number") &&
-    isNewSong(x.song)
+    (x.activeSetlistIdx === undefined || typeof x.activeSetlistIdx === "number") &&
+    (isSong(x.song) || isNewSong(x.song))
   );
 }
 

@@ -98,7 +98,6 @@ const allSongs = [
 const jsssSetlist: Setlist = {
     id: 'setlist1',
     title: 'Jimi Satans Schuhshop',
-    archived: false,
     songIds: [
         spielchen.id,
         wuff.id,
@@ -118,7 +117,6 @@ const jsssSetlist: Setlist = {
 const blablaSetlist: Setlist = {
     id: 'setlist2',
     title: 'Bla bla bla',
-    archived: false,
     songIds: [
         spielchen.id,
         wuff.id
