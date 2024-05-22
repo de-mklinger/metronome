@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
-import { useIntl } from "react-intl";
-import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ConfigKey } from "../../types.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
 import { useAppState } from "../../lib/use-app-state.ts";
@@ -11,15 +10,13 @@ import FormGroup from "../controls/FormGroup.tsx";
 import Row from "../controls/Row.tsx";
 import Col from "../controls/Col.tsx";
 import Screen from "../controls/Screen.tsx";
+import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
 
-function ConfigEditScreen() {
+export default function ConfigEditScreen() {
   const appState = useAppState();
   const [configState, setConfigState] = useState(appState.config);
 
   const [changeKey, setChangeKey] = useState<ConfigKey>();
-
-  const intl = useIntl();
-  const msg = (id: string) => intl.formatMessage({ id: id });
 
   useEventListener("keydown", (e) => {
     if (changeKey) {
@@ -32,9 +29,11 @@ function ConfigEditScreen() {
 
   const navigate = useNavigate();
 
+  const back = "/";
+
   const apply = () => {
     appState.config = configState;
-    navigate(-1);
+    navigate(back);
   };
 
   const ChangeKeyButton = ({ keyName }: { keyName: ConfigKey }) => (
@@ -49,11 +48,17 @@ function ConfigEditScreen() {
         }
       }}
     >
-      {changeKey === keyName
-        ? msg("config.press-button-to-change")
-        : msg("config.change")}
+      <FormattedMessage
+        id={
+          changeKey === keyName
+            ? "config.press-button-to-change"
+            : "config.change"
+        }
+      />
     </Button>
   );
+
+  const intl = useIntl();
 
   function translateKey(key: string): string | undefined {
     //console.log("key", key);
@@ -76,10 +81,12 @@ function ConfigEditScreen() {
   }
 
   const KeyInput = ({ keyName }: { keyName: ConfigKey }) => (
-    <FormGroup data-testid={"key-input-" + keyName}>
+    <FormGroup data-testid={`key-input-${keyName}`}>
       <Row className="align-items-baseline">
         <Col xs={12} md={2}>
-          <label htmlFor={keyName}>{msg("config." + keyName)}:</label>
+          <label htmlFor={keyName}>
+            <FormattedMessage id={`config.${keyName}`} />:
+          </label>
         </Col>
         <Col>{translateKey(configState[keyName])}</Col>
         <Col xs={7} md={6}>
@@ -92,24 +99,28 @@ function ConfigEditScreen() {
   const keys: ConfigKey[] = ["playKey", "nextSongKey", "previousSongKey"];
 
   return (
-    <Screen name="config-editor">
-      <h1>{msg("config.settings")}</h1>
+    <Screen name="config-editor" back={back}>
+      <h1>
+        <FormattedMessage id="config.settings" />
+      </h1>
 
-      <h2>{msg("config.keyboard-shortcuts")}</h2>
+      <h2>
+        <FormattedMessage id="config.keyboard-shortcuts" />
+      </h2>
 
       {keys.map((keyName) => (
         <KeyInput key={keyName} keyName={keyName} />
       ))}
 
-      <EqualWidthFormGroup>
-        <Button onClick={apply}>{msg("config.save")}</Button>
+      <FormButtonsGroup>
+        <Button onClick={apply}>
+          <FormattedMessage id="save" />
+        </Button>
 
-        <Link to="/" className="btn btn-link">
-          {msg("config.cancel")}
+        <Link to={back} className="btn btn-link">
+          <FormattedMessage id="cancel" />
         </Link>
-      </EqualWidthFormGroup>
+      </FormButtonsGroup>
     </Screen>
   );
 }
-
-export default ConfigEditScreen;

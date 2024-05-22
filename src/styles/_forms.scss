@@ -1,0 +1,28 @@
+.btn {
+  min-width: 4rem;
+  min-height: 4rem;
+  line-height: 3rem;
+  &:not(.btn-link) {
+    box-shadow: $dark-box-shadow;
+  }
+  margin: $box-shadow-size;
+}
+
+// reset focus and active colors and box-shadow
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    //@include button-variant($value, $value, $value, $value, $value, $value);
+    @include button-variant($value, $value, $value, $value);
+
+    &:focus,
+    &.focus {
+      box-shadow: $dark-box-shadow;
+    }
+  }
+}
+
+.form-buttons-group {
+  *:first-child {
+    margin-left: 0;
+  }
+}

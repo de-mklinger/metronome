@@ -1,45 +1,8 @@
 @import "variables";
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-svg {
-  fill: currentColor;
-}
-
-.svg-inline {
-  display: inline-block;
-  font-size: inherit;
-  height: 1em;
-  overflow: visible;
-  vertical-align: -0.125em;
-}
-
-.svg-inline.w-16 {
-  width: 1em;
-}
-
-.btn {
-  min-width: 4rem;
-  min-height: 4rem;
-  line-height: 3rem;
-  &:not(.btn-link) {
-    box-shadow: $dark-box-shadow;
-  }
-  margin: $box-shadow-size;
-}
-
-// reset focus and active colors and box-shadow
-@each $color, $value in $theme-colors {
-  .btn-#{$color} {
-    //@include button-variant($value, $value, $value, $value, $value, $value);
-    @include button-variant($value, $value, $value, $value);
-
-    &:focus,
-    &.focus {
-      box-shadow: $dark-box-shadow;
-    }
-  }
-}
-
+@import "svg";
+@import "forms";
 @import "lists";
 @import "loading-indicator";
 @import "screen-navigation";

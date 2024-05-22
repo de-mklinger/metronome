@@ -4,13 +4,14 @@ import TimeSignature from "./TimeSignature.js";
 import {NewSong} from "../../types.ts";
 import Row from "../controls/Row.tsx";
 import Col from "../controls/Col.tsx";
+import {FormattedMessage} from "react-intl";
 
 export type SongEditorProps<T extends NewSong> = {
   song: T
   onChange: (song: T) => void
 }
 
-function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
+export default function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
     function fireChange<K extends keyof T>(attributeName: K, attributeValue: T[K]) {
         const changedSong = { ...song };
         changedSong[attributeName] = attributeValue;
@@ -20,7 +21,9 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
     return (
         <>
             <div className="form-group">
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">
+                  <FormattedMessage id="song.title" />
+                </label>
                 <input type="text" className="form-control" id="title" placeholder="Enter song title"
                        value={song.title}
                        onChange={e => fireChange("title", e.target.value)}
@@ -29,7 +32,9 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
             <div className="form-group">
                 <Row>
                     <Col>
-                        <label htmlFor="bpm">BPM</label>
+                        <label htmlFor="bpm">
+                          <FormattedMessage id="song.bpm" />
+                        </label>
                         <input type="number" className="form-control" id="bpm" placeholder="Enter BPM"
                                min={1}
                                value={song.bpm}
@@ -45,7 +50,9 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
                 </Row>
             </div>
             <div className="form-group">
-                <label htmlFor="timeSignatureBeats">Time Signature</label>
+                <label htmlFor="timeSignatureBeats">
+                  <FormattedMessage id="song.time-signature"/>
+                </label>
                 <TimeSignature
                     beats={song.timeSignatureBeats}
                     noteValue={song.timeSignatureNoteValue}
@@ -54,7 +61,9 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="bpm">subDivisions</label>
+                <label htmlFor="subDivisions">
+                  <FormattedMessage id="song.sub-divisions" />
+                </label>
                 <input type="number" className="form-control" id="subDivisions" placeholder="Enter subDivisions"
                        value={song.subDivisions}
                        onChange={e => fireChange("subDivisions", parseInt(e.target.value, 10))}
@@ -62,7 +71,9 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
             </div>
 
             <div className="form-group">
-                <label htmlFor="accent0">Accents</label>
+                <label htmlFor="accent0">
+                  <FormattedMessage id="song.accents"/>
+                </label>
                 <Accents
                     timeSignatureBeats={song.timeSignatureBeats}
                     accents={song.accents}
@@ -72,5 +83,3 @@ function SongEditor<T extends NewSong>({song, onChange}: SongEditorProps<T>) {
         </>
     );
 }
-
-export default SongEditor;

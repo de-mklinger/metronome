@@ -6,6 +6,8 @@ import { useSaveSong } from "../../lib/repository.ts";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import Button from "../controls/Button.tsx";
 import Screen from "../controls/Screen.tsx";
+import { FormattedMessage } from "react-intl";
+import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
 
 function CurrentSongEditScreen() {
   const appState = useAppState();
@@ -35,13 +37,15 @@ function CurrentSongEditScreen() {
 
   return (
     <Screen name="song-editor" back={back}>
-      <h1>Edit Current Song</h1>
+      <h1>
+        <FormattedMessage id="song.edit-current" />
+      </h1>
 
       <SongEditor song={songState} onChange={setSongState} />
 
-      <div className="form-group">
+      <FormButtonsGroup>
         <Button onClick={apply}>
-          Ok
+          <FormattedMessage id="ok" />
         </Button>
 
         <Button
@@ -49,13 +53,13 @@ function CurrentSongEditScreen() {
           onClick={saveAsNew}
           disabled={!songState.title}
         >
-          Save as new
+          <FormattedMessage id="song.save-as-new" />
         </Button>
 
         <Link to={back} className="btn btn-link">
-          Cancel
+          <FormattedMessage id="cancel" />
         </Link>
-      </div>
+      </FormButtonsGroup>
     </Screen>
   );
 }
