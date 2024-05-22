@@ -8,9 +8,9 @@ import MetronomeScreen from "./metronome/MetronomeScreen.tsx";
 import ConfigEditScreen from "./config/ConfigEditScreen.tsx";
 import CurrentSongEditScreen from "./song/CurrentSongEditScreen.tsx";
 import { language, messages } from "../lang/i18n.ts";
-import SetlistEditorByParam from "./setlist/SetlistEditorByParam.tsx";
+import { useAppState } from "../lib/use-app-state.ts";
 import SetlistsScreen from "./setlist/SetlistsScreen.tsx";
-import {useAppState} from "../lib/use-app-state.ts";
+import SetlistEditScreen from "./setlist/SetlistEditScreen.tsx";
 
 function App() {
   // const [loadSetlistId, setLoadSetlistId] = useState<string | undefined>(
@@ -101,10 +101,7 @@ function App() {
                   {/*  }*/}
                   {/*/>*/}
                   <Route path="setlists" element={<SetlistsScreen />} />
-                  <Route
-                    path="setlists/:id"
-                    element={<SetlistEditorByParam />}
-                  />
+                  <Route path="setlists/:id" element={<SetlistEditScreen />} />
                 </Route>
                 <Route element={<MetronomeLayout />}>
                   <Route index={true} element={<MetronomeScreen />} />

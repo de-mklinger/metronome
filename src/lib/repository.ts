@@ -145,7 +145,7 @@ export function useGetSetlists() {
 
 export function useNewSetlist() {
   const {entity: initialSetlist, save, saveCount} = useEntity(
-    `setlist-new-${Math.random().toString(16).substring(2)}`,
+    `setlist-new`,
     () => Promise.resolve({...defaultSetlist}),
     (setlist) => repository.saveSetlist(setlist),
     (setlist) => Promise.resolve(setlist),

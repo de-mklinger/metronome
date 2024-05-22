@@ -1,41 +1,44 @@
 import SongEditor from "../song/SongEditor.js";
-import {defaultSong} from "../../lib/env.js";
+import { defaultSong } from "../../lib/env.js";
 import repository from "../../lib/repository.js";
-import {useState} from "react";
-import {Song} from "../../types.ts";
+import { useState } from "react";
+import { Song } from "../../types.ts";
 import Button from "../controls/Button.tsx";
-import Container from "../controls/Container.tsx";
+import { FormattedMessage } from "react-intl";
+import Screen from "../controls/Screen.tsx";
+import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
 
 export type NewSongEditorContainerProps = {
-  onSave: (song: Song) => void
-  onCancel: () => void
-}
+  onSave: (song: Song) => void;
+  onCancel: () => void;
+};
 
-function NewSongEditScreen({onSave, onCancel}: NewSongEditorContainerProps) {
-    const [song, setSong] = useState(defaultSong);
+function NewSongEditScreen({ onSave, onCancel }: NewSongEditorContainerProps) {
+  const [song, setSong] = useState(defaultSong);
 
-    const save = () => repository.saveSong(song)
-        .then(savedSong => {
-            onSave(savedSong);
-        });
+  const save = () =>
+    repository.saveSong(song).then((savedSong) => {
+      onSave(savedSong);
+    });
 
-    return (
-        <Container className="song-editor-screen">
-            <h1>Add New Song</h1>
+  return (
+    <Screen name="song-editor">
+      <h1>
+        <FormattedMessage id="song.new-song" />
+      </h1>
 
-            <SongEditor song={song} onChange={setSong} />
+      <SongEditor song={song} onChange={setSong} />
 
-            <div className="form-group">
-                <Button onClick={() => save()}>
-                    Save
-                </Button>
-                <Button variant="link" onClick={() => onCancel()}>
-                    Cancel
-                </Button>
-            </div>
-        </Container>
-    );
-
+      <FormButtonsGroup>
+        <Button onClick={() => save()}>
+          <FormattedMessage id="save" />
+        </Button>
+        <Button variant="link" onClick={() => onCancel()}>
+          <FormattedMessage id="cancel" />
+        </Button>
+      </FormButtonsGroup>
+    </Screen>
+  );
 }
 
 export default NewSongEditScreen;
