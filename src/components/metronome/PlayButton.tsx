@@ -1,6 +1,6 @@
 import {faPlay, faPause} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Button from 'react-bootstrap/Button';
+import Button from "../controls/Button.tsx";
 
 export type PlayButtonProps = {
     started: boolean,

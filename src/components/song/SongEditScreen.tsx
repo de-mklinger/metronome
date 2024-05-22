@@ -2,12 +2,13 @@ import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import SongEditor from "./SongEditor.js";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
-import {Button, Container} from "react-bootstrap";
 import SongSetlistsEditor from "./SongSetlistsEditor.js";
 import repository from "../../lib/repository.js";
 import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import {Setlist, SetlistWithSongs, Song} from "../../types.ts";
 import useParam from "../../lib/use-param.ts";
+import Button from "../controls/Button.tsx";
+import Container from "../controls/Container.tsx";
 
 export type SongEditScreenProps = {
   onSongChange: (song: Song) => void,
@@ -112,11 +113,11 @@ function SongEditScreen({onSongChange, onSetlistChange}: SongEditScreenProps) {
             />
 
             <EqualWidthFormGroup>
-                <Button className="btn-primary" onClick={save} disabled={!song.title}>
+                <Button onClick={save} disabled={!song.title}>
                     Save
                 </Button>
 
-                <Button className="btn-secondary" onClick={saveAsNew} disabled={!song.title || song.title.trim() === originalSong.title.trim()}>
+                <Button variant="secondary" onClick={saveAsNew} disabled={!song.title || song.title.trim() === originalSong.title.trim()}>
                     As New
                 </Button>
 

@@ -1,5 +1,6 @@
 import QuarterNoteSvg from "../../images/quarter-note.svg?react";
 import {Song} from "../../types.ts";
+import Button from "../controls/Button.tsx";
 
 export type SelectSongProps = {
   songs: Song[]
@@ -21,9 +22,9 @@ function SelectSong({songs, onSelect}: SelectSongProps) {
                             </div>
                         </div>
                         <div className="actions">
-                            <button className="btn btn-primary" onClick={() => onSelect(song)}>
+                            <Button onClick={() => onSelect(song)}>
                                 Select
-                            </button>
+                            </Button>
                         </div>
                     </li>
                 )}

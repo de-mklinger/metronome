@@ -1,4 +1,3 @@
-import {Col, Row} from "react-bootstrap";
 import {
     isTimeSignatureBeats,
     isTimeSignatureNoteValue,
@@ -6,6 +5,8 @@ import {
     TimeSignatureNoteValue
 } from "../../types.ts";
 import {ChangeEvent} from "react";
+import Row from "../controls/Row.tsx";
+import Col from "../controls/Col.tsx";
 
 export type TimeSignatureProps = {
     beats: TimeSignatureBeats,

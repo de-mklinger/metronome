@@ -1,10 +1,11 @@
 import SongEditor from "./SongEditor.tsx";
 import { useState } from "react";
-import { Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppState } from "../../lib/use-app-state.ts";
 import { useSaveSong } from "../../lib/repository.ts";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
+import Button from "../controls/Button.tsx";
+import Screen from "../controls/Screen.tsx";
 
 function CurrentSongEditScreen() {
   const appState = useAppState();
@@ -21,9 +22,11 @@ function CurrentSongEditScreen() {
     throw error;
   }
 
+  const back = "/";
+
   const apply = () => {
     appState.song = songState;
-    navigate(-1);
+    navigate(back);
   };
 
   function saveAsNew() {
@@ -31,29 +34,29 @@ function CurrentSongEditScreen() {
   }
 
   return (
-    <Container className="song-editor-screen">
+    <Screen name="song-editor" back={back}>
       <h1>Edit Current Song</h1>
 
       <SongEditor song={songState} onChange={setSongState} />
 
       <div className="form-group">
-        <Button className="btn-primary" onClick={apply}>
+        <Button onClick={apply}>
           Ok
         </Button>
 
         <Button
-          className="btn-secondary"
+          variant="secondary"
           onClick={saveAsNew}
           disabled={!songState.title}
         >
           Save as new
         </Button>
 
-        <Link to="/" className="btn btn-link">
+        <Link to={back} className="btn btn-link">
           Cancel
         </Link>
       </div>
-    </Container>
+    </Screen>
   );
 }
 

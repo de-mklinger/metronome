@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Col, Container, FormGroup, Row } from "react-bootstrap";
 import classNames from "classnames";
 import { useIntl } from "react-intl";
 import EqualWidthFormGroup from "../common/EqualWidthFormGroup.tsx";
 import { ConfigKey } from "../../types.ts";
 import useEventListener from "../../lib/use-event-listener.ts";
 import { useAppState } from "../../lib/use-app-state.ts";
+import Button from "../controls/Button.tsx";
+import FormGroup from "../controls/FormGroup.tsx";
+import Row from "../controls/Row.tsx";
+import Col from "../controls/Col.tsx";
+import Screen from "../controls/Screen.tsx";
 
 function ConfigEditScreen() {
   const appState = useAppState();
@@ -88,7 +92,7 @@ function ConfigEditScreen() {
   const keys: ConfigKey[] = ["playKey", "nextSongKey", "previousSongKey"];
 
   return (
-    <Container className="config-editor-screen">
+    <Screen name="config-editor">
       <h1>{msg("config.settings")}</h1>
 
       <h2>{msg("config.keyboard-shortcuts")}</h2>
@@ -104,7 +108,7 @@ function ConfigEditScreen() {
           {msg("config.cancel")}
         </Link>
       </EqualWidthFormGroup>
-    </Container>
+    </Screen>
   );
 }
 

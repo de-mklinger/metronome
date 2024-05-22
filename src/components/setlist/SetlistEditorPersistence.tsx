@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import SetlistEditView from "./SetlistEditView.tsx";
 import { useNavigate } from "react-router-dom";
 import { useNewSetlist, useSetlist } from "../../lib/repository.ts";
+import Button from "../controls/Button.tsx";
 
 export type SetlistEditorPersistenceProps = {
   id: string;
@@ -33,7 +34,7 @@ function InnerComponentSetlist({ id }: SetlistEditorPersistenceProps) {
   return (
     <div>
       <SetlistEditView setlist={setlist} onChange={update} />
-      <button onClick={() => save(setlist)}>Save</button>
+      <Button onClick={() => save(setlist)}>Save</Button>
     </div>
   );
 }
@@ -50,7 +51,7 @@ function InnerComponentNewSetlist() {
   return (
     <div>
       <SetlistEditView setlist={setlist} onChange={update} />
-      <button onClick={() => save(setlist)}>Save</button>
+      <Button onClick={() => save(setlist)}>Save</Button>
     </div>
   );
 }

@@ -50,5 +50,9 @@
   "config.key.AudioVolumeUp": "AudioVolumeUp",
   "config.key.LaunchMediaPlayer": "LaunchMediaPlayer",
   "config.key.LaunchApplication1": "LaunchApplication1",
-  "config.key.LaunchApplication2": "LaunchApplication2"
+  "config.key.LaunchApplication2": "LaunchApplication2",
+  "back": "Back",
+  "ok": "Ok",
+  "save": "Save",
+  "cancel": "Cancel"
 }

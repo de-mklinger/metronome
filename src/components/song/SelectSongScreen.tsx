@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
 import SelectSong from "./SelectSong.tsx";
-import {Container} from "react-bootstrap";
 import repository from "../../lib/repository.ts";
 import {Song} from "../../types.ts";
+import Button from "../controls/Button.tsx";
+import Container from "../controls/Container.tsx";
 
 export type SelectSongScreenProps = {
   onSelect: (song: Song) => void
@@ -48,10 +49,10 @@ function SelectSongScreen({onSelect, onCancel}: SelectSongScreenProps) {
             />
 
             <div className="form-group">
-                <button className="btn btn-link"
+                <Button variant="link"
                         onClick={() => onCancel()}>
                     Cancel
-                </button>
+                </Button>
             </div>
         </Container>
     );

@@ -50,5 +50,9 @@
   "config.key.AudioVolumeUp": "Audio lauter",
   "config.key.LaunchMediaPlayer": "Media-Player starten",
   "config.key.LaunchApplication1": "Applikation 1 starten",
-  "config.key.LaunchApplication2": "Applikation 2 starten"
+  "config.key.LaunchApplication2": "Applikation 2 starten",
+  "back": "Zurück",
+  "ok": "Ok",
+  "save": "Speichern",
+  "cancel": "Abbrechen"
 }

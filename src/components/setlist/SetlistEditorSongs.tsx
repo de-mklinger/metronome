@@ -4,12 +4,12 @@ import {
   faAngleUp,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "react-bootstrap";
 import QuarterNoteSvg from "../../images/quarter-note.svg?react";
 import EqualWidthGrid from "../common/EqualWidthGrid.tsx";
 import { Song } from "../../types.ts";
 import classNames from "classnames";
 import ListLg from "../common/ListLg.tsx";
+import Button from "../controls/Button.tsx";
 
 export type SetlistEditorSongsProps = {
   songs: Song[];

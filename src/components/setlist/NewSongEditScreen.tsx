@@ -1,9 +1,10 @@
-import {Container} from "react-bootstrap";
 import SongEditor from "../song/SongEditor.js";
 import {defaultSong} from "../../lib/env.js";
 import repository from "../../lib/repository.js";
 import {useState} from "react";
 import {Song} from "../../types.ts";
+import Button from "../controls/Button.tsx";
+import Container from "../controls/Container.tsx";
 
 export type NewSongEditorContainerProps = {
   onSave: (song: Song) => void
@@ -25,12 +26,12 @@ function NewSongEditScreen({onSave, onCancel}: NewSongEditorContainerProps) {
             <SongEditor song={song} onChange={setSong} />
 
             <div className="form-group">
-                <button className="btn btn-primary" onClick={() => save()}>
+                <Button onClick={() => save()}>
                     Save
-                </button>
-                <button className="btn btn-link" onClick={() => onCancel()}>
+                </Button>
+                <Button variant="link" onClick={() => onCancel()}>
                     Cancel
-                </button>
+                </Button>
             </div>
         </Container>
     );

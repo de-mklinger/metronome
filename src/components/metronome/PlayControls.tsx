@@ -1,4 +1,3 @@
-import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStepBackward,
@@ -9,6 +8,7 @@ import { getLabels } from "../../lib/tempo.js";
 import BpmKnob from "../common/BpmKnob.tsx";
 import { memo } from "react";
 import { useAppState } from "../../lib/use-app-state.ts";
+import Button from "../controls/Button.tsx";
 
 export type PlayControlsProps = {
   started: boolean;

@@ -128,7 +128,7 @@ function NoSleepAlwaysIfEnabled() {
 
 function EditLayout() {
   return (
-    <div className="container">
+    <div>
       <Outlet />
     </div>
   );

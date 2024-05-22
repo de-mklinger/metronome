@@ -1,6 +1,6 @@
-import {Button} from "react-bootstrap";
 import Logo from "../images/logo.svg?react";
 import useEventListener from "../lib/use-event-listener.ts";
+import Button from "./controls/Button.tsx";
 
 export type SplashScreenProps = {
   onClick: () => void

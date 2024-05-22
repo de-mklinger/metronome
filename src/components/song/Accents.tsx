@@ -1,6 +1,7 @@
-import {Col, Row} from "react-bootstrap";
 import {ChangeEvent} from "react";
 import {Accent, isAccent} from "../../types.ts";
+import Row from "../controls/Row.tsx";
+import Col from "../controls/Col.tsx";
 
 export type AccentsProps = {
     accents: Accent[],

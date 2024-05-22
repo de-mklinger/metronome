@@ -1,10 +1,11 @@
 import {useState} from "react";
 import LoadingIndicator from "../common/LoadingIndicator.tsx";
-import {Button, Container} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import SetlistEditScreen from "./SetlistEditScreen.tsx";
 import {useGetSetlists, useSaveSetlist} from "../../lib/repository.js";
 import {AppStateProps} from "../../lib/app-state.tsx";
+import Button from "../controls/Button.tsx";
+import Container from "../controls/Container.tsx";
 
 function SetlistsEditScreen({appState, appStateDispatch}: AppStateProps) {
     const {invoke: getSetlists, inProgress: getSetlistsInProgress, error: getSetlistsError, result: setlists, reset: resetSetlists} = useGetSetlists();

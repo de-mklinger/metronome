@@ -1,8 +1,8 @@
 import { SetlistWithSongs } from "../../types.ts";
 import ListLg from "../common/ListLg.tsx";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import classNames from "classnames";
+import Button from "../controls/Button.tsx";
 
 export type SetlistsListProps = {
   setlists: SetlistWithSongs[];

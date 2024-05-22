@@ -1,8 +1,9 @@
-import {Col, Row} from "react-bootstrap";
 import BpmKnob from "../common/BpmKnob.tsx";
 import Accents from "./Accents.js";
 import TimeSignature from "./TimeSignature.js";
 import {NewSong} from "../../types.ts";
+import Row from "../controls/Row.tsx";
+import Col from "../controls/Col.tsx";
 
 export type SongEditorProps<T extends NewSong> = {
   song: T
