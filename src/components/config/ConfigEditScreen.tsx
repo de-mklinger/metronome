@@ -11,6 +11,7 @@ import Row from "../controls/Row.tsx";
 import Col from "../controls/Col.tsx";
 import Screen from "../controls/Screen.tsx";
 import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
+import {createExportObject} from "../../lib/export-import.ts";
 
 export default function ConfigEditScreen() {
   const appState = useAppState();
@@ -98,6 +99,25 @@ export default function ConfigEditScreen() {
 
   const keys: ConfigKey[] = ["playKey", "nextSongKey", "previousSongKey"];
 
+  async function handleExportClick() {
+    const exportObject = await createExportObject();
+
+    const dataUrl = `data:application/json;base64,${btoa(JSON.stringify(exportObject))}`;
+
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.setAttribute("download", "metronome-data.json");
+
+    // Append to html
+    document.body.appendChild(link);
+
+    // Start download
+    link.click();
+
+    // Clean up and remove the link
+    link.parentNode?.removeChild(link);
+  }
+
   return (
     <Screen name="config-editor" back={back}>
       <h1>
@@ -121,6 +141,21 @@ export default function ConfigEditScreen() {
           <FormattedMessage id="cancel" />
         </Link>
       </FormButtonsGroup>
+
+      <h2>
+        <FormattedMessage id="config.import-export" />
+      </h2>
+
+      {/*<FormGroup>*/}
+      {/*  <Button>*/}
+      {/*    <FormattedMessage id="config.import-data" />*/}
+      {/*  </Button>*/}
+      {/*</FormGroup>*/}
+      <FormGroup>
+        <Button onClick={handleExportClick}>
+          <FormattedMessage id="config.export-data" />
+        </Button>
+      </FormGroup>
     </Screen>
   );
 }

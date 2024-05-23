@@ -54,6 +54,14 @@ export type SongPersistentAppState = BasePersistentAppState & {
 };
 export type PersistentAppState = SetlistPersistentAppState | SongPersistentAppState;
 
+export function setlistWithoutSongs(setlist: Setlist | SetlistWithSongs): Setlist {
+  return {
+    id: setlist.id,
+    title: setlist.title,
+    songIds: [...setlist.songIds],
+  };
+}
+
 export default function newRepository({
   doGetSongs,
   doGetSetlists,
@@ -320,14 +328,6 @@ export default function newRepository({
   async function setlistWithSongs(setlist: Setlist): Promise<SetlistWithSongs> {
     const songs = await Promise.all(setlist.songIds.map(getSong));
     return { ...setlist, songs: songs };
-  }
-
-  function setlistWithoutSongs(setlist: Setlist | SetlistWithSongs): Setlist {
-    return {
-      id: setlist.id,
-      title: setlist.title,
-      songIds: [...setlist.songIds],
-    };
   }
 
   function containsSong(setlist: Setlist, songId: string) {
