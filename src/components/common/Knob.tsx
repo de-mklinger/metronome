@@ -35,6 +35,30 @@ function requireTargetElement(e: UIEvent): Element {
     return el;
 }
 
+type CoordinatesHolder = {
+    clientX: number,
+    clientY: number
+}
+
+function isCoordinatesHolder(x: unknown): x is CoordinatesHolder {
+  return (
+    isPlainOldObject(x) &&
+    typeof x.clientX === "number" &&
+    typeof x.clientY === "number"
+  );
+}
+
+function isTouchList(x: unknown): x is TouchList {
+    return (
+      typeof x === "object" &&
+      x !== null &&
+      "length" in x &&
+      typeof x.length === "number" &&
+      "item" in x &&
+      typeof x.item === "function"
+    );
+}
+
 function Knob({rotation, minRotation, maxRotation, onRotate}: KnobProps) {
     const [currentRotation, setCurrentRotation] = useState(rotation);
     const [dragStartDegreeInUnit, setDragStartDegreeInUnit] = useState(0);
@@ -109,11 +133,17 @@ function Knob({rotation, minRotation, maxRotation, onRotate}: KnobProps) {
         const element = requireTargetElement(e);
         const rect = element.getBoundingClientRect();
 
-        let coordinatesHolder;
-        if ("targetTouches" in e && Array.isArray(e.targetTouches) && e.targetTouches.length > 0) {
-            coordinatesHolder = e.targetTouches[0];
-        } else {
+        let coordinatesHolder: CoordinatesHolder;
+        if ("targetTouches" in e && isTouchList(e.targetTouches) && e.targetTouches.length > 0) {
+            coordinatesHolder = e.targetTouches.item(0)!;
+        } else if (isCoordinatesHolder(e)) {
             coordinatesHolder = e;
+        } else {
+            console.warn("Unable to find client coordinates in UI event:", e);
+            coordinatesHolder = {
+                clientX: 0,
+                clientY: 0
+            }
         }
 
         return {
@@ -143,7 +173,7 @@ function Knob({rotation, minRotation, maxRotation, onRotate}: KnobProps) {
         if (degreeInUnit >= -90 && degreeInUnit < 0) {
             return 1;
         }
-        throw new Error("Illegal Argument");
+        throw new Error("Illegal Argument: Expected -90 <= degreeInUnit <= 90 but was: " + degreeInUnit);
     }
 
     return (
