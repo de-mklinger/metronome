@@ -1,5 +1,5 @@
 import { HashRouter as Router, Outlet, Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import LoadingIndicator from "./common/LoadingIndicator.tsx";
 import { AppStateContextProvider } from "../lib/app-state.tsx";
 import { useNoSleep } from "../lib/no-sleep.ts";
@@ -7,22 +7,21 @@ import { IntlProvider } from "react-intl";
 import MetronomeScreen from "./metronome/MetronomeScreen.tsx";
 import ConfigEditScreen from "./config/ConfigEditScreen.tsx";
 import CurrentSongEditScreen from "./song/CurrentSongEditScreen.tsx";
-import { language, messages } from "../lang/i18n.ts";
+import { messages } from "../lang/i18n.ts";
 import { useAppState } from "../lib/use-app-state.ts";
 import SetlistsScreen from "./setlist/SetlistsScreen.tsx";
 import SetlistEditScreen from "./setlist/SetlistEditScreen.tsx";
 import SplashScreen from "./SplashScreen.tsx";
+import { loadAppState } from "../lib/app-state-storage.ts";
 
 export default function App() {
+  const initialAppState = loadAppState();
+
   return (
     <>
-      <AppStateContextProvider>
+      <AppStateContextProvider initialAppState={initialAppState}>
         <NoSleepAlwaysIfEnabled />
-        <IntlProvider
-          locale={language}
-          defaultLocale="en"
-          messages={messages[language]}
-        >
+        <CustomIntlProvider>
           {/*<NoSleepDebugView noSleep={noSleep} />*/}
           <Suspense fallback={<LoadingIndicator />}>
             <SplashScreen>
@@ -57,7 +56,7 @@ export default function App() {
               </Router>
             </SplashScreen>
           </Suspense>
-        </IntlProvider>
+        </CustomIntlProvider>
       </AppStateContextProvider>
     </>
   );
@@ -83,4 +82,55 @@ function MetronomeLayout() {
       <Outlet />
     </div>
   );
+}
+
+function CustomIntlProvider({ children }: PropsWithChildren) {
+  const locale = useLocale();
+
+  return (
+    <IntlProvider
+      locale={locale}
+      defaultLocale="en"
+      messages={messages[locale]}
+    >
+      {children}
+    </IntlProvider>
+  );
+}
+
+function useLocale(): SupportedLocale {
+  const appState = useAppState();
+
+  if (isSupportedLocale(appState.config.locale)) {
+    console.log(
+      "Found supported locale in app state config:",
+      appState.config.locale,
+    );
+    return appState.config.locale;
+  } else {
+    console.log(
+      "No supported locale found in app state config:",
+      appState.config.locale,
+    );
+    return getBrowserDefaultLocale();
+  }
+}
+
+type SupportedLocale = keyof typeof messages;
+
+function isSupportedLocale(x: unknown): x is SupportedLocale {
+  return typeof x === "string" && x in messages;
+}
+
+function getBrowserDefaultLocale(): SupportedLocale {
+  let browserDefaultLocale: SupportedLocale = "en";
+
+  const navigatorLanguage = navigator.language.toLowerCase();
+  if (navigatorLanguage === "de" || navigatorLanguage.startsWith("de-")) {
+    browserDefaultLocale = "de";
+  }
+
+  console.log("Using browser locale:", browserDefaultLocale);
+
+  return browserDefaultLocale;
 }

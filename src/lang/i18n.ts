@@ -5,5 +5,3 @@ export const messages = {
   'en': messages_en,
   'de': {...messages_en, ...messages_de}
 };
-
-export const language = 'de';

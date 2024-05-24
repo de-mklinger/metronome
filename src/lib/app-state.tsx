@@ -6,6 +6,7 @@ import {
   useReducer,
 } from "react";
 import { AppState, Config, NewSong, SetlistWithSongs, Song } from "../types.ts";
+import {storeAppState} from "./app-state-storage.ts";
 
 function savingAppStateReducer(appState: AppState, action: Action) {
   // TODO only store non-default config values
@@ -14,7 +15,7 @@ function savingAppStateReducer(appState: AppState, action: Action) {
   if (newAppState) {
     //console.log("New app state", newAppState);
     if (appState) {
-      localStorage.setItem("metronome.appState", JSON.stringify(appState));
+      storeAppState(appState);
     } else {
       console.log("Not saving app state after initial set");
     }

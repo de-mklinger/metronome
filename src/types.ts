@@ -130,6 +130,7 @@ export type KeyConfig = {
 };
 
 export type Config = KeyConfig & {
+  locale?: string;
   noSleepAlways: boolean;
   noSleepWhenStarted: boolean;
   splashAlways: boolean;

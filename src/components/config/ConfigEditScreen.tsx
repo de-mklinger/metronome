@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
 import classNames from "classnames";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ConfigKey } from "../../types.ts";
@@ -10,32 +9,32 @@ import FormGroup from "../controls/FormGroup.tsx";
 import Row from "../controls/Row.tsx";
 import Col from "../controls/Col.tsx";
 import Screen from "../controls/Screen.tsx";
-import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
-import {createExportObject} from "../../lib/export-import.ts";
+import { createExportObject } from "../../lib/export-import.ts";
 
 export default function ConfigEditScreen() {
   const appState = useAppState();
-  const [configState, setConfigState] = useState(appState.config);
+  // const [configState, setConfigState] = useState(appState.config);
 
   const [changeKey, setChangeKey] = useState<ConfigKey>();
 
-  useEventListener("keydown", (e) => {
-    if (changeKey) {
-      const newConfigState = { ...configState };
-      newConfigState[changeKey] = e.key;
-      setConfigState(newConfigState);
-      setChangeKey(undefined);
-    }
-  });
-
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const back = "/";
 
-  const apply = () => {
-    appState.config = configState;
-    navigate(back);
-  };
+  // const apply = () => {
+  //   console.log("Applying config:", appState.config);
+  //   appState.config = configState;
+  //   // navigate(back);
+  // };
+
+  useEventListener("keydown", (e) => {
+    if (changeKey) {
+      const newConfigState = { ...appState.config };
+      newConfigState[changeKey] = e.key;
+      setChangeKey(undefined);
+      appState.config = newConfigState;
+    }
+  });
 
   const ChangeKeyButton = ({ keyName }: { keyName: ConfigKey }) => (
     <Button
@@ -89,7 +88,7 @@ export default function ConfigEditScreen() {
             <FormattedMessage id={`config.${keyName}`} />:
           </label>
         </Col>
-        <Col>{translateKey(configState[keyName])}</Col>
+        <Col>{translateKey(appState.config[keyName])}</Col>
         <Col xs={7} md={6}>
           <ChangeKeyButton keyName={keyName} />
         </Col>
@@ -118,11 +117,42 @@ export default function ConfigEditScreen() {
     link.parentNode?.removeChild(link);
   }
 
+  function handleLanguageChange(e: ChangeEvent<HTMLSelectElement>) {
+    const locale = e.target.value ?? undefined;
+    console.log("Switching locale to", locale);
+    appState.config = {
+      ...appState.config,
+      locale,
+    };
+  }
+
   return (
     <Screen name="config-editor" back={back}>
       <h1>
         <FormattedMessage id="config.settings" />
       </h1>
+
+      <h2>
+        <FormattedMessage id="config.base" />
+      </h2>
+
+      <FormGroup>
+        <label htmlFor="language-select">
+          <FormattedMessage id="config.language" />
+        </label>
+        <select
+          className="form-control"
+          value={appState.config.locale}
+          onChange={handleLanguageChange}
+          id="language-select"
+        >
+          <option value="">
+            <FormattedMessage id="config.browser-language" />
+          </option>
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </FormGroup>
 
       <h2>
         <FormattedMessage id="config.keyboard-shortcuts" />
@@ -131,16 +161,6 @@ export default function ConfigEditScreen() {
       {keys.map((keyName) => (
         <KeyInput key={keyName} keyName={keyName} />
       ))}
-
-      <FormButtonsGroup>
-        <Button onClick={apply}>
-          <FormattedMessage id="save" />
-        </Button>
-
-        <Link to={back} className="btn btn-link">
-          <FormattedMessage id="cancel" />
-        </Link>
-      </FormButtonsGroup>
 
       <h2>
         <FormattedMessage id="config.import-export" />
