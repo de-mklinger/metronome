@@ -4,6 +4,7 @@ import theme from "../../lib/theme.ts";
 export default styled.div`
   border: 1px solid black;
   border-radius: 0.5rem;
+  margin-bottom: 1rem;
 
   ul {
     margin: 0;

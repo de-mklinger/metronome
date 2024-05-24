@@ -6,7 +6,7 @@ import Screen from "../controls/Screen.tsx";
 import { useAppState } from "../../lib/use-app-state.ts";
 import { FormattedMessage } from "react-intl";
 import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
-import FormGroup from "../controls/FormGroup.tsx";
+import ListLg from "../common/ListLg.tsx";
 
 function SetlistsScreen() {
   const appState = useAppState();
@@ -40,7 +40,7 @@ function SetlistsScreen() {
       </h1>
 
       {setlists && setlists.length > 0 && (
-        <FormGroup className="setlists">
+        <ListLg>
           <ul>
             {setlists.map((setlist) => (
               <li
@@ -65,7 +65,7 @@ function SetlistsScreen() {
                     className="btn btn-secondary"
                     to={"/setlists/" + encodeURIComponent(setlist.id)}
                   >
-                    Edit
+                    <FormattedMessage id="edit" />
                   </Link>
                   <Button
                     variant="secondary"
@@ -74,13 +74,13 @@ function SetlistsScreen() {
                       navigate(back);
                     }}
                   >
-                    Select
+                    <FormattedMessage id="select" />
                   </Button>
                 </div>
               </li>
             ))}
           </ul>
-        </FormGroup>
+        </ListLg>
       )}
 
       <FormButtonsGroup>

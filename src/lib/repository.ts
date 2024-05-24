@@ -129,6 +129,10 @@ export function useSaveSong() {
   return useRepositoryAction(repository.saveSong);
 }
 
+export function useGetSongs() {
+  return useRepositoryNoArgAction(repository.getSongs);
+}
+
 export function useGetSetlist() {
   return useRepositoryAction(repository.getSetlist);
 }

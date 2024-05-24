@@ -58,6 +58,7 @@
   "config.key.LaunchMediaPlayer": "Media-Player starten",
   "config.key.LaunchApplication1": "Applikation 1 starten",
   "config.key.LaunchApplication2": "Applikation 2 starten",
+  "songs": "Songs",
   "song.new-song": "Neuer Song",
   "song.edit-current": "Aktuellen Song bearbeiten",
   "song.save-as-new": "Als neuen Song speichern",
@@ -66,6 +67,8 @@
   "song.time-signature": "Takt",
   "song.sub-divisions": "Unterteilungen",
   "song.accents": "Akzente",
+  "songs.select-song": "Song Auswählen",
+  "songs.filter": "Filter",
   "setlists": "Setlisten",
   "setlist.edit": "Setliste bearbeiten",
   "setlist.new": "Neue Setliste...",
@@ -76,5 +79,7 @@
   "back": "Zurück",
   "ok": "Ok",
   "save": "Speichern",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "select": "Auswählen",
+  "edit": "Bearbeiten"
 }

@@ -13,6 +13,9 @@ import SetlistsScreen from "./setlist/SetlistsScreen.tsx";
 import SetlistEditScreen from "./setlist/SetlistEditScreen.tsx";
 import SplashScreen from "./SplashScreen.tsx";
 import { loadAppState } from "../lib/app-state-storage.ts";
+import SongsScreen from "./song/SongsScreen.tsx";
+import NotFoundScreen from "./NotFoundScreen.tsx";
+import SongEditScreen from "./song/SongEditScreen.tsx";
 
 export default function App() {
   const initialAppState = loadAppState();
@@ -33,21 +36,14 @@ export default function App() {
                       path="currentsong"
                       element={<CurrentSongEditScreen />}
                     />
-                    <Route path="songs" element={<>TODO</>} />
-                    {/*<Route*/}
-                    {/*  path="songs/:id"*/}
-                    {/*  element={*/}
-                    {/*    <SongEditScreen*/}
-                    {/*      onSongChange={onSongChange}*/}
-                    {/*      onSetlistChange={onSetlistChange}*/}
-                    {/*    />*/}
-                    {/*  }*/}
-                    {/*/>*/}
+                    <Route path="songs" element={<SongsScreen />} />
+                    <Route path="songs/:id" element={<SongEditScreen />} />
                     <Route path="setlists" element={<SetlistsScreen />} />
                     <Route
                       path="setlists/:id"
                       element={<SetlistEditScreen />}
                     />
+                    <Route path="*" element={<NotFoundScreen />} />
                   </Route>
                   <Route element={<MetronomeLayout />}>
                     <Route index={true} element={<MetronomeScreen />} />

@@ -3,6 +3,7 @@ import ListLg from "../common/ListLg.tsx";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import Button from "../controls/Button.tsx";
+import {FormattedMessage} from "react-intl";
 
 export type SetlistsListProps = {
   setlists: SetlistWithSongs[];
@@ -15,7 +16,7 @@ export default function SetlistsList({
   activeSetlistId,
   onSelect,
 }: SetlistsListProps) {
-  console.log("active:", activeSetlistId)
+  // console.log("active:", activeSetlistId)
 
   return (
     <ListLg>
@@ -34,7 +35,7 @@ export default function SetlistsList({
                 className="btn btn-secondary"
                 to={"/setlists/" + encodeURIComponent(setlist.id)}
               >
-                Edit
+                <FormattedMessage id="edit" />
               </Link>
               <Button
                 variant="secondary"
@@ -42,7 +43,7 @@ export default function SetlistsList({
                   onSelect(setlist);
                 }}
               >
-                Select
+                <FormattedMessage id="select" />
               </Button>
             </div>
           </li>

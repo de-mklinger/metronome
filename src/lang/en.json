@@ -61,6 +61,7 @@
   "config.import-export": "Import/Export",
   "config.import-data": "Import data from file",
   "config.export-data": "Export data to file",
+  "songs": "Songs",
   "song.new-song": "New Song",
   "song.edit-current": "Edit Current Song",
   "song.save-as-new": "Save as new",
@@ -69,6 +70,8 @@
   "song.time-signature": "Time Signature",
   "song.sub-divisions": "Sub Divisions",
   "song.accents": "Accents",
+  "songs.select-song": "Select Song",
+  "songs.filter": "Filter",
   "setlists": "Setlists",
   "setlist.edit": "Edit Setlist",
   "setlist.new": "New Setlist",
@@ -79,5 +82,7 @@
   "back": "Back",
   "ok": "Ok",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "select": "Select",
+  "edit": "Edit"
 }

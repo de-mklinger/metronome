@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGear,
+  faBars,
   faEllipsisV,
   faListOl,
 } from "@fortawesome/free-solid-svg-icons";
@@ -29,6 +30,9 @@ export default function SongControls() {
       <div className="song-settings">
         <Link className="btn btn-primary" to={"/config"}>
           <FontAwesomeIcon icon={faGear} />
+        </Link>
+        <Link className="btn btn-primary" to={"/songs"}>
+          <FontAwesomeIcon icon={faBars} />
         </Link>
         <Link className="btn btn-primary" to={"/setlists"}>
           <FontAwesomeIcon icon={faListOl} />

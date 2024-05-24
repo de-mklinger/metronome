@@ -70,7 +70,7 @@ function SetlistEditScreen() {
           addSong(song);
           setSelectSong(false);
         }}
-        onCancel={() => {
+        back={() => {
           setSelectSong(false);
         }}
       />

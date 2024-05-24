@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import Button from "./Button.tsx";
 
 export type CancelButtonProps = {
-  back?: number | string;
+  back?: number | string | (() => void);
 };
 
 export default function CancelButton({ back = -1 }: CancelButtonProps) {
@@ -15,11 +15,13 @@ export default function CancelButton({ back = -1 }: CancelButtonProps) {
         <FormattedMessage id="cancel" />
       </Link>
     );
-  } else {
-    return (
-      <Button variant="link" onClick={() => navigate(back)}>
-        <FormattedMessage id="cancel" />
-      </Button>
-    );
   }
+
+  const handleClick = typeof back === "function" ? back : () => navigate(back);
+
+  return (
+    <Button variant="link" onClick={handleClick}>
+      <FormattedMessage id="cancel" />
+    </Button>
+  );
 }

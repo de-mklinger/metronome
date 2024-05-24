@@ -7,7 +7,7 @@ import { FormattedMessage } from "react-intl";
 
 export type ScreenProps = {
   name: string;
-  back?: false | string | number;
+  back?: false | string | number | (() => void);
 } & ContainerProps;
 
 export default function Screen({ children, name, back, className, ...containerProps }: ScreenProps) {
@@ -41,7 +41,7 @@ function ScreenNavigation({ back, name }: ScreenNavigationProps) {
   );
 }
 
-function BackButton({ back }: { back: string | number }) {
+function BackButton({ back }: { back: string | number | (() => void) }) {
   const navigate = useNavigate();
 
   if (typeof back === "string") {
@@ -52,11 +52,13 @@ function BackButton({ back }: { back: string | number }) {
     );
   }
 
+  const handleClick = (typeof back === "function") ? back : () => navigate(back);
+
   return (
     <a
       className="screen-navigation-link"
       href="#"
-      onClick={() => navigate(back)}
+      onClick={handleClick}
     >
       <BackButtonLabel />
     </a>
