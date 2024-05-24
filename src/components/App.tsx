@@ -16,44 +16,48 @@ import { loadAppState } from "../lib/app-state-storage.ts";
 import SongsScreen from "./song/SongsScreen.tsx";
 import NotFoundScreen from "./NotFoundScreen.tsx";
 import SongEditScreen from "./song/SongEditScreen.tsx";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorScreen from "./ErrorScreen.tsx";
 
 export default function App() {
   const initialAppState = loadAppState();
 
   return (
     <>
-      <AppStateContextProvider initialAppState={initialAppState}>
-        <NoSleepAlwaysIfEnabled />
-        <CustomIntlProvider>
-          {/*<NoSleepDebugView noSleep={noSleep} />*/}
-          <Suspense fallback={<LoadingIndicator />}>
-            <SplashScreen>
-              <Router>
-                <Routes>
-                  <Route element={<EditLayout />}>
-                    <Route path="config" element={<ConfigEditScreen />} />
-                    <Route
-                      path="currentsong"
-                      element={<CurrentSongEditScreen />}
-                    />
-                    <Route path="songs" element={<SongsScreen />} />
-                    <Route path="songs/:id" element={<SongEditScreen />} />
-                    <Route path="setlists" element={<SetlistsScreen />} />
-                    <Route
-                      path="setlists/:id"
-                      element={<SetlistEditScreen />}
-                    />
-                    <Route path="*" element={<NotFoundScreen />} />
-                  </Route>
-                  <Route element={<MetronomeLayout />}>
-                    <Route index={true} element={<MetronomeScreen />} />
-                  </Route>
-                </Routes>
-              </Router>
-            </SplashScreen>
-          </Suspense>
-        </CustomIntlProvider>
-      </AppStateContextProvider>
+      <ErrorBoundary fallback={<ErrorScreen />}>
+        <AppStateContextProvider initialAppState={initialAppState}>
+          <NoSleepAlwaysIfEnabled />
+          <CustomIntlProvider>
+            {/*<NoSleepDebugView noSleep={noSleep} />*/}
+            <Suspense fallback={<LoadingIndicator />}>
+              <SplashScreen>
+                <Router>
+                  <Routes>
+                    <Route element={<EditLayout />}>
+                      <Route path="config" element={<ConfigEditScreen />} />
+                      <Route
+                        path="currentsong"
+                        element={<CurrentSongEditScreen />}
+                      />
+                      <Route path="songs" element={<SongsScreen />} />
+                      <Route path="songs/:id" element={<SongEditScreen />} />
+                      <Route path="setlists" element={<SetlistsScreen />} />
+                      <Route
+                        path="setlists/:id"
+                        element={<SetlistEditScreen />}
+                      />
+                      <Route path="*" element={<NotFoundScreen />} />
+                    </Route>
+                    <Route element={<MetronomeLayout />}>
+                      <Route index={true} element={<MetronomeScreen />} />
+                    </Route>
+                  </Routes>
+                </Router>
+              </SplashScreen>
+            </Suspense>
+          </CustomIntlProvider>
+        </AppStateContextProvider>
+      </ErrorBoundary>
     </>
   );
 }
