@@ -65,6 +65,7 @@ function SongEditScreen() {
     );
     // TODO
     // savedSetlists.forEach(onSetlistChange);
+    console.log("savedSetlists:", savedSetlists);
 
     setSubmitted(true);
   }
