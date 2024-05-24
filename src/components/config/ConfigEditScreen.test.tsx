@@ -52,8 +52,6 @@ test("saves shortcut settings", async () => {
 
   expect(await findButton("key-input-playKey")).toHaveTextContent("Change...");
 
-  fireEvent.click(await screen.findByText("Save"));
-
   expect(dispatched).toHaveLength(1);
   expect(dispatched[0]).toHaveProperty("type", "setConfig");
   expect(dispatched[0]).toHaveProperty("payload.playKey", newKey);
