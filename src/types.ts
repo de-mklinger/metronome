@@ -132,6 +132,7 @@ export type KeyConfig = {
 export type Config = KeyConfig & {
   noSleepAlways: boolean;
   noSleepWhenStarted: boolean;
+  splashAlways: boolean;
 };
 
 function isConfig(x: unknown): x is Config {
@@ -139,6 +140,7 @@ function isConfig(x: unknown): x is Config {
     isPlainOldObject(x) &&
     typeof x.noSleepAlways === "boolean" &&
     typeof x.noSleepWhenStarted === "boolean" &&
+    typeof x.splashAlways === "boolean" &&
     typeof x.playKey === "string" &&
     typeof x.nextSongKey === "string" &&
     typeof x.previousSongKey === "string"

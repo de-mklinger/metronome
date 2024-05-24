@@ -1,4 +1,8 @@
 {
+  "splash.heading": "Welcome!",
+  "splash.line1": "Click or touch anywhere",
+  "splash.line2": "or press a key to get started",
+  "splash.line3": "...",
   "config.settings": "Settings",
   "config.keyboard-shortcuts": "Keyboard Shortcuts",
   "config.playKey": "Start/Stop",

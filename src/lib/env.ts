@@ -46,6 +46,7 @@ const defaultConfig: Config = {
   previousSongKey: "ArrowLeft",
   noSleepAlways: true,
   noSleepWhenStarted: false,
+  splashAlways: true,
 };
 
 const defaultAppState: AppState = {

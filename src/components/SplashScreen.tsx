@@ -1,26 +1,55 @@
 import Logo from "../images/logo.svg?react";
-import useEventListener from "../lib/use-event-listener.ts";
-import Button from "./controls/Button.tsx";
+import { PropsWithChildren, useState } from "react";
+import { useAppState } from "../lib/use-app-state.ts";
+import { getAudioContext } from "../lib/audio.ts";
+import Div100vh from "react-div-100vh";
+import { FormattedMessage } from "react-intl";
 
-export type SplashScreenProps = {
-  onClick: () => void
-}
+export default function SplashScreen({ children }: PropsWithChildren) {
+  const appState = useAppState();
+  const isAudioContextRunning = () => getAudioContext().state === "running";
+  const [visible, setVisible] = useState(
+    !isAudioContextRunning() || appState.config.splashAlways,
+  );
 
-function SplashScreen({onClick}: SplashScreenProps) {
-    useEventListener("keydown", onClick);
+  function close() {
+    setVisible(false);
+  }
 
-    return (
-        <div className="splash-screen" onClick={onClick}>
-            <div className="logo">
-                <Logo/>
-            </div>
-            <div className="start">
-                <Button>
-                    Open Metronome
-                </Button>
-            </div>
+  if (!visible) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Div100vh
+      className="splash-screen"
+      onClick={close}
+      onKeyDown={close}
+      autoFocus={true}
+      style={{ marginTop: "2rem" }}
+    >
+      <div style={{ textAlign: "center" }}>
+        <h1>
+          <FormattedMessage id="splash.heading" />
+        </h1>
+      </div>
+      <div className="logo">
+        <Logo />
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <div>
+          <FormattedMessage id="splash.line1" />
         </div>
-    );
+        <div>
+          <FormattedMessage id="splash.line2" />
+        </div>
+        <div>
+          <FormattedMessage id="splash.line3" />
+        </div>
+      </div>
+      <div style={{ width: "0px", height: "0px", overflow: "hidden" }}>
+        <input type="text" autoFocus={true} />
+      </div>
+    </Div100vh>
+  );
 }
-
-export default SplashScreen;

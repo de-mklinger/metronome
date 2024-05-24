@@ -1,4 +1,8 @@
 {
+  "splash.heading": "Hallo!",
+  "splash.line1": "Zum Starten",
+  "splash.line2": "irgendwo klicken",
+  "splash.line3": "oder eine Taste drücken...",
   "config.settings": "Einstellungen",
   "config.keyboard-shortcuts": "Tastenkürzel",
   "config.playKey": "Start/Stop",

@@ -1,21 +1,20 @@
-import { PropsWithChildren } from "react";
-import Container from "./Container.tsx";
+import Container, { ContainerProps } from "./Container.tsx";
 import { Link, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedMessage } from "react-intl";
 
-export type ScreenProps = PropsWithChildren<{
+export type ScreenProps = {
   name: string;
   back?: false | string | number;
-}>;
+} & ContainerProps;
 
-export default function Screen({ children, name, back }: ScreenProps) {
+export default function Screen({ children, name, back, className, ...containerProps }: ScreenProps) {
   return (
     <>
       <ScreenNavigation name={name} back={back} />
-      <Container className={`${name}-screen`}>{children}</Container>
+      <Container className={classNames(`${name}-screen`, className)} {...containerProps}>{children}</Container>
     </>
   );
 }
