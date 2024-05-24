@@ -59,6 +59,7 @@
   "config.key.LaunchApplication1": "Applikation 1 starten",
   "config.key.LaunchApplication2": "Applikation 2 starten",
   "songs": "Songs",
+  "song.new": "Neuer Song...",
   "song.new-song": "Neuer Song",
   "song.edit-current": "Aktuellen Song bearbeiten",
   "song.save-as-new": "Als neuen Song speichern",

@@ -1,9 +1,11 @@
 import { Song } from "../../types.ts";
 import { useAppState } from "../../lib/use-app-state.ts";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Screen from "../controls/Screen.tsx";
 import LoadingSongsList from "./LoadingSongsList.tsx";
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from "react-intl";
+import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
+import CancelButton from "../controls/CancelButton.tsx";
 
 export default function SongsScreen() {
   const appState = useAppState();
@@ -25,7 +27,15 @@ export default function SongsScreen() {
       <h1>
         <FormattedMessage id="songs" />
       </h1>
+
       <LoadingSongsList onSelect={handleSelect} onEdit={handleEdit} />
+
+      <FormButtonsGroup>
+        <Link className="btn btn-secondary" to="/songs/_new_">
+          <FormattedMessage id="song.new" />
+        </Link>
+        <CancelButton back={back} />
+      </FormButtonsGroup>
     </Screen>
   );
 }

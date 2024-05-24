@@ -62,6 +62,7 @@
   "config.import-data": "Import data from file",
   "config.export-data": "Export data to file",
   "songs": "Songs",
+  "song.new": "New Song...",
   "song.new-song": "New Song",
   "song.edit-current": "Edit Current Song",
   "song.save-as-new": "Save as new",
