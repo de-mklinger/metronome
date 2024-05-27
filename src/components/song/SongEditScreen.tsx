@@ -11,6 +11,7 @@ import { defaultSong } from "../../lib/env.ts";
 import Screen from "../controls/Screen.tsx";
 import FormButtonsGroup from "../controls/FormButtonsGroup.tsx";
 import CancelButton from "../controls/CancelButton.tsx";
+import { FormattedMessage } from "react-intl";
 
 export default function SongEditScreen() {
   let songId: string | undefined = useParam("id");
@@ -118,7 +119,9 @@ export default function SongEditScreen() {
 
   return (
     <Screen name="song-editor" back={back}>
-      <h1>Edit Song</h1>
+      <h1>
+        <FormattedMessage id="song.edit-song" />
+      </h1>
 
       <SongEditor song={song} onChange={setSong} />
 
@@ -126,7 +129,7 @@ export default function SongEditScreen() {
 
       <FormButtonsGroup>
         <Button onClick={save} disabled={!song.title}>
-          Save
+          <FormattedMessage id="save" />
         </Button>
 
         {!newSong && (
@@ -137,7 +140,7 @@ export default function SongEditScreen() {
               !song.title || song.title.trim() === originalSong.title.trim()
             }
           >
-            As New
+            <FormattedMessage id="song.save-as-new" />
           </Button>
         )}
 
