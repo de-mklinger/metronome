@@ -158,28 +158,23 @@ export default function newRepository({
   async function addSongToSetlist(setlistId: string, songId: string) {
     info("Repository: addSongToSetlist", setlistId, songId);
 
-    const setlists = await doGetSetlists();
+    const setlist = await getSetlist(setlistId);
 
-    const setlist = findById(setlists, setlistId);
     setlist.songIds.push(songId);
 
-    return setlistWithSongs(setlist);
+    return saveSetlist(setlist);
   }
 
   async function removeSongFromSetlist(setlistId: string, songId: string) {
     info("Repository: removeSongFromSetlist", setlistId, songId);
 
-    const setlists = await doGetSetlists();
+    const setlist = await getSetlist(setlistId);
 
-    const setlist = findById(setlists, setlistId);
     setlist.songIds = setlist.songIds.filter(
       (setlistSongId) => setlistSongId !== songId,
     );
 
-    info("Repository: removeSongFromSetlist after:", setlist);
-    info("Repository: all setlists:", setlists);
-
-    return setlistWithSongs(setlist);
+    return saveSetlist(setlist);
   }
 
   async function saveSetlist(setlist: Setlist | NewSetlist) {

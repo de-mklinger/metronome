@@ -76,22 +76,17 @@ export default function SongEditScreen() {
     }
 
     const savedSong = await repository.saveSong(song);
-    // TODO
-    // onSongChange(savedSong);
 
     const removedSetlists = (originalSetlists ?? []).filter(
       (originalSetlist) =>
         !(setlists ?? []).find((setlist) => setlist.id === originalSetlist.id),
     );
 
-    const savedSetlists = await Promise.all(
+    await Promise.all(
       removedSetlists.map((setlist) =>
         repository.removeSongFromSetlist(setlist.id, savedSong.id),
       ),
     );
-    // TODO
-    // savedSetlists.forEach(onSetlistChange);
-    console.log("savedSetlists:", savedSetlists);
 
     navigate(back);
   }
