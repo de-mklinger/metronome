@@ -16,7 +16,10 @@ function MetronomeView() {
 
   const [activeBeatIdx, setActiveBeatIdx] = useState(-1);
 
-  useNoSleep(appState.config.noSleepWhenStarted && started);
+  useNoSleep(
+    appState.config.noSleepInMetronomeView ||
+    appState.config.noSleepWhenStarted && started
+  );
 
   return (
     <>

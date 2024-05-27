@@ -44,7 +44,8 @@ const defaultConfig: Config = {
   playKey: " ",
   nextSongKey: "ArrowRight",
   previousSongKey: "ArrowLeft",
-  noSleepAlways: true,
+  noSleepAlways: false,
+  noSleepInMetronomeView: true,
   noSleepWhenStarted: false,
   splashAlways: true,
 };

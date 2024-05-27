@@ -132,6 +132,7 @@ export type KeyConfig = {
 export type Config = KeyConfig & {
   locale?: string;
   noSleepAlways: boolean;
+  noSleepInMetronomeView: boolean;
   noSleepWhenStarted: boolean;
   splashAlways: boolean;
 };
