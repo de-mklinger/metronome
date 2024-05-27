@@ -46,7 +46,7 @@ export type Song = {
   accents: Accent[];
 };
 
-function isSong(x: unknown): x is Song {
+export function isSong(x: unknown): x is Song {
   return isPlainOldObject(x) && typeof x.id === "string" && isNewSong(x);
 }
 
@@ -87,7 +87,7 @@ export type Setlist = {
   songIds: string[];
 };
 
-function isSetlist(x: unknown): x is Setlist {
+export function isSetlist(x: unknown): x is Setlist {
   return (
     isPlainOldObject(x) &&
     typeof x.id === "string" &&
