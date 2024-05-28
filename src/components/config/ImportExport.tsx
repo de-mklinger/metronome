@@ -1,7 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import FormGroup from "../controls/FormGroup.tsx";
 import Button from "../controls/Button.tsx";
-import { createExportObject } from "../../lib/export-import.ts";
+import { createExportObject } from "../../lib/import-export.ts";
 import { ChangeEvent } from "react";
 
 export default function ImportExport() {
