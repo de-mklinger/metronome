@@ -12,10 +12,9 @@ export default function ImportExport() {
       </h2>
 
       <FormGroup>
-        <Button>
+        <Button onClick={handleImportClick}>
           <FormattedMessage id="config.import-data" />
         </Button>
-        <input type="file" onChange={handleImportFile} />
       </FormGroup>
       <FormGroup>
         <Button onClick={handleExportClick}>
@@ -96,4 +95,23 @@ async function handleImportFile(e: ChangeEvent<HTMLInputElement>) {
   const obj = JSON.parse(s);
 
   console.log(obj);
+}
+
+function handleImportClick() {
+  const input = document.createElement("input");
+  input.setAttribute("type", "file");
+  input.setAttribute("style", "display: none;");
+  input.onchange = (e) => {
+    handleImportFile(e as unknown as ChangeEvent<HTMLInputElement>).finally(
+      () => {
+        input.parentNode?.removeChild(input);
+      },
+    );
+  };
+
+  // Append to html
+  document.body.appendChild(input);
+
+  // Start upload
+  input.click();
 }
