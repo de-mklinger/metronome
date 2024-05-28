@@ -52,9 +52,13 @@ export type SetlistPersistentAppState = BasePersistentAppState & {
 export type SongPersistentAppState = BasePersistentAppState & {
   song: NewSong | Song | string;
 };
-export type PersistentAppState = SetlistPersistentAppState | SongPersistentAppState;
+export type PersistentAppState =
+  | SetlistPersistentAppState
+  | SongPersistentAppState;
 
-export function setlistWithoutSongs(setlist: Setlist | SetlistWithSongs): Setlist {
+export function setlistWithoutSongs(
+  setlist: Setlist | SetlistWithSongs,
+): Setlist {
   return {
     id: setlist.id,
     title: setlist.title,
@@ -105,18 +109,18 @@ export default function newRepository({
   return repository;
 
   async function getSongs() {
-    info("Repository: getSongs");
+    debug("Repository: getSongs");
     return doGetSongs();
   }
 
   async function getSong(id: string) {
-    info("Repository: getSong", id);
+    debug("Repository: getSong", id);
     const songs = await doGetSongs();
     return findById(songs, id);
   }
 
   async function saveSong(song: Song | NewSong) {
-    info("Repository: saveSong", song);
+    debug("Repository: saveSong", song);
     const songs = await doGetSongs();
     const addedSong = addSong(songs, song);
     await doSaveSongs(songs);
@@ -124,13 +128,13 @@ export default function newRepository({
   }
 
   async function getSetlists(): Promise<SetlistWithSongs[]> {
-    info("Repository: getSetlists");
+    debug("Repository: getSetlists");
     const setlists = await doGetSetlists();
     return Promise.all(setlists.map(setlistWithSongs));
   }
 
   async function getSetlist(id: string) {
-    info("Repository: getSetlist", id);
+    debug("Repository: getSetlist", id);
     const setlists = await doGetSetlists();
     return setlistWithSongs(findById(setlists, id));
   }
@@ -138,25 +142,25 @@ export default function newRepository({
   async function getSetlistsWithSong(
     songId: string,
   ): Promise<SetlistWithSongs[]> {
-    info("Repository: getSetlistsWithSong", songId);
+    debug("Repository: getSetlistsWithSong", songId);
 
     const setlists = await doGetSetlists();
 
-    info("Repository: all setlists:", setlists);
+    debug("Repository: all setlists:", setlists);
 
     return Promise.all(
       setlists
         .filter((setlist) => containsSong(setlist, songId))
         .map(setlistWithSongs)
         .map((setlist) => {
-          info("Repository: getSetlistsWithSong found ", setlist);
+          debug("Repository: getSetlistsWithSong found ", setlist);
           return setlist;
         }),
     );
   }
 
   async function addSongToSetlist(setlistId: string, songId: string) {
-    info("Repository: addSongToSetlist", setlistId, songId);
+    debug("Repository: addSongToSetlist", setlistId, songId);
 
     const setlist = await getSetlist(setlistId);
 
@@ -166,7 +170,7 @@ export default function newRepository({
   }
 
   async function removeSongFromSetlist(setlistId: string, songId: string) {
-    info("Repository: removeSongFromSetlist", setlistId, songId);
+    debug("Repository: removeSongFromSetlist", setlistId, songId);
 
     const setlist = await getSetlist(setlistId);
 
@@ -178,6 +182,8 @@ export default function newRepository({
   }
 
   async function saveSetlist(setlist: Setlist | NewSetlist) {
+    debug("Repository: saveSetlist", setlist);
+
     const setlists = await doGetSetlists();
     const savedSetlist = addSetlist(setlists, setlist);
     await doSaveSetlists(setlists.map(setlistWithoutSongs));
@@ -214,7 +220,7 @@ export default function newRepository({
   }
 
   async function getAppState() {
-    info("Repository: getAppState");
+    debug("Repository: getAppState");
 
     const savedAppState = await doGetAppState();
 
@@ -228,7 +234,7 @@ export default function newRepository({
   async function saveAppState(appState: AppState) {
     // TODO try to save only once if this is invoked many times in sequence
 
-    info("Repository: save app state: ", appState);
+    debug("Repository: save app state: ", appState);
 
     const appStateToSave = toPersistentAppState(appState);
 
@@ -255,7 +261,7 @@ export default function newRepository({
   // ---- internal
 
   function findById<T extends { id?: string }>(haystack: T[], id: string): T {
-    info("Repository: findById", id);
+    debug("Repository: findById", id);
 
     const found = haystack.find((item) => item.id === id);
     if (!found) {
@@ -267,10 +273,10 @@ export default function newRepository({
   }
 
   function addSong(haystack: Song[], song: Song | NewSong): Song {
-    info("Repository: addSong", song);
+    debug("Repository: addSong", song);
 
     if ("id" in song && song.id) {
-      replace(haystack, song);
+      addOrReplace(haystack, song);
       return song;
     } else {
       const newObject = {
@@ -286,10 +292,10 @@ export default function newRepository({
     haystack: Setlist[],
     setlist: Setlist | NewSetlist,
   ): Setlist {
-    info("Repository: addSetlist", setlist);
+    debug("Repository: addSetlist", setlist);
 
     if ("id" in setlist && setlist.id) {
-      replace(haystack, setlist);
+      addOrReplace(haystack, setlist);
       return setlist;
     } else {
       const newObject = {
@@ -301,12 +307,13 @@ export default function newRepository({
     }
   }
 
-  function replace<T extends { id?: string }>(haystack: T[], object: T) {
+  function addOrReplace<T extends { id?: string }>(haystack: T[], object: T) {
     const idx = haystack.findIndex((item) => item.id === object.id);
-    if (idx === -1) {
-      throw new Error("Not found: " + object.id);
+    if (idx !== -1) {
+      haystack[idx] = object;
+    } else {
+      haystack.push(object);
     }
-    haystack[idx] = object;
   }
 
   function newRandomId(len = 16) {
@@ -332,8 +339,7 @@ export default function newRepository({
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function info(..._args: unknown[]) {
-    //console.log(...args);
+  function debug(...args: unknown[]) {
+    console.debug(...args);
   }
 }

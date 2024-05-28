@@ -1,10 +1,51 @@
 import { FormattedMessage } from "react-intl";
 import FormGroup from "../controls/FormGroup.tsx";
 import Button from "../controls/Button.tsx";
-import { createExportObject } from "../../lib/import-export.ts";
+import {
+  createExportObject,
+  ImportPreparation,
+  prepareImport,
+} from "../../lib/import-export.ts";
 import { ChangeEvent } from "react";
 
-export default function ImportExport() {
+export type ImportExportProps = {
+  onImportPreparation: (importPreparation: ImportPreparation) => void;
+};
+
+export default function ImportExport({
+  onImportPreparation,
+}: ImportExportProps) {
+  async function handleImportFile(e: ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files?.length) {
+      return;
+    }
+
+    const file = e.target.files[0];
+    const s = await readFile(file);
+
+    const importPreparation = await prepareImport(s);
+    onImportPreparation(importPreparation);
+  }
+
+  function handleImportClick() {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("style", "display: none;");
+    input.onchange = (e) => {
+      handleImportFile(e as unknown as ChangeEvent<HTMLInputElement>).finally(
+        () => {
+          input.parentNode?.removeChild(input);
+        },
+      );
+    };
+
+    // Append to html
+    document.body.appendChild(input);
+
+    // Start upload
+    input.click();
+  }
+
   return (
     <>
       <h2>
@@ -77,41 +118,4 @@ async function readFile(file: File): Promise<string> {
     };
     fr.readAsText(file, "UTF-8");
   });
-}
-
-async function handleImportFile(e: ChangeEvent<HTMLInputElement>) {
-  if (!e.target.files?.length) {
-    return;
-  }
-
-  const file = e.target.files[0];
-
-  console.log(file);
-
-  const s = await readFile(file);
-
-  console.log(s);
-
-  const obj = JSON.parse(s);
-
-  console.log(obj);
-}
-
-function handleImportClick() {
-  const input = document.createElement("input");
-  input.setAttribute("type", "file");
-  input.setAttribute("style", "display: none;");
-  input.onchange = (e) => {
-    handleImportFile(e as unknown as ChangeEvent<HTMLInputElement>).finally(
-      () => {
-        input.parentNode?.removeChild(input);
-      },
-    );
-  };
-
-  // Append to html
-  document.body.appendChild(input);
-
-  // Start upload
-  input.click();
 }

@@ -36,15 +36,61 @@ export async function createExportObject(): Promise<ImportExportData> {
   };
 }
 
-export async function prepareImport(data: ImportExportData): Promise<string[]> {
-  const result = [];
+export type ImportPreparation = {
+  data?: ImportExportData;
+  comments: string[];
+};
 
-  if (!isImportExportData(data)) {
-    result.push("Type check failed");
-  } else {
-    result.push(`Importing ${data.songs.length} songs`);
-    result.push(`Importing ${data.setlists.length} setlists`);
+export async function prepareImport(json: string): Promise<ImportPreparation> {
+  const comments = [];
+
+  let data;
+  try {
+    data = JSON.parse(json);
+  } catch (e) {
+    comments.push(`Parsing JSON failed: ${e}`);
   }
 
-  return result;
+  if (!isImportExportData(data)) {
+    data = undefined;
+    comments.push("Type check failed");
+  } else {
+    const [existingSetlists, existingSongs] = await Promise.all([
+      repository.getSetlists(),
+      repository.getSongs(),
+    ]);
+
+    comments.push(`Importing ${data.songs.length} songs`);
+
+    const songsToOverwrite = data.songs.filter((s) =>
+      Boolean(existingSongs.find((ss) => ss.id === s.id)),
+    ).length;
+    if (songsToOverwrite > 0) {
+      comments.push(`Overwriting ${songsToOverwrite} songs`);
+    }
+
+    comments.push(`Importing ${data.setlists.length} setlists`);
+
+    const setlistsToOverwrite = data.setlists.filter((s) =>
+      Boolean(existingSetlists.find((ss) => ss.id === s.id)),
+    ).length;
+    if (setlistsToOverwrite > 0) {
+      comments.push(`Overwriting ${setlistsToOverwrite} songs`);
+    }
+  }
+
+  return {
+    data,
+    comments,
+  };
+}
+
+export async function doImport(importExportData: ImportExportData) {
+  for (const song of importExportData.songs) {
+    await repository.saveSong(song);
+  }
+
+  for (const setlist of importExportData.setlists) {
+    await repository.saveSetlist(setlist);
+  }
 }
