@@ -1,20 +1,13 @@
 .splash-screen {
+  padding-top: 2rem;
+  text-align: center;
   display: flex;
   flex-direction: column;
 
   .logo {
-    margin: 5rem auto;
+    margin: 3rem auto;
     svg {
       fill: darken($body-bg, 5%);
-    }
-  }
-
-  .start {
-    display: flex;
-    margin: 0 5rem;
-
-    button {
-      flex: 2;
     }
   }
 }

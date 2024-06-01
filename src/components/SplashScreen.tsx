@@ -26,9 +26,8 @@ export default function SplashScreen({ children }: PropsWithChildren) {
       onClick={close}
       onKeyDown={close}
       autoFocus={true}
-      style={{ marginTop: "2rem" }}
     >
-      <div style={{ textAlign: "center" }}>
+      <div>
         <h1>
           <FormattedMessage id="splash.heading" />
         </h1>
@@ -36,7 +35,7 @@ export default function SplashScreen({ children }: PropsWithChildren) {
       <div className="logo">
         <Logo />
       </div>
-      <div style={{ textAlign: "center" }}>
+      <div>
         <div>
           <FormattedMessage id="splash.line1" />
         </div>
