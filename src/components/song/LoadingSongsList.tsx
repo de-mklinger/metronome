@@ -29,5 +29,9 @@ export default function LoadingSongsList({onEdit, onSelect}: LoadingSongsListPro
     throw error;
   }
 
+  if (songs.length === 0) {
+    return undefined;
+  }
+
   return <FilteredSongsList songs={songs} onEdit={onEdit} onSelect={onSelect} />;
 }
