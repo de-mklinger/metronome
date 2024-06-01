@@ -26,6 +26,7 @@ export default function SongEditor<T extends NewSong>({song, onChange}: SongEdit
                 </label>
                 <input type="text" className="form-control" id="title" placeholder="Enter song title"
                        value={song.title}
+                       autoFocus={true}
                        onChange={e => fireChange("title", e.target.value)}
                 />
             </div>

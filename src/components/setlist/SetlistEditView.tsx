@@ -26,6 +26,7 @@ function SetlistEditView<T extends NewSetlistWithSongs>({setlist, onChange}: Set
                     <label htmlFor="title">Title</label>
                     <input type="text" className="form-control" id="title" placeholder="Enter setlist title"
                            value={setlist.title}
+                           autoFocus={true}
                            onChange={e => fireChange("title", e.target.value)}
                     />
                 </div>
