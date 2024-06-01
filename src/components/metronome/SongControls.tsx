@@ -8,21 +8,29 @@ import {
   faListOl,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAppState } from "../../lib/use-app-state.ts";
+import { useCallback } from "react";
 
 export default function SongControls() {
   const appState = useAppState();
+
+  const onSongSelect = useCallback(
+    (idx: number) => {
+      appState.songIdx = idx;
+    },
+    [appState],
+  );
+
+  const onSetlistDeselect = useCallback(() => {
+    appState.setlist = undefined;
+  }, [appState]);
 
   if (appState.setlist) {
     return (
       <SetlistView
         setlist={appState.setlist}
         songIdx={appState.songIdx}
-        onSongSelect={(idx) => {
-          appState.songIdx = idx;
-        }}
-        onSetlistDeselect={() => {
-          appState.setlist = undefined;
-        }}
+        onSongSelect={onSongSelect}
+        onSetlistDeselect={onSetlistDeselect}
       />
     );
   } else {

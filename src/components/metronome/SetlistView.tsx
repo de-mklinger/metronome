@@ -65,8 +65,6 @@ type SetlistEntryProps = {
 };
 
 function SetlistEntry({ song, idx, active, onSongSelect }: SetlistEntryProps) {
-  console.log("Render SetlistEntry", song.title);
-
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
