@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+	 version="1.1"
+	 width="8mm" height="8mm"
+	 viewBox="0 0 8 8">
+	<defs>
+		<linearGradient
+				id="bg-gradient"
+				x1="0" y1="0"
+				x2="0" y2="1"
+				gradientUnits="objectBoundingBox"
+		>
+			<stop stop-color="#ddd" offset="0"/>
+			<stop stop-color="#888" offset="1"/>
+		</linearGradient>
+	</defs>
+	<rect x="0" y="0" width="8" height="8" fill="url(#bg-gradient)"/>
+	<path d="m4.56 1.57-0.249 0.802h-0.785l-1.27 4.06h3.46l-0.795-2.53-0.543 1.75h-0.826l1.02-3.27h0.826l-0.215 0.693 0.205 0.0636 0.368-1.19z"/>
+</svg>

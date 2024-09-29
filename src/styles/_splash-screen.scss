@@ -6,7 +6,9 @@
 
   .logo {
     margin: 3rem auto;
+    height: 33%;
     svg {
+      height: 100%;
       fill: darken($body-bg, 5%);
     }
   }
