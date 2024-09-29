@@ -1,23 +1,20 @@
-const entityActionStates = [
-  "initializing",
-  "error",
-  "loading",
-  "loaded",
-  "saving",
-  "saved",
-] as const;
-
-type EntityActionState = typeof entityActionStates[number];
+type EntityActionState =
+  | "initializing"
+  | "error"
+  | "loading"
+  | "loaded"
+  | "saving"
+  | "saved";
 
 export type EntityAction<T, S> = {
-  id: string,
-  state: EntityActionState,
-  loadResult?: T,
-  saveResult?: S,
-  error?: unknown,
-  loadPromise?: Promise<void>,
-  savePromise?: Promise<void>
-}
+  id: string;
+  state: EntityActionState;
+  loadResult?: T;
+  saveResult?: S;
+  error?: unknown;
+  loadPromise?: Promise<void>;
+  savePromise?: Promise<void>;
+};
 
 const cache = new Map<string, EntityAction<unknown, unknown>>();
 
