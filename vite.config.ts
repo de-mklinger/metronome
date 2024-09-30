@@ -26,8 +26,30 @@ export default defineConfig({
             type: "image/png",
           },
           {
+            src: "logo-maskable-bg-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any"
+          },
+          {
+            src: "logo-maskable-bg-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable"
+          },
+          {
             src: "logo-maskable-bg.svg",
             type: "image/svg+xml",
+          },
+          {
+            src: "logo-maskable-bg.svg",
+            type: "image/svg+xml",
+            purpose: "any"
+          },
+          {
+            src: "logo-maskable-bg.svg",
+            type: "image/svg+xml",
+            purpose: "maskable"
           },
           {
             src: "logo.svg",
