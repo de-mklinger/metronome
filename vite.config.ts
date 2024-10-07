@@ -11,6 +11,10 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        mode: "development",
+        globPatterns: ["**/*"]
+      },
       manifest: {
         name: "Metronome",
         short_name: "Metronome",
