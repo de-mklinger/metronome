@@ -1,12 +1,18 @@
 .splash-screen {
-  padding-top: 2rem;
+  margin-top: 3rem;
   text-align: center;
   display: flex;
   flex-direction: column;
+  gap: 3rem;
+
+  h1 {
+    margin: 0;
+  }
 
   .logo {
-    margin: 3rem auto;
     height: 33%;
+    max-height: 20rem;
+
     svg {
       height: 100%;
       fill: darken($body-bg, 5%);
