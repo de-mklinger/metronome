@@ -18,7 +18,11 @@ import NotFoundScreen from "./NotFoundScreen.tsx";
 import SongEditScreen from "./song/SongEditScreen.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorScreen from "./ErrorScreen.tsx";
-import {clearConsoleMessages, grabConsoleMessages, ungrabConsoleMessages} from "../lib/console-messages.ts";
+import {
+  clearConsoleMessages,
+  grabConsoleMessages,
+  ungrabConsoleMessages,
+} from "../lib/console-messages.ts";
 
 export default function App() {
   const initialAppState = loadAppState();
@@ -76,7 +80,11 @@ function GrabConsoleMessagesIfEnabled() {
 
 function NoSleepAlwaysIfEnabled() {
   const appState = useAppState();
-  useNoSleep(appState.config.noSleepAlways, appState.config.noSleepMode);
+  useNoSleep(
+    appState.config.noSleepAlways,
+    appState.config.noSleepMode,
+    appState.config.debug,
+  );
   return undefined;
 }
 

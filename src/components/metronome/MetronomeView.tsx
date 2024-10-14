@@ -20,6 +20,7 @@ function MetronomeView() {
     appState.config.noSleepInMetronomeView ||
       (appState.config.noSleepWhenStarted && started),
     appState.config.noSleepMode,
+    appState.config.debug,
   );
 
   return (

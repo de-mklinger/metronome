@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import NoSleep, { NoSleepMode } from "./no-sleep-patched.js";
 import useEventListener from "./use-event-listener.ts";
 
-export function useNoSleep(enabled: boolean, mode: NoSleepMode = "auto") {
+export function useNoSleep(enabled: boolean, mode: NoSleepMode = "auto", debug = false) {
   const noSleep = useRef<NoSleep | null>(null);
 
   const noSleepMode = useRef<NoSleepMode>(mode);
@@ -15,6 +15,7 @@ export function useNoSleep(enabled: boolean, mode: NoSleepMode = "auto") {
       noSleep.current = new NoSleep({
         title: "Metronome",
         mode: noSleepMode.current,
+        debug
       });
     }
 
@@ -22,7 +23,7 @@ export function useNoSleep(enabled: boolean, mode: NoSleepMode = "auto") {
       .enable()
       .then(() => console.debug("No-sleep enabled"))
       .catch((e) => console.warn("Error enabling no-sleep", e));
-  }, [noSleep, noSleepMode]);
+  }, [noSleep, noSleepMode, debug]);
 
   const enableIfNeeded = useCallback(() => {
     if (currentRequestedEnabled.current) {

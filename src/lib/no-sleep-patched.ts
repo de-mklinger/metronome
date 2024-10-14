@@ -12,6 +12,7 @@ export function isNoSleepMode(x: unknown): x is NoSleepMode {
 export type NoSleepOpts = {
   title?: string;
   mode?: NoSleepMode;
+  debug?: boolean;
 };
 
 export const nativeWakeLockSupported = () => "wakeLock" in navigator;
@@ -34,7 +35,7 @@ class NoSleep implements INoSleep {
     ) {
       this.delegate = new NoSleepNativeWakeLock();
     } else {
-      this.delegate = new NoSleepVideo(opts.title ?? "No Sleep");
+      this.delegate = new NoSleepVideo(opts.title ?? "No Sleep", opts.debug);
     }
   }
 
@@ -108,10 +109,15 @@ class NoSleepNativeWakeLock implements INoSleep {
 class NoSleepVideo implements INoSleep {
   private readonly noSleepVideo: HTMLVideoElement;
 
-  constructor(title: string) {
+  constructor(title: string, debug = false) {
     console.log("NoSleepVideo: Initializing");
 
     const noSleepVideo = document.createElement("video");
+
+    noSleepVideo.style.position = "absolute";
+    noSleepVideo.style.top = "0";
+    noSleepVideo.style.left = "0";
+    noSleepVideo.style.zIndex = "-1000";
 
     noSleepVideo.setAttribute("title", title);
     noSleepVideo.setAttribute("playsinline", "");
@@ -127,8 +133,15 @@ class NoSleepVideo implements INoSleep {
       console.log("NoSleepVideo: play");
     });
 
-    this.addSourceToVideo(noSleepVideo, "webm", webm);
-    this.addSourceToVideo(noSleepVideo, "mp4", mp4);
+    if (debug) {
+      this.addSourceToVideo(noSleepVideo, "webm", "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm")
+      this.addSourceToVideo(noSleepVideo, "mp4", "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4")
+    } else {
+      this.addSourceToVideo(noSleepVideo, "webm", webm);
+      this.addSourceToVideo(noSleepVideo, "mp4", mp4);
+      noSleepVideo.style.width = "1px";
+      noSleepVideo.style.height = "1px";
+    }
 
     noSleepVideo.addEventListener("loadedmetadata", () => {
       console.log("NoSleepVideo: Duration:", noSleepVideo.duration);
@@ -149,16 +162,23 @@ class NoSleepVideo implements INoSleep {
       // }
     });
 
+    const body = document.querySelector("body");
+    if (body) {
+      body.appendChild(noSleepVideo);
+    } else {
+      console.warn("NoSleepVideo: Missing body element");
+    }
+
     this.noSleepVideo = noSleepVideo;
   }
 
   private addSourceToVideo(
     element: HTMLVideoElement,
     type: string,
-    dataURI: string,
+    src: string,
   ) {
     const source = document.createElement("source");
-    source.src = dataURI;
+    source.src = src;
     source.type = `video/${type}`;
     element.appendChild(source);
   }
