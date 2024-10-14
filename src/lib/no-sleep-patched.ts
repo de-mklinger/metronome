@@ -145,11 +145,11 @@ class NoSleepVideo implements INoSleep {
 
     noSleepVideo.addEventListener("loadedmetadata", () => {
       console.log("NoSleepVideo: Duration:", noSleepVideo.duration);
-      if (noSleepVideo.duration <= 1) {
+      // if (noSleepVideo.duration <= 1) {
         // webm source
-        console.log("Enabling loop");
-        noSleepVideo.setAttribute("loop", "");
-      } else {
+      //   console.log("Enabling loop");
+      //   noSleepVideo.setAttribute("loop", "");
+      // } else {
         // mp4 source
         noSleepVideo.addEventListener("timeupdate", () => {
           // console.log("timeupdate", noSleepVideo.currentTime);
@@ -159,7 +159,7 @@ class NoSleepVideo implements INoSleep {
             noSleepVideo.currentTime = newCurrentTime;
           }
         });
-      }
+      // }
     });
 
     const body = document.querySelector("body");
