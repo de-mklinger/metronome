@@ -109,7 +109,7 @@ class NoSleepVideo implements INoSleep {
   private readonly noSleepVideo: HTMLVideoElement;
 
   constructor(title: string) {
-    console.log("Initializing NoSleepVideo");
+    console.log("NoSleepVideo: Initializing");
 
     const noSleepVideo = document.createElement("video");
 
@@ -117,22 +117,37 @@ class NoSleepVideo implements INoSleep {
     noSleepVideo.setAttribute("playsinline", "");
     noSleepVideo.setAttribute("loop", "");
 
+    noSleepVideo.addEventListener("ended", () => {
+      console.log("NoSleepVideo: ended");
+    });
+    noSleepVideo.addEventListener("pause", () => {
+      console.log("NoSleepVideo: pause");
+    });
+    noSleepVideo.addEventListener("play", () => {
+      console.log("NoSleepVideo: play");
+    });
+
     this.addSourceToVideo(noSleepVideo, "webm", webm);
     this.addSourceToVideo(noSleepVideo, "mp4", mp4);
 
-    // noSleepVideo.addEventListener("loadedmetadata", () => {
-    //   if (noSleepVideo.duration <= 1) {
-    //     // webm source
-    //     noSleepVideo.setAttribute("loop", "");
-    //   } else {
-    //     // mp4 source
-    //     noSleepVideo.addEventListener("timeupdate", () => {
-    //       if (noSleepVideo.currentTime > 0.5) {
-    //         noSleepVideo.currentTime = Math.random() / 2;
-    //       }
-    //     });
-    //   }
-    // });
+    noSleepVideo.addEventListener("loadedmetadata", () => {
+      console.log("NoSleepVideo: Duration:", noSleepVideo.duration);
+      // if (noSleepVideo.duration <= 1) {
+        // webm source
+        // console.log("Enabling loop");
+        // noSleepVideo.setAttribute("loop", "");
+      // } else {
+        // mp4 source
+        noSleepVideo.addEventListener("timeupdate", () => {
+          // console.log("timeupdate", noSleepVideo.currentTime);
+          if (noSleepVideo.currentTime > 0.5) {
+            const newCurrentTime = Math.random() / 4;
+            // console.log("newCurrentTime:", newCurrentTime);
+            noSleepVideo.currentTime = newCurrentTime;
+          }
+        });
+      // }
+    });
 
     this.noSleepVideo = noSleepVideo;
   }
