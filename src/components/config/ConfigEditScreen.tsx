@@ -6,6 +6,7 @@ import KeyboardShortcuts from "./KeyboardShortcuts.tsx";
 import { useState } from "react";
 import { ImportPreparation } from "../../lib/import-export.ts";
 import ImportScreen from "./ImportScreen.tsx";
+import Debug from "./Debug.tsx";
 
 export default function ConfigEditScreen() {
   const back = "/";
@@ -33,6 +34,8 @@ export default function ConfigEditScreen() {
       <KeyboardShortcuts />
 
       <ImportExport onImportPreparation={setImportPreparation} />
+
+      <Debug />
     </Screen>
   );
 }

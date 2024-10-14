@@ -13,9 +13,9 @@ function savingAppStateReducer(appState: AppState, action: Action) {
 
   const newAppState = appStateReducer(appState, action);
   if (newAppState) {
-    //console.log("New app state", newAppState);
+    // console.log("New app state", newAppState);
     if (appState) {
-      storeAppState(appState);
+      storeAppState(newAppState);
     } else {
       console.log("Not saving app state after initial set");
     }
