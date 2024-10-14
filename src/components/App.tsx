@@ -64,7 +64,7 @@ export default function App() {
 
 function NoSleepAlwaysIfEnabled() {
   const appState = useAppState();
-  useNoSleep(appState.config.noSleepAlways);
+  useNoSleep(appState.config.noSleepAlways, appState.config.noSleepMode);
   return undefined;
 }
 

@@ -18,7 +18,8 @@ function MetronomeView() {
 
   useNoSleep(
     appState.config.noSleepInMetronomeView ||
-    appState.config.noSleepWhenStarted && started
+      (appState.config.noSleepWhenStarted && started),
+    appState.config.noSleepMode,
   );
 
   return (
@@ -31,18 +32,13 @@ function MetronomeView() {
         onActiveBeatIdxChange={setActiveBeatIdx}
       />
 
-      <KeyListener
-        onPlay={onPlay}
-      />
+      <KeyListener onPlay={onPlay} />
 
       <BeatBar song={appState.song} activeBeatIdx={activeBeatIdx} />
 
       <SongControls />
 
-      <PlayControls
-        started={started}
-        onPlay={onPlay}
-      />
+      <PlayControls started={started} onPlay={onPlay} />
     </>
   );
 }

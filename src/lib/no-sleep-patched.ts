@@ -3,158 +3,177 @@
 
 import { webm, mp4 } from "./no-sleep-media.js";
 
-// Detect iOS browsers < version 10
-function oldIOS(): boolean {
-    return typeof navigator !== "undefined" &&
-    parseFloat(
-      (
-        "" +
-        (/CPU.*OS ([0-9_]{3,4})[0-9_]{0,1}|(CPU like).*AppleWebKit.*Mobile/i.exec(
-          navigator.userAgent
-        ) || [0, ""])[1]
-      )
-        .replace("undefined", "3_2")
-        .replace("_", ".")
-        .replace("_", "")
-    ) < 10 &&
-      // @ts-expect-error MSStream is unknown
-    !window.MSStream;
+export type NoSleepMode = "auto" | "native" | "video";
+
+export function isNoSleepMode(x: unknown): x is NoSleepMode {
+  return x === "auto" || x === "native" || x === "video";
 }
 
-// Detect native Wake Lock API support
-const nativeWakeLock = () => "wakeLock" in navigator;
-// const nativeWakeLock = () => false;
+export type NoSleepOpts = {
+  title?: string;
+  mode?: NoSleepMode;
+};
 
-class NoSleep {
-    private enabled: boolean;
-    private _wakeLock: WakeLockSentinel | undefined = undefined;
-    private noSleepTimer: number | undefined;
-    private noSleepVideo: HTMLVideoElement | undefined;
+export const nativeWakeLockSupported = () => "wakeLock" in navigator;
 
-    constructor(title = "No Sleep") {
-        this.enabled = false;
-        if (nativeWakeLock()) {
-            this._wakeLock = undefined;
-            const handleVisibilityChange = () => {
-                if (this._wakeLock !== null && document.visibilityState === "visible") {
-                    this.enable();
-                }
-            };
-            document.addEventListener("visibilitychange", handleVisibilityChange);
-            document.addEventListener("fullscreenchange", handleVisibilityChange);
-        } else if (oldIOS()) {
-            this.noSleepTimer = undefined;
-        } else {
-            // Set up no sleep video element
-            const noSleepVideo = document.createElement("video");
+interface INoSleep {
+  isEnabled(): boolean;
 
-            noSleepVideo.setAttribute("title", title);
-            noSleepVideo.setAttribute("playsinline", "");
+  enable(): Promise<void>;
 
-            this._addSourceToVideo(noSleepVideo, "webm", webm);
-            this._addSourceToVideo(noSleepVideo, "mp4", mp4);
+  disable(): Promise<void>;
+}
 
-            noSleepVideo.addEventListener("loadedmetadata", () => {
-                if (noSleepVideo.duration <= 1) {
-                    // webm source
-                    noSleepVideo.setAttribute("loop", "");
-                } else {
-                    // mp4 source
-                    noSleepVideo.addEventListener("timeupdate", () => {
-                        if (noSleepVideo.currentTime > 0.5) {
-                            noSleepVideo.currentTime = Math.random();
-                        }
-                    });
-                }
-            });
+class NoSleep implements INoSleep {
+  private readonly delegate: INoSleep;
 
-            this.noSleepVideo = noSleepVideo;
-        }
+  constructor(opts: NoSleepOpts) {
+    if (
+      opts.mode === "native" ||
+      (opts.mode === "auto" && nativeWakeLockSupported())
+    ) {
+      this.delegate = new NoSleepNativeWakeLock();
+    } else {
+      this.delegate = new NoSleepVideo(opts.title ?? "No Sleep");
+    }
+  }
+
+  isEnabled() {
+    return this.delegate.isEnabled();
+  }
+
+  async enable() {
+    return this.delegate.enable();
+  }
+
+  async disable() {
+    return this.delegate.disable();
+  }
+}
+
+class NoSleepNativeWakeLock implements INoSleep {
+  private wakeLock: WakeLockSentinel | undefined = undefined;
+
+  constructor() {
+    console.log("Initializing NoSleepNativeWakeLock");
+
+    // const handleVisibilityChange = () => {
+    //   if (document.visibilityState === "visible" && !this.isEnabled()) {
+    //     this.enable();
+    //   }
+    // };
+    // document.addEventListener("visibilitychange", handleVisibilityChange);
+    // document.addEventListener("fullscreenchange", handleVisibilityChange);
+  }
+
+  isEnabled(): boolean {
+    return this.wakeLock !== undefined;
+  }
+
+  async enable(): Promise<void> {
+    if (this.wakeLock !== undefined) {
+      console.warn("Wake Lock is already enabled.");
+      return;
     }
 
-    _addSourceToVideo(element: HTMLVideoElement, type: string, dataURI: string) {
-        const source = document.createElement("source");
-        source.src = dataURI;
-        source.type = `video/${type}`;
-        element.appendChild(source);
+    try {
+      this.wakeLock = await navigator.wakeLock.request("screen");
+      this.wakeLock.addEventListener("release", () => {
+        this.wakeLock = undefined;
+        //console.log("Wake Lock released.");
+      });
+    } catch (error: unknown) {
+      this.wakeLock = undefined;
+      console.error("Error requesting Wake Lock", error);
+      throw error;
+    }
+  }
+
+  async disable(): Promise<void> {
+    if (this.wakeLock === undefined) {
+      console.warn("Wake Lock is not enabled.");
+      return;
     }
 
-    isEnabled() {
-        return this.enabled && (!this.noSleepVideo || !this.noSleepVideo.paused);
+    try {
+      await this.wakeLock.release();
+    } catch (error: unknown) {
+      this.wakeLock = undefined;
+      console.error("Error releasing Wake Lock", error);
+      throw error;
+    }
+  }
+}
+
+class NoSleepVideo implements INoSleep {
+  private readonly noSleepVideo: HTMLVideoElement;
+
+  constructor(title: string) {
+    console.log("Initializing NoSleepVideo");
+
+    const noSleepVideo = document.createElement("video");
+
+    noSleepVideo.setAttribute("title", title);
+    noSleepVideo.setAttribute("playsinline", "");
+    noSleepVideo.setAttribute("loop", "");
+
+    this.addSourceToVideo(noSleepVideo, "webm", webm);
+    this.addSourceToVideo(noSleepVideo, "mp4", mp4);
+
+    // noSleepVideo.addEventListener("loadedmetadata", () => {
+    //   if (noSleepVideo.duration <= 1) {
+    //     // webm source
+    //     noSleepVideo.setAttribute("loop", "");
+    //   } else {
+    //     // mp4 source
+    //     noSleepVideo.addEventListener("timeupdate", () => {
+    //       if (noSleepVideo.currentTime > 0.5) {
+    //         noSleepVideo.currentTime = Math.random() / 2;
+    //       }
+    //     });
+    //   }
+    // });
+
+    this.noSleepVideo = noSleepVideo;
+  }
+
+  private addSourceToVideo(
+    element: HTMLVideoElement,
+    type: string,
+    dataURI: string,
+  ) {
+    const source = document.createElement("source");
+    source.src = dataURI;
+    source.type = `video/${type}`;
+    element.appendChild(source);
+  }
+
+  isEnabled(): boolean {
+    return !this.noSleepVideo.paused;
+  }
+
+  async enable(): Promise<void> {
+    if (this.isEnabled()) {
+      console.warn("Wake Lock is already enabled.");
+      return;
     }
 
-    getVideo() {
-        return this.noSleepVideo;
+    try {
+      await this.noSleepVideo.play();
+    } catch (error: unknown) {
+      console.error("Error starting no-sleep video", error);
+      throw error;
     }
+  }
 
-    async enable() {
-        if (nativeWakeLock()) {
-            return navigator.wakeLock
-                .request("screen")
-                .then((wakeLock) => {
-                    this._wakeLock = wakeLock;
-                    this.enabled = true;
-                    //console.log("Wake Lock active.");
-                    this._wakeLock.addEventListener("release", () => {
-                        // ToDo: Potentially emit an event for the page to observe since
-                        // Wake Lock releases happen when page visibility changes.
-                        // (https://web.dev/wakelock/#wake-lock-lifecycle)
-                        //console.log("Wake Lock released.");
-                    });
-                })
-                .catch((err) => {
-                    this.enabled = false;
-                    console.error(`${err.name}, ${err.message}`);
-                    throw err;
-                });
-        } else if (oldIOS()) {
-            this.disable();
-            console.warn(`
-        NoSleep enabled for older iOS devices. This can interrupt
-        active or long-running network requests from completing successfully.
-        See https://github.com/richtr/NoSleep.js/issues/15 for more details.
-      `);
-            this.noSleepTimer = window.setInterval(() => {
-                if (!document.hidden) {
-                    window.location.href = window.location.href.split("#")[0];
-                    window.setTimeout(window.stop, 0);
-                }
-            }, 15000);
-            this.enabled = true;
-            return Promise.resolve();
-        } else if (this.noSleepVideo) {
-            const playPromise = this.noSleepVideo.play();
-            return playPromise
-                .then((res) => {
-                    this.enabled = true;
-                    return res;
-                })
-                .catch((err) => {
-                    this.enabled = false;
-                    throw err;
-                });
-        }
+  async disable(): Promise<void> {
+    try {
+      this.noSleepVideo.pause();
+    } catch (error: unknown) {
+      console.error("Error pausing no-sleep video", error);
+      throw error;
     }
-
-    disable() {
-        if (nativeWakeLock()) {
-            if (this._wakeLock) {
-                this._wakeLock.release();
-            }
-            this._wakeLock = undefined;
-        } else if (oldIOS()) {
-            if (this.noSleepTimer) {
-                console.warn(`
-          NoSleep now disabled for older iOS devices.
-        `);
-                window.clearInterval(this.noSleepTimer);
-                this.noSleepTimer = undefined;
-            }
-        } else if (this.noSleepVideo) {
-            this.noSleepVideo.pause();
-        }
-        this.enabled = false;
-    }
+  }
 }
 
 export default NoSleep;

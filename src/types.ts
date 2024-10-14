@@ -1,4 +1,5 @@
 import isPlainOldObject from "./lib/is-plain-old-object.ts";
+import { NoSleepMode } from "./lib/no-sleep-patched.ts";
 
 export type Accent = 1 | 2 | 3;
 
@@ -134,6 +135,7 @@ export type Config = KeyConfig & {
   noSleepAlways: boolean;
   noSleepInMetronomeView: boolean;
   noSleepWhenStarted: boolean;
+  noSleepMode?: NoSleepMode;
   splashAlways: boolean;
 };
 
@@ -163,7 +165,8 @@ export function isAppState(x: unknown): x is AppState {
     isPlainOldObject(x) &&
     isConfig(x.config) &&
     (x.setlist === undefined || isSetlistWithSongs(x.setlist)) &&
-    (x.activeSetlistIdx === undefined || typeof x.activeSetlistIdx === "number") &&
+    (x.activeSetlistIdx === undefined ||
+      typeof x.activeSetlistIdx === "number") &&
     (isSong(x.song) || isNewSong(x.song))
   );
 }

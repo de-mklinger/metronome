@@ -1,45 +1,64 @@
 import { useCallback, useEffect, useRef } from "react";
-import NoSleep from "./no-sleep-patched.js";
+import NoSleep, { NoSleepMode } from "./no-sleep-patched.js";
 import useEventListener from "./use-event-listener.ts";
 
-export function useNoSleep(enabled: boolean) {
+export function useNoSleep(enabled: boolean, mode: NoSleepMode = "auto") {
   const noSleep = useRef<NoSleep | null>(null);
 
-  const currentEnabled = useRef<boolean>(enabled);
-  currentEnabled.current = enabled;
+  const noSleepMode = useRef<NoSleepMode>(mode);
+
+  const currentRequestedEnabled = useRef<boolean>(enabled);
+  currentRequestedEnabled.current = enabled;
 
   const enable = useCallback(() => {
-    if (currentEnabled.current) {
-      if (!noSleep.current) {
-        noSleep.current = new NoSleep("Metronome");
-      }
-
-      noSleep.current
-        .enable()
-        .then(() => console.debug("No-sleep enabled"))
-        .catch((e) => console.warn("Error enabling no-sleep", e));
+    if (!noSleep.current) {
+      noSleep.current = new NoSleep({
+        title: "Metronome",
+        mode: noSleepMode.current,
+      });
     }
-  }, [noSleep, currentEnabled]);
 
-  useEventListener("touchstart", enable);
-  useEventListener("mousedown", enable);
+    noSleep.current
+      .enable()
+      .then(() => console.debug("No-sleep enabled"))
+      .catch((e) => console.warn("Error enabling no-sleep", e));
+  }, [noSleep, noSleepMode]);
+
+  const enableIfNeeded = useCallback(() => {
+    if (currentRequestedEnabled.current) {
+      enable();
+    }
+  }, [enable, currentRequestedEnabled]);
+
+  const disable = useCallback(() => {
+    if (noSleep.current) {
+      noSleep.current
+        .disable()
+        .then(() => console.debug("No-sleep disabled"))
+        .catch((e) => console.warn("Error disabling no-sleep", e));
+    }
+  }, [noSleep]);
+
+  useEventListener("touchstart", enableIfNeeded);
+  useEventListener("mousedown", enableIfNeeded);
 
   useEffect(() => {
-    enable();
+    enableIfNeeded();
 
-    const disable = () => {
-      if (noSleep.current) {
-        console.debug("No-sleep disabled");
-        noSleep.current.disable();
-      }
-    };
-
-    if (!currentEnabled.current) {
+    if (!currentRequestedEnabled.current) {
       disable();
     }
 
     return () => disable();
-  }, [currentEnabled, enabled, enable]);
+  }, [currentRequestedEnabled, enableIfNeeded, disable]);
+
+  if (mode !== noSleepMode.current) {
+    console.log("Changing no-sleep mode", mode);
+    if (noSleep.current) {
+      disable();
+      noSleep.current = null;
+    }
+  }
 
   return noSleep;
 }
