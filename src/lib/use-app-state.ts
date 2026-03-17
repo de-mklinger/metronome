@@ -1,18 +1,17 @@
 import { Dispatch, useContext, useMemo } from "react";
 import { AppState, Config, NewSong, SetlistWithSongs, Song } from "../types.ts";
+import { Action, MutableAppState } from "./app-state.tsx";
 import {
-  Action,
   AppStateContext,
   AppStateDispatchContext,
-  MutableAppState,
-} from "./app-state.tsx";
+} from "./app-state-context.tsx";
 
 export function useAppState(): MutableAppState {
   const appState = useContext(AppStateContext);
   const appStateDispatch = useContext(AppStateDispatchContext);
 
   if (!appState || !appStateDispatch) {
-    throw new Error();
+    throw new Error("useAppState must be used within an AppStateProvider.");
   }
 
   return useMemo(

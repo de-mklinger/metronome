@@ -9,7 +9,7 @@ import { messages } from "../../lang/i18n.ts";
 import {
   AppStateContext,
   AppStateDispatchContext,
-} from "../../lib/app-state.tsx";
+} from "../../lib/app-state-context.tsx";
 
 test("renders shortcut settings", async () => {
   renderConfigEditor();

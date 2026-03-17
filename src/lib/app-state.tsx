@@ -1,12 +1,7 @@
 import { defaultAppState, defaultSong } from "./env.ts";
-import {
-  createContext,
-  Dispatch,
-  PropsWithChildren,
-  useReducer,
-} from "react";
+import { useReducer } from "react";
 import { AppState, Config, NewSong, SetlistWithSongs, Song } from "../types.ts";
-import {storeAppState} from "./app-state-storage.ts";
+import { storeAppState } from "./app-state-storage.ts";
 
 function savingAppStateReducer(appState: AppState, action: Action) {
   // TODO only store non-default config values
@@ -181,27 +176,8 @@ export type MutableAppState = Required<Pick<AppState, "songIdx">> &
     previousSong: () => void;
   };
 
-export const AppStateContext = createContext<AppState | null>(null);
-export const AppStateDispatchContext = createContext<Dispatch<Action> | null>(null);
-
-export type AppStateContextProviderProps = PropsWithChildren<{
-  initialAppState?: AppState;
-}>;
-
-export function AppStateContextProvider({
-  children,
-  initialAppState,
-}: AppStateContextProviderProps) {
-  const [appState, appStateDispatch] = useReducer(
-    savingAppStateReducer,
-    initialAppState ?? defaultAppState,
-  );
-
-  return (
-    <AppStateContext.Provider value={appState}>
-      <AppStateDispatchContext.Provider value={appStateDispatch}>
-        {children}
-      </AppStateDispatchContext.Provider>
-    </AppStateContext.Provider>
-  );
+export function useAppStateReducer(
+  initialAppState?: AppState,
+): [AppState, AppStateDispatch] {
+  return useReducer(savingAppStateReducer, initialAppState ?? defaultAppState);
 }

@@ -1,7 +1,6 @@
 import { HashRouter as Router, Outlet, Route, Routes } from "react-router-dom";
 import { PropsWithChildren, Suspense } from "react";
 import LoadingIndicator from "./common/LoadingIndicator.tsx";
-import { AppStateContextProvider } from "../lib/app-state.tsx";
 import { useNoSleep } from "../lib/no-sleep.ts";
 import { IntlProvider } from "react-intl";
 import MetronomeScreen from "./metronome/MetronomeScreen.tsx";
@@ -23,47 +22,46 @@ import {
   grabConsoleMessages,
   ungrabConsoleMessages,
 } from "../lib/console-messages.ts";
+import { AppStateProvider } from "../lib/app-state-provider.tsx";
 
 export default function App() {
   const initialAppState = loadAppState();
 
   return (
-    <>
-      <ErrorBoundary fallback={<ErrorScreen />}>
-        <AppStateContextProvider initialAppState={initialAppState}>
-          <GrabConsoleMessagesIfEnabled />
-          <NoSleepAlwaysIfEnabled />
-          <CustomIntlProvider>
-            <Suspense fallback={<LoadingIndicator />}>
-              <SplashScreen>
-                <Router>
-                  <Routes>
-                    <Route element={<EditLayout />}>
-                      <Route path="config" element={<ConfigEditScreen />} />
-                      <Route
-                        path="currentsong"
-                        element={<CurrentSongEditScreen />}
-                      />
-                      <Route path="songs" element={<SongsScreen />} />
-                      <Route path="songs/:id" element={<SongEditScreen />} />
-                      <Route path="setlists" element={<SetlistsScreen />} />
-                      <Route
-                        path="setlists/:id"
-                        element={<SetlistEditScreen />}
-                      />
-                      <Route path="*" element={<NotFoundScreen />} />
-                    </Route>
-                    <Route element={<MetronomeLayout />}>
-                      <Route index={true} element={<MetronomeScreen />} />
-                    </Route>
-                  </Routes>
-                </Router>
-              </SplashScreen>
-            </Suspense>
-          </CustomIntlProvider>
-        </AppStateContextProvider>
-      </ErrorBoundary>
-    </>
+    <ErrorBoundary fallback={<ErrorScreen />}>
+      <AppStateProvider initialAppState={initialAppState}>
+        <GrabConsoleMessagesIfEnabled />
+        <NoSleepAlwaysIfEnabled />
+        <CustomIntlProvider>
+          <Suspense fallback={<LoadingIndicator />}>
+            <SplashScreen>
+              <Router>
+                <Routes>
+                  <Route element={<EditLayout />}>
+                    <Route path="config" element={<ConfigEditScreen />} />
+                    <Route
+                      path="currentsong"
+                      element={<CurrentSongEditScreen />}
+                    />
+                    <Route path="songs" element={<SongsScreen />} />
+                    <Route path="songs/:id" element={<SongEditScreen />} />
+                    <Route path="setlists" element={<SetlistsScreen />} />
+                    <Route
+                      path="setlists/:id"
+                      element={<SetlistEditScreen />}
+                    />
+                    <Route path="*" element={<NotFoundScreen />} />
+                  </Route>
+                  <Route element={<MetronomeLayout />}>
+                    <Route index={true} element={<MetronomeScreen />} />
+                  </Route>
+                </Routes>
+              </Router>
+            </SplashScreen>
+          </Suspense>
+        </CustomIntlProvider>
+      </AppStateProvider>
+    </ErrorBoundary>
   );
 }
 
